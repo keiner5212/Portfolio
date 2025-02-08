@@ -1,19 +1,16 @@
 import "../globals.css";
+import "normalize.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Providers } from "@/components/Providers";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Keiner José Alvarado - Portfolio",
 	description:
-		"Professional portfolio of Keiner José Alvarado - Software Developer",
+		"Professional portfolio of Keiner José Alvarado Quintero - Software Developer",
 };
 
 export default function RootLayout({
-	children,
-	params,
+	children
 }: {
 	children: React.ReactNode;
 	params: { lang: string };

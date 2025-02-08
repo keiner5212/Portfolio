@@ -4,11 +4,14 @@ Welcome to my personal portfolio website! This project is designed to showcase m
 
 ## Table of Contents
 
-- [About Me](#about-me)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contact](#contact)
+- [Portfolio - Keiner Alvarado](#portfolio---keiner-alvarado)
+  - [Table of Contents](#table-of-contents)
+  - [About Me](#about-me)
+  - [Tech Stack](#tech-stack)
+    - [Frontend](#frontend)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contact](#contact)
 
 ## About Me
 
@@ -21,10 +24,6 @@ This portfolio is built using the following technologies and frameworks:
 ### Frontend
 - **Frameworks/Libraries**: React, Next.js, Tailwind CSS, Radix UI
 - **Languages**: JavaScript, TypeScript, CSS, SCSS, HTML
-
-### DevOps & Tools
-- **Cloud Platforms**: AWS
-- **Tools**: Docker, CI/CD pipelines
 
 ## Installation
 
