@@ -5,12 +5,14 @@ import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { useCanvasAnimation } from './background/useCanvasAnimation';
+import { useTheme } from 'next-themes';
 
 const githubProfilePic = 'https://avatars.githubusercontent.com/u/122523028?v=4';
 
 const Hero = ({ t }: { t: any }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  useCanvasAnimation(canvasRef);
+  const {theme} = useTheme();
+  useCanvasAnimation(canvasRef, theme || 'light');
   return (
     <section className="bg-background py-20 relative h-[400px] md:h-[300px]">
       <canvas ref={canvasRef} className='absolute top-0 left-0 w-full h-[400px] md:h-[300px] z-0'> </canvas>

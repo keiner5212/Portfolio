@@ -20,7 +20,6 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
 	useEffect(() => {
 		const fetchQuote = async () => {
 			try {
-				console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
 				const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/quote", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },

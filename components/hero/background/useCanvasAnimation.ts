@@ -8,18 +8,58 @@ import {
     FPS,
     HOVER_VELOCITY_MULTIPLIER,
     INITIAL_VEL_MULIPLIER,
-    NUMBER_OF_POINTS,
     POINTS_BOUNCE,
-    POINTS_COLOR,
-    POINTS_HOVER_COLOR,
 } from "./utils/constants";
 import { getRamdomX, getRamdomY, getSizePoint } from "./utils/sizesGenerator";
 import { Point } from "./models/Points";
 import { DrawLines, DrawPoints, clearCanvas } from "./utils/drawer";
 
-export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>) => {
+export function isMobileDevice(): boolean {
+    if (typeof window === "undefined") return false;
+
+    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+    return /android|iphone|ipad|ipod|blackberry|windows phone/i.test(userAgent.toLowerCase());
+}
+
+export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>, theme: string) => {
     const [points, setPoints] = useState<Point[]>([]);
     const animationFrameId = useRef<number | null>(null);
+
+    const [POINTS_COLOR, setPointsColor] = useState("#fff");
+    const [POINTS_HOVER_COLOR, setPointsHoverColor] = useState("#989");
+    const [NUMBER_OF_POINTS, setNumberOfPoints] = useState(0);
+
+
+    useEffect(() => {
+        if (theme == 'dark') {
+            setPointsColor("#fff");
+            setPointsHoverColor("#989");
+        } else if (theme == 'light') {
+            setPointsColor("#000");
+            setPointsHoverColor("#989");
+        }
+    }, [theme]);
+
+    useEffect(() => {
+        if (isMobileDevice()) {
+            setNumberOfPoints(10);
+        } else {
+            setNumberOfPoints(25);
+        }
+    }, []);
+
+    useEffect(() => {
+        updatePointsTheme();
+    }, [POINTS_COLOR, POINTS_HOVER_COLOR]);
+
+    function updatePointsTheme() {
+        const updatedPoints = points.map((point) => {
+            point.color = POINTS_COLOR;
+            return point;
+        });
+        setPoints(updatedPoints);
+    }
 
     // Initialize points
     useEffect(() => {
@@ -39,14 +79,14 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
             newPoints.push(point);
         }
         setPoints(newPoints);
-    }, []);
+    }, [NUMBER_OF_POINTS]);
 
     // Resize canvas
     const resizeCanvas = () => {
         if (canvasRef.current) {
-			const parent= canvasRef.current.parentElement as HTMLElement;
+            const parent = canvasRef.current.parentElement as HTMLElement;
             canvasRef.current.width = parent.clientWidth;
-			canvasRef.current.height = parent.clientHeight;
+            canvasRef.current.height = parent.clientHeight;
         }
     };
 
@@ -116,7 +156,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
 
     // Handle window resize
     useEffect(() => {
-		resizeCanvas();
+        resizeCanvas();
         const handleResize = () => {
             resizeCanvas();
         };

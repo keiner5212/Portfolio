@@ -83,5 +83,9 @@
 
 
 * {
-  scrollbar-color: #ffffff91 transparent;
+  
+  scrollbar-color: #00000091 transparent;
+  &.dark {
+    scrollbar-color: #ffffff91 transparent;
+  }
 }

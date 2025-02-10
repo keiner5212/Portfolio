@@ -22,6 +22,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import { useTheme } from "next-themes";
 
 const Projects = ({ t }: { t: any }) => {
   const [visibleProjects, setVisibleProjects] = useState(3);
@@ -91,7 +92,7 @@ const Projects = ({ t }: { t: any }) => {
     })
   }, [visibleProjects, t.data]);
 
-
+  const {theme} = useTheme();
 
   return (
     <section id="projects" className="bg-muted py-20 relative">
@@ -243,14 +244,14 @@ const Projects = ({ t }: { t: any }) => {
           {visibleProjects < t.data.length ? (
             <button
               onClick={loadMoreProjects}
-              className="view-more-button"
+              className={"view-more-button " + (theme === 'dark' ? 'dark' : '')}
             >
               <span>{t.viewMore}</span>
             </button>
           ) : (
             <button
               onClick={showLessProjects}
-              className="view-more-button"
+              className={"view-more-button " + (theme === 'dark' ? 'dark' : '')}
             >
               <span>{t.viewLess}</span>
             </button>
