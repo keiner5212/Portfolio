@@ -108,7 +108,12 @@ export const translations = {
 			viewGithub: "View on GitHub",
 			viewWebsite: "View on Website",
 			viewMore: "View more",
-			viewLess: "View less",
+			viewLess: "View less", 
+			finalCard: {
+				title: "The End... or Maybe Not",
+				description: "That was the most important part, but you can also check out my GitHub, where I'm always working on interesting projects.",
+				buttonText: "Visit my GitHub profile",
+			},
 			data: [
 				{
 					title: "Loan App",
@@ -256,6 +261,11 @@ export const translations = {
 			viewWebsite: "Ver en Sitio Web",
 			viewMore: "Ver más",
 			viewLess: "Ver menos",
+			finalCard: {
+				title: "Fin... o casi",
+				description: "Eso fue lo más importante, pero también puedes visitar mi GitHub, donde siempre estoy trabajando en cosas interesantes.",
+				buttonText: "Visita mi perfil de GitHub",
+			},
 			data: [
 				{
 					title: "Loan App",

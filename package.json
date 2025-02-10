@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
     "@hookform/resolvers": "3.9.0",
     "@next/swc-wasm-nodejs": "13.5.1",
     "@radix-ui/react-accordion": "1.2.0",

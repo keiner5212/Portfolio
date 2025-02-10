@@ -25,7 +25,7 @@ export default function Home({ params: { lang } }: { params: { lang: 'en' | 'es'
         <About t={t.about} />
         <Experience t={t.experience} />
         <Projects t={t.projects} />
-        <Contact t={t.contact} />
+        <Contact t={t.contact} lang={lang} />
       </main>
       <Footer t={t.footer} />
     </div>
