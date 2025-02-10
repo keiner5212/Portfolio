@@ -1,5 +1,5 @@
 
-export const NUMBER_OF_POINTS = 30
+export const NUMBER_OF_POINTS = 20
 export const FPS = 50
 export const INITIAL_VEL_MULIPLIER = 100
 export const MIN_SIZE_POINTS = 5

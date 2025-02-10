@@ -1,3 +1,55 @@
+import BackendIMG from "@/assets/backend-rep.webp"
+//Hello front
+import Frontend1IMG from "@/assets/hello-front/1.png"
+import Frontend2IMG from "@/assets/hello-front/2.png"
+import Frontend3IMG from "@/assets/hello-front/3.png"
+import Frontend4IMG from "@/assets/hello-front/4.png"
+
+//Hello Node
+import Node1IMG from "@/assets/hello-ipfs-user-node-front/1.png"
+
+//skillwork
+import Skillwork1IMG from "@/assets/skillwork/1.png"
+import Skillwork2IMG from "@/assets/skillwork/2.png"
+import Skillwork3IMG from "@/assets/skillwork/3.png"
+import Skillwork4IMG from "@/assets/skillwork/4.png"
+import Skillwork5IMG from "@/assets/skillwork/5.png"
+
+//autoclicker
+import Autoclicker1IMG from "@/assets/autoclicker/1.png"
+
+//loans app
+import LoansApp1IMG from "@/assets/loans-app/1.png"
+import LoansApp2IMG from "@/assets/loans-app/2.png"
+import LoansApp3IMG from "@/assets/loans-app/3.png"
+import LoansApp4IMG from "@/assets/loans-app/4.png"
+import LoansApp5IMG from "@/assets/loans-app/5.png"
+import LoansApp6IMG from "@/assets/loans-app/6.png"
+import LoansApp7IMG from "@/assets/loans-app/7.png"
+import LoansApp8IMG from "@/assets/loans-app/8.png"
+import LoansApp9IMG from "@/assets/loans-app/9.png"
+import LoansApp10IMG from "@/assets/loans-app/10.png"
+
+//educative game
+import EducativeGame1IMG from "@/assets/educative-game/1.png"
+import EducativeGame2IMG from "@/assets/educative-game/2.png"
+import EducativeGame3IMG from "@/assets/educative-game/3.png"
+import EducativeGame4IMG from "@/assets/educative-game/4.png"
+import EducativeGame5IMG from "@/assets/educative-game/5.png"
+import EducativeGame6IMG from "@/assets/educative-game/6.png"
+
+//sorting methods
+import SortingMethods1IMG from "@/assets/sorting-methods/1.png"
+
+//mc launcher
+import MinecraftLauncher1IMG from "@/assets/mc-launcher/1.png"
+import MinecraftLauncher2IMG from "@/assets/mc-launcher/2.png"
+
+//data structures
+import DataStructures1IMG from "@/assets/data-structures/1.png"
+
+
+
 export const translations = {
 	en: {
 		header: {
@@ -20,29 +72,119 @@ export const translations = {
 			title: "Work Experience",
 			helloApp: {
 				title: "Full Stack Developer",
+				link: "https://hello.app",
 				company: "hello.app",
-				period: "August 2023 - Present",
+				period: "May 2023 - November 2024 (1 year, 6 months)",
 				description:
-					"Enhancing the usability and functionality of the company's platform. Working closely with teams to implement efficient and scalable technological solutions, improving user experience and contributing to the overall success of the company.",
+					"Enhanced the usability and functionality of the company's platform by working on multiple projects:\n" +
+					"- Mobile App: Developed using React Native, focusing on delivering a seamless cross-platform user experience.\n" +
+					"- Web App: Built with Tauri, ensuring high performance and a modern user interface.\n" +
+					"- Backend Systems: Worked on two distinct backend systems:\n" +
+					"  - Gin: Designed to serve files efficiently.\n" +
+					"  - Express: Managed user authentication, statistics, and specific services.\n" +
+					"- Website: Developed using React, ensuring a responsive and interactive user experience.\n" +
+					"Integrated IPFS (InterPlanetary File System) across multiple projects to enable decentralized file storage and sharing.\n" +
+					"Collaborated closely with cross-functional teams to implement scalable and efficient technological solutions, improving user experience and contributing to the overall success of the company.",
+			},
+			notiexpress: {
+				title: "Technical Consultant (Freelance)",
+				link: "https://www.notiexpresscolor.com/",
+				company: "Notiexpress Color",
+				period: "No period",
+				description:
+					"Provided occasional technical support to solve general problems, including hosting issues, PHP and WordPress troubleshooting, and system optimizations. Collaborated with the team to ensure smooth operation of their digital platforms.",
 			},
 			freelance: {
 				title: "Web Developer (Freelance)",
+				link: undefined,
 				company: "Perímetro Urbano",
 				period: "January 2020 - Present",
 				description:
 					"Worked on various web development projects as a freelancer, delivering custom solutions to clients.",
 			},
 		},
-		skills: {
-			title: "Skills",
-			frontend: "Frontend",
-			backend: "Backend",
-			cloudDevOps: "Cloud & DevOps",
-			otherLanguages: "Other Languages",
-		},
 		projects: {
 			title: "Projects",
 			viewGithub: "View on GitHub",
+			viewWebsite: "View on Website",
+			viewMore: "View more",
+			viewLess: "View less",
+			data: [
+				{
+					title: "Loan App",
+					description: "LoansApp is a comprehensive solution designed for companies engaged in the vehicle lending and rental sector. This robust and highly customizable platform allows you to efficiently manage all aspects related to user administration, credit applications, financial calculations, contract creation, amortization tables and system configuration.",
+					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "Docker"],
+					github: ["https://github.com/keiner5212/loans-app-back", "https://github.com/keiner5212/loans-app-front"],
+					images: [LoansApp1IMG, LoansApp2IMG, LoansApp3IMG, LoansApp4IMG, LoansApp5IMG, LoansApp6IMG, LoansApp7IMG, LoansApp8IMG, LoansApp9IMG, LoansApp10IMG]
+				},
+				{
+					title: "Hello Front",
+					description: "The frontend of hello.app",
+					technologies: ["React", "TypeScript", "Tailwind CSS", "Vite", "SCSS", "IPFS"],
+					github: ["https://github.com/Hello-Storage/hello-front"],
+					website: "https://hello.app",
+					images: [Frontend1IMG, Frontend2IMG, Frontend3IMG, Frontend4IMG]
+				},
+				{
+					title: "Skillwork",
+					description: "SkillWork is an innovative platform designed to facilitate the connection between professionals and companies, optimizing the process of publishing job offers, applying for vacancies and managing quotes. Inspired by leading platforms such as Computrabajo, SkillWork offers a comprehensive solution for job searching and recruiting talent.",
+					technologies: ["React Native", "Express", "TypeScript", "Expo", "Firestore", "Firebase Storage"],
+					github: ["https://github.com/keiner5212/skillwork-front", "https://github.com/keiner5212/skillwork-back"],
+					images: [Skillwork1IMG, Skillwork2IMG, Skillwork3IMG, Skillwork4IMG, Skillwork5IMG]
+				},
+				{
+					title: "Auth Service",
+					description: "Auth-Service is a robust and scalable server that provides all the functionality required for user authentication and management in modern applications. It offers user creation and management, secure login, two-factor authentication (2FA), sending emails and WhatsApp messages, JWT token generation, and security auditing. Designed to be easy to integrate through a well-documented RESTful API, Auth-Service ensures security, scalability, and customization, allowing developers to implement reliable authentication systems while focusing on the business logic of their applications.",
+					technologies: ["Express", "TypeScript", "JWT", "PostgreSQL", "Redis", "Docker"],
+					github: ["https://github.com/keiner5212/Auth-Service"],
+					images: [BackendIMG]
+				},
+				{
+					title: "Hello Node",
+					description: "This frontend application interacts with an IPFS node configured with the Kubo library and a local server. It also integrates with services provided by Hello.app. The frontend allows users to manage and adjust configurations through an intuitive user interface.",
+					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "IPFS"],
+					github: ["https://github.com/Hello-Storage/hello-ipfs-user-node-front/tree/app-v0.0.1",
+						"https://github.com/Hello-Storage/hello-ipfs-user-node"],
+					images: [Node1IMG]
+				},
+				{
+					title: "Autockicker",
+					description: "Autoclicker is a program that allows you to click the mouse automatically at a certain rate.",
+					technologies: ["Python"],
+					github: ["https://github.com/keiner5212/AutoClicker"],
+					images: [Autoclicker1IMG]
+				},
+				{
+					title: "Hello Back",
+					description: "The backend of hello.app",
+					technologies: ["Go", "Node.js", "PostgreSQL", "Redis", "S3", "IPFS", "Docker"],
+					github: ["priv"],
+					website: "https://api-staging.joinhello.app/api/",
+					images: [BackendIMG]
+				},
+				{
+					title: "Educative Game",
+					description: "A small 2D game with its own graphics engine, made with vanilla javascript and the pixi.js library.",
+					technologies: ["JavaScript", "Pixi.js"],
+					github: ["https://github.com/keiner5212/educative-game"],
+					website: "https://educative-game.vercel.app/",
+					images: [EducativeGame1IMG, EducativeGame2IMG, EducativeGame3IMG, EducativeGame4IMG, EducativeGame5IMG, EducativeGame6IMG]
+				},
+				{
+					title: "Sorting algorithms and data structures",
+					description: "Sorting-Methods is a repository that implements and compares various classical and modern sorting algorithms. Designed for educational and practical purposes, this project includes efficient implementations of methods such as Quick Sort, Merge Sort, Bubble Sort, Insertion Sort, Selection Sort, and more, along with analyses of their time and space complexity. Ideal for students, developers, and algorithm enthusiasts, Sorting-Methods provides a solid foundation for understanding and applying sorting techniques in different contexts, optimizing the performance of applications that require handling structured data. Data Structures is a repository that is a comprehensive collection of various data structures implemented in different programming languages. Whether you are a beginner looking to understand fundamental data structures or an experienced developer looking for reference implementations, this repository aims to provide a valuable resource.",
+					technologies: ["JavaScript", "TypeScript", "Python", "Go", "C++", "Java"],
+					github: ["https://github.com/keiner5212/sorting-methods", "https://github.com/keiner5212/data-structures"],
+					images: [SortingMethods1IMG, DataStructures1IMG]
+				},
+				{
+					title: "Minecraft Launcher (By Keiner5212)",
+					description: "MC-Launcher is a custom launcher for Minecraft designed to offer a safe and secure experience, avoiding the use of unsafe options such as TLauncher. With MC-Launcher, players can easily manage and run multiple versions of the game, install mods, manage profiles, and optimize performance without compromising the security of their account.",
+					technologies: ["Java"],
+					github: ["https://github.com/keiner5212/mc-launcher"],
+					images: [MinecraftLauncher1IMG, MinecraftLauncher2IMG]
+				},
+			]
 		},
 		contact: {
 			title: "Get in Touch",
@@ -53,7 +195,7 @@ export const translations = {
 		},
 		footer: {
 			rights:
-				"All rights reserved. Free use of resources, original code.",
+				"Rights reserved. Developed with original code. Free icons from third parties..",
 		},
 	},
 	es: {
@@ -77,10 +219,27 @@ export const translations = {
 			title: "Experiencia Laboral",
 			helloApp: {
 				title: "Desarrollador Full Stack",
+				link: "https://hello.app",
 				company: "hello.app",
-				period: "Agosto 2023 - Presente",
+				period: "Mayo 2023 - Noviembre 2024 (1 año y 6 meses)",
 				description:
-					"Mejorando la usabilidad y funcionalidad de la plataforma de la empresa. Trabajando en estrecha colaboración con equipos para implementar soluciones tecnológicas eficientes y escalables, mejorando la experiencia del usuario y contribuyendo al éxito general de la empresa.",
+					"Mejoró la usabilidad y la funcionalidad de la plataforma de la empresa trabajando en varios proyectos:\n" +
+					"- Aplicación Móvil: Desarrollada utilizando React Native, enfocada en ofrecer una experiencia de usuario cross-platform sin problemas.\n" +
+					"- Aplicación Web: Construida con Tauri, garantizando un rendimiento alto y una interfaz de usuario moderna.\n" +
+					"- Sistemas de Backend: Trabajé en dos sistemas de backend distintos:\n" +
+					"  - Gin: Disenado para servir archivos eficientemente.\n" +
+					"  - Express: Administró la autenticación de usuarios, estadísticas y servicios especiales.\n" +
+					"- Sitio Web: Desarrollado utilizando React, garantizando una experiencia de usuario responsive y interactiva.\n" +
+					"Integró IPFS (InterPlanetary File System) en varios proyectos para permitir almacenamiento y compartimiento de archivos descentralizados.\n" +
+					"Trabajé en equipo con equipos transversales para implementar soluciones tecnológicas escalables y eficientes, mejorando la experiencia del usuario y contribuyendo al éxito de la empresa.",
+			},
+			notiexpress: {
+				title: "Consultor Técnico (Freelance)",
+				company: "Notiexpress Color",
+				period: "Sin período definido",
+				description:
+					"Brindé soporte técnico ocasional para resolver problemas generales, incluyendo problemas de hosting, troubleshooting en PHP y WordPress, y optimización de sistemas. Colaboré con el equipo para garantizar el correcto funcionamiento de sus plataformas digitales.",
+				link: "https://www.notiexpresscolor.com/",
 			},
 			freelance: {
 				title: "Desarrollador Web (Freelance)",
@@ -88,18 +247,91 @@ export const translations = {
 				period: "Enero 2022 - Presente",
 				description:
 					"Trabajé en varios proyectos de desarrollo web como freelancer, entregando soluciones personalizadas a los clientes.",
+				link: undefined,
 			},
-		},
-		skills: {
-			title: "Habilidades",
-			frontend: "Frontend",
-			backend: "Backend",
-			cloudDevOps: "Cloud y DevOps",
-			otherLanguages: "Otros Lenguajes",
 		},
 		projects: {
 			title: "Proyectos",
 			viewGithub: "Ver en GitHub",
+			viewWebsite: "Ver en Sitio Web",
+			viewMore: "Ver más",
+			viewLess: "Ver menos",
+			data: [
+				{
+					title: "Loan App",
+					description: "LoansApp es una solución integral diseñada para empresas dedicadas al sector de préstamos y alquiler de vehículos. Esta plataforma robusta y altamente personalizable permite gestionar de forma eficiente todos los aspectos relacionados con la administración de usuarios, solicitudes de crédito, cálculos financieros, creación de contratos, tablas de amortización y configuración del sistema.",
+					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "Docker"],
+					github: ["https://github.com/keiner5212/loans-app-back", "https://github.com/keiner5212/loans-app-front"],
+					images: [LoansApp1IMG, LoansApp2IMG, LoansApp3IMG, LoansApp4IMG, LoansApp5IMG, LoansApp6IMG, LoansApp7IMG, LoansApp8IMG, LoansApp9IMG, LoansApp10IMG]
+				},
+				{
+					title: "Hello Front",
+					description: "El frontend de hello.app",
+					technologies: ["React", "TypeScript", "Tailwind CSS", "Vite", "SCSS", "IPFS"],
+					github: ["https://github.com/Hello-Storage/hello-front"],
+					website: "https://hello.app",
+					images: [Frontend1IMG, Frontend2IMG, Frontend3IMG, Frontend4IMG]
+				},
+				{
+					title: "Skillwork",
+					description: "SkillWork es una plataforma innovadora diseñada para facilitar la conexión entre profesionales y empresas, optimizando el proceso de publicación de ofertas laborales, aplicación a vacantes y gestión de cotizaciones. Inspirada en plataformas líderes como Computrabajo, SkillWork ofrece una solución integral para la búsqueda de empleo y la contratación de talento.",
+					technologies: ["React Native", "Express", "TypeScript", "Expo", "Firestore", "Firebase Storage"],
+					github: ["https://github.com/keiner5212/skillwork-front", "https://github.com/keiner5212/skillwork-back"],
+					images: [Skillwork1IMG, Skillwork2IMG, Skillwork3IMG, Skillwork4IMG, Skillwork5IMG]
+				},
+				{
+					title: "Auth Service",
+					description: "Auth-Service es un servidor robusto y escalable que proporciona toda la funcionalidad necesaria para la autenticación y gestión de usuarios en aplicaciones modernas. Ofrece creación y gestión de usuarios, inicio de sesión seguro, autenticación de dos factores (2FA), envío de correos electrónicos y mensajes de WhatsApp, generación de tokens JWT y auditoría de seguridad. Diseñado para ser fácil de integrar a través de una API RESTful bien documentada, Auth-Service garantiza seguridad, escalabilidad y personalización, lo que permite a los desarrolladores implementar sistemas de autenticación confiables mientras se concentran en la lógica comercial de sus aplicaciones.",
+					technologies: ["Express", "TypeScript", "JWT", "PostgreSQL", "Redis", "Docker"],
+					github: ["https://github.com/keiner5212/Auth-Service"],
+					images: [BackendIMG]
+				},
+				{
+					title: "Hello Node",
+					description: "Esta aplicación frontend interactúa con un nodo IPFS configurado con la biblioteca Kubo y un servidor local. También se integra con los servicios proporcionados por Hello.app. El frontend permite a los usuarios administrar y ajustar las configuraciones a través de una interfaz de usuario intuitiva.",
+					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "IPFS"],
+					github: ["https://github.com/Hello-Storage/hello-ipfs-user-node-front/tree/app-v0.0.1",
+						"https://github.com/Hello-Storage/hello-ipfs-user-node"],
+					images: [Node1IMG]
+				},
+				{
+					title: "Autockicker",
+					description: "Autoclicker es un programa que permite hacer clic en el ratón automático a una tasa determinada.",
+					technologies: ["Python"],
+					github: ["https://github.com/keiner5212/AutoClicker"],
+					images: [Autoclicker1IMG]
+				},
+				{
+					title: "Hello Back",
+					description: "El backend de hello.app",
+					technologies: ["Go", "Node.js", "PostgreSQL", "Redis", "S3", "IPFS", "Docker"],
+					github: ["priv"],
+					website: "https://api-staging.joinhello.app/api/",
+					images: [BackendIMG]
+				},
+				{
+					title: "Educative Game",
+					description: "Un pequeño juego 2D con un motor grafico propio, hecho con javascript vanilla y la libreria pixi.js.",
+					technologies: ["JavaScript", "Pixi.js"],
+					github: ["https://github.com/keiner5212/educative-game"],
+					website: "https://educative-game.vercel.app/",
+					images: [EducativeGame1IMG, EducativeGame2IMG, EducativeGame3IMG, EducativeGame4IMG, EducativeGame5IMG, EducativeGame6IMG]
+				},
+				{
+					title: "Algoritmos de ordenamiento y estructuras de datos",
+					description: "Sorting-Methods es un repositorio que implementa y compara diversos algoritmos de ordenamiento clásicos y modernos. Diseñado para fines educativos y prácticos, este proyecto incluye implementaciones eficientes de métodos como Quick Sort, Merge Sort, Bubble Sort, Insertion Sort, Selection Sort y más, junto con análisis de su complejidad temporal y espacial. Ideal para estudiantes, desarrolladores y entusiastas de la algoritmia, Sorting-Methods ofrece una base sólida para entender y aplicar técnicas de ordenamiento en diferentes contextos, optimizando el rendimiento de aplicaciones que requieren manejo de datos estructurados. Data Structures es un repositorio es una colección completa de diversas estructuras de datos implementadas en diferentes lenguajes de programación. Tanto si es un principiante que busca comprender las estructuras de datos fundamentales como si es un desarrollador experimentado que busca implementaciones de referencia, este repositorio tiene como objetivo proporcionar un recurso valioso.",
+					technologies: ["JavaScript", "TypeScript", "Python", "Go", "C++", "Java"],
+					github: ["https://github.com/keiner5212/sorting-methods", "https://github.com/keiner5212/data-structures"],
+					images: [SortingMethods1IMG, DataStructures1IMG]
+				},
+				{
+					title: "Minecraft Launcher (By Keiner5212)",
+					description: "MC-Launcher es un lanzador personalizado para Minecraft diseñado para ofrecer una experiencia segura y confiable, evitando el uso de opciones inseguras como TLauncher. Con MC-Launcher, los jugadores pueden gestionar y ejecutar múltiples versiones del juego de manera sencilla, instalar mods, administrar perfiles y optimizar el rendimiento sin comprometer la seguridad de su cuenta.",
+					technologies: ["Java"],
+					github: ["https://github.com/keiner5212/mc-launcher"],
+					images: [MinecraftLauncher1IMG, MinecraftLauncher2IMG]
+				},
+			]
 		},
 		contact: {
 			title: "Contáctame",
@@ -110,7 +342,7 @@ export const translations = {
 		},
 		footer: {
 			rights:
-				"Todos los derechos reservados. Uso de recursos gratuitos, código original.",
+				"Derechos reservados. Desarrollado con código original. Íconos gratuitos de terceros.",
 		},
 	},
 };

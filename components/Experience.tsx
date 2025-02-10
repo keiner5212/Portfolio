@@ -6,14 +6,23 @@ const Experience = ({ t }: { t: any }) => {
       title: t.helloApp.title,
       company: t.helloApp.company,
       period: t.helloApp.period,
-      description: t.helloApp.description
+      description: t.helloApp.description,
+      link: t.helloApp.link,
+    },
+    {
+      title: t.notiexpress.title,
+      company: t.notiexpress.company,
+      period: t.notiexpress.period,
+      description: t.notiexpress.description,
+      link: t.notiexpress.link,
     },
     {
       title: t.freelance.title,
       company: t.freelance.company,
       period: t.freelance.period,
-      description: t.freelance.description
-    }
+      description: t.freelance.description,
+      link: t.freelance.link,
+    },
   ];
 
   return (
@@ -25,10 +34,18 @@ const Experience = ({ t }: { t: any }) => {
             <Card key={index}>
               <CardHeader>
                 <CardTitle>{exp.title}</CardTitle>
-                <CardDescription>{exp.company} | {exp.period}</CardDescription>
+                <CardDescription>
+                  {exp.link ? (
+                    <a href={exp.link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      {exp.company}
+                    </a>
+                  ) : (
+                    exp.company
+                  )} | {exp.period}
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p>{exp.description}</p>
+                <p style={{ whiteSpace: "pre-line" }}>{exp.description}</p>
               </CardContent>
             </Card>
           ))}

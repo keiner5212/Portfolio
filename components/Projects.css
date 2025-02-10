@@ -1,0 +1,206 @@
+.view-more-button {
+    --fs: 1.25em;
+    --col1: #000;
+    --col2: #4d4d4d9a;
+    --col3: #ffffff;
+    --col4: #000;
+    --pd: .5em .65em;
+    display: grid;
+    align-content: baseline;
+    appearance: none;
+    border: 0;
+    grid-template-columns: min-content 1fr;
+    padding: var(--pd);
+    font-size: var(--fs);
+    color: var(--col1);
+    background-color: var(--col3);
+    border-radius: 6px;
+    position: relative;
+    transition: all .2s ease-out;
+    transform-origin: center;
+}
+
+.view-more-button:hover {
+    color: var(--col4);
+    transform: scale(1.051);
+}
+
+.view-more-button:active {
+    animation: offset .4s ease-in-out infinite;
+    outline-offset: 0;
+}
+
+.view-more-button::after,
+.view-more-button::before {
+    content: '';
+    align-self: center;
+    justify-self: center;
+    height: .6em;
+    margin: 0 .6em;
+    grid-column: 1;
+    grid-row: 1;
+    opacity: 1;
+}
+
+.view-more-button::after {
+    position: relative;
+    border: 2px solid var(--col4);
+    border-radius: 50%;
+    transition: all .5s ease-out;
+    height: .1em;
+    width: .1em;
+}
+
+.view-more-button:hover::after {
+    border: 2px solid var(--col3);
+    transform: rotate(-120deg) translate(10%, 140%);
+}
+
+.view-more-button::before {
+    border-radius: 50% 0%;
+    border: 2px solid var(--col4);
+    box-shadow: inset 1px 1px var(--col2);
+    transition: all 1s ease-out;
+    transform: rotate(45deg);
+    height: .75em;
+    width: .75em;
+}
+
+.view-more-button:hover::before {
+    border-radius: 50%;
+    border: 3px solid var(--col1);
+    transform: scale(1.25) rotate(0deg);
+    animation: blink 1.2s ease-out 1s infinite alternate;
+}
+
+.view-more-button:hover>span {
+    filter: contrast(150%);
+}
+
+@keyframes blink {
+    0% {
+        transform: scale(1, 1) skewX(0deg);
+        opacity: 1;
+    }
+
+    5% {
+        transform: scale(1.5, .1) skewX(10deg);
+        opacity: .5;
+    }
+
+    10%,
+    35% {
+        transform: scale(1, 1) skewX(0deg);
+        opacity: 1;
+    }
+
+    40% {
+        transform: scale(1.5, .1) skewX(10deg);
+        opacity: .25;
+    }
+
+    45%,
+    100% {
+        transform: scale(1, 1) skewX(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes offset {
+    50% {
+        outline-offset: .15em;
+        outline-color: var(--col1);
+    }
+
+    55% {
+        outline-offset: .1em;
+        transform: translateY(1px);
+    }
+
+    80%,
+    100% {
+        outline-offset: 0;
+    }
+}
+
+
+
+/* From Uiverse.io by SalladShooter */
+.light-button button.bt {
+    position: relative;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    outline: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.light-button button.bt .button-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 100px;
+    background-color: #0a0a0a;
+    border-radius: 5px;
+    color: #0f0f0f;
+    font-weight: 700;
+    transition: 300ms;
+    outline: #0f0f0f 2px solid;
+    outline-offset: 20;
+}
+
+.light-button button.bt .button-holder svg {
+    height: 50px;
+    fill: #0f0f0f;
+    transition: 300ms;
+}
+
+.light-button button.bt .light-holder {
+    position: absolute;
+    height: 200px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.light-button button.bt .light-holder .dot {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #0a0a0a;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.light-button button.bt .light-holder .light {
+    position: absolute;
+    top: 0;
+    width: 200px;
+    height: 200px;
+    clip-path: polygon(50% 0%, 25% 100%, 75% 100%);
+    background: transparent;
+}
+
+.light-button button.bt:hover .button-holder svg {
+    fill: rgba(101, 101, 121, 1);
+}
+
+.light-button button.bt:hover .button-holder {
+    color: rgba(101, 101, 121, 1);
+    outline: rgba(101, 101, 121, 1) 2px solid;
+    outline-offset: 2px;
+}
+
+.light-button button.bt:hover .light-holder .light {
+    background: rgb(255, 255, 255);
+    background: linear-gradient(180deg,
+            rgba(101, 101, 121, 1) 0%,
+            rgba(255, 255, 255, 0) 75%,
+            rgba(255, 255, 255, 0) 100%);
+}
