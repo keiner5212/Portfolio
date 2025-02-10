@@ -20,7 +20,8 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
 	useEffect(() => {
 		const fetchQuote = async () => {
 			try {
-				const response = await fetch("/api/generate", {
+				console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
+				const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/quote", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ lang }),
@@ -50,7 +51,7 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
 		setLoading(true);
 
 		try {
-			const response = await fetch("/api/sendEmail", {
+			const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/send-email", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(formData),
