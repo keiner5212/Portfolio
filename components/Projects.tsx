@@ -1,7 +1,7 @@
 "use client";
 
 import "./Projects.css";
-import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, memo } from "react";
 import {
   Card,
   CardContent,
@@ -100,42 +100,42 @@ const BUTTON_VARIANTS = {
   },
 };
 
-const ProjectImage = ({
-  image,
-  projectTitle,
-  index,
-}: {
-  image: string;
-  projectTitle: string;
-  index: number;
-}) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "200px 0px" });
+const ProjectImage = memo(
+  ({
+    image,
+    projectTitle,
+    index,
+  }: {
+    image: string;
+    projectTitle: string;
+    index: number;
+  }) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "200px 0px" });
 
-  return (
-    <div
-      ref={ref}
-      className="flex justify-center items-center w-full h-[210px]"
-    >
-      {isInView ? (
-        <Image
-          src={image}
-          width={200}
-          height={200}
-          alt={`Project ${projectTitle} image ${index}`}
-          className="rounded-lg w-auto h-full object-cover"
-          priority={index < 3}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "/placeholder-image.png";
-          }}
-        />
-      ) : (
-        <div className="w-full h-[210px] bg-muted rounded-lg animate-pulse" />
-      )}
-    </div>
-  );
-};
+    return (
+      <div
+        ref={ref}
+        className="flex justify-center items-center w-full h-[210px]"
+      >
+        {isInView ? (
+          <Image
+            src={image}
+            width={200}
+            height={200}
+            alt={`Project ${projectTitle} image ${index}`}
+            className="rounded-lg w-auto h-full object-cover"
+            priority={index < 3}
+          />
+        ) : (
+          <div className="w-full h-[210px] bg-muted rounded-lg animate-pulse" />
+        )}
+      </div>
+    );
+  }
+);
+
+ProjectImage.displayName = "ProjectImage";
 
 const Projects = ({ t }: { t: ProjectsTranslation }) => {
   const [visibleProjects, setVisibleProjects] = useState(3);
@@ -144,15 +144,9 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   const { theme } = useTheme();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
-  const projectsToShow = useMemo(
-    () => t.data.slice(0, visibleProjects),
-    [t.data, visibleProjects]
-  );
-
   const [showArrows, setShowArrows] = useState<
     { left: boolean; right: boolean }[]
-  >(projectsToShow.map(() => ({ left: false, right: false })));
+  >(t.data.map(() => ({ left: false, right: false })));
 
   const loadMoreProjects = useCallback(() => {
     setVisibleProjects((prev) => Math.min(prev + 3, t.data.length));
@@ -175,12 +169,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
         techScroll.scrollLeft < techScroll.scrollWidth - techScroll.clientWidth;
 
       setShowArrows((prev) => {
-        if (
-          prev[projectIndex]?.left === showLeft &&
-          prev[projectIndex]?.right === showRight
-        ) {
-          return prev;
-        }
         const newArrows = [...prev];
         newArrows[projectIndex] = { left: showLeft, right: showRight };
         return newArrows;
@@ -205,7 +193,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
 
   useEffect(() => {
     const checkAllScrollPositions = () => {
-      projectsToShow.forEach((_project, index) => {
+      t.data.forEach((_project, index) => {
         checkScrollPosition(index);
       });
     };
@@ -216,7 +204,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
     return () => {
       window.removeEventListener("resize", checkAllScrollPositions);
     };
-  }, [projectsToShow, checkScrollPosition]);
+  }, [t.data, checkScrollPosition]);
 
   return (
     <section id="projects" className="bg-muted py-20 relative" ref={sectionRef}>
@@ -236,9 +224,9 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          {projectsToShow.map((project, index) => (
+          {t.data.slice(0, visibleProjects).map((project, index) => (
             <motion.div
-              key={`${project.title}-${index}`}
+              key={project.title} 
               variants={ITEM_VARIANTS}
             >
               <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
