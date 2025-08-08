@@ -45,7 +45,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         if (isMobileDevice()) {
             setNumberOfPoints(10);
         } else {
-            setNumberOfPoints(25);
+            setNumberOfPoints(30);
         }
     }, []);
 

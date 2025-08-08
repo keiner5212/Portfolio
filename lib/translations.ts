@@ -48,7 +48,7 @@ export const translations = {
 					"  - Express: Managed user authentication, statistics, and specific services.\n" +
 					"- Website: Developed using React, ensuring a responsive and interactive user experience.\n" +
 					"Integrated IPFS (InterPlanetary File System) across multiple projects to enable decentralized file storage and sharing.\n" +
-					"Collaborated closely with cross-functional teams to implement scalable and efficient technological solutions, improving user experience and contributing to the overall success of the company.",
+					"Collaborated closely with cross-functional teams to implement scalable and efficient technological solutions, improving user experience.",
 			},
 			notiexpress: {
 				title: "Technical Consultant (Freelance)",
@@ -83,6 +83,7 @@ export const translations = {
 					title: "Theorim.ai",
 					description: "Theorim is a platform for intuitively modeling custom datasets with granular user and permission control. It supports complex data structures (tables, selectors, markdown, validations), record management, and integration with tools like interactive visualizations and AI-powered content generation (reports, emails, etc.).",
 					technologies: ["JavaScript", "CSS", "HTML", "Node.js", "Express", "AWS CloudFormation", "DynamoDB", "S3"],
+					website: "https://cloud.theorim.io/",
 					github: ["https://github.com/Theorim-ai"],
 					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"]
 				},
@@ -257,6 +258,7 @@ export const translations = {
 					title: "Theorim.ai",
 					description: "Theorim es una plataforma para modelar intuitivamente conjuntos de datos personalizados con control granular de usuarios y permisos. Soporta estructuras de datos complejas (tablas, selectores, markdown, validaciones), gestión de registros e integración con herramientas como visualizaciones interactivas y generación de contenido impulsada por IA (reportes, correos electrónicos, etc.).",
 					technologies: ["JavaScript", "CSS", "HTML", "Node.js", "Express", "AWS CloudFormation", "DynamoDB", "S3"],
+					website: "https://cloud.theorim.io/",
 					github: ["https://github.com/Theorim-ai"],
 					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"]
 				},

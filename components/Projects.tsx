@@ -1,7 +1,7 @@
 "use client";
 
 import "./Projects.css";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -29,10 +29,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
-import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { cache } from "@/utils/cache";
 
 interface Project {
   title: string;
@@ -106,75 +104,31 @@ const ProjectImage = ({
   image,
   projectTitle,
   index,
-  onLoad,
 }: {
   image: string;
   projectTitle: string;
   index: number;
-  onLoad: (imageUrl: string) => void;
 }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    rootMargin: "200px 0px",
-  });
-
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (inView && !isLoaded) {
-      const loadImage = async () => {
-        try {
-          const cached = await cache.get<string>(`project-image-${image}`);
-          if (cached) {
-            setImageSrc(cached);
-            setIsLoaded(true);
-            onLoad(image);
-            return;
-          }
-
-          const img = document.createElement('img');
-          img.src = image;
-          img.onload = () => {
-            if (img.complete && img.naturalWidth !== 0) {
-              cache.set(`project-image-${image}`, image, 86400000); 
-              setImageSrc(image);
-              setIsLoaded(true);
-              onLoad(image);
-            }
-          };
-          img.onerror = () => {
-            console.error("Error loading image:", image);
-            setImageSrc("/placeholder-image.png");
-            setIsLoaded(true);
-            onLoad(image);
-          };
-        } catch (error) {
-          console.error("Error loading image:", error);
-          setImageSrc("/placeholder-image.png");
-          setIsLoaded(true);
-          onLoad(image);
-        }
-      };
-
-      loadImage();
-    }
-  }, [inView]);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "200px 0px" });
 
   return (
     <div
       ref={ref}
       className="flex justify-center items-center w-full h-[210px]"
     >
-      {isLoaded && imageSrc ? (
+      {isInView ? (
         <Image
-          src={imageSrc}
+          src={image}
           width={200}
           height={200}
           alt={`Project ${projectTitle} image ${index}`}
           className="rounded-lg w-auto h-full object-cover"
           priority={index < 3}
-          onError={() => setImageSrc("/placeholder-image.png")}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "/placeholder-image.png";
+          }}
         />
       ) : (
         <div className="w-full h-[210px] bg-muted rounded-lg animate-pulse" />
@@ -187,14 +141,18 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   const [visibleProjects, setVisibleProjects] = useState(3);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const { theme } = useTheme();
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const projectsToShow = useMemo(() => t.data.slice(0, visibleProjects), [t.data, visibleProjects]);
-
-  const [showArrows, setShowArrows] = useState<{ left: boolean; right: boolean }[]>(
-    projectsToShow.map(() => ({ left: false, right: false }))
+  const projectsToShow = useMemo(
+    () => t.data.slice(0, visibleProjects),
+    [t.data, visibleProjects]
   );
+
+  const [showArrows, setShowArrows] = useState<
+    { left: boolean; right: boolean }[]
+  >(projectsToShow.map(() => ({ left: false, right: false })));
 
   const loadMoreProjects = useCallback(() => {
     setVisibleProjects((prev) => Math.min(prev + 3, t.data.length));
@@ -209,18 +167,18 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
     setIsModalOpen(true);
   }, []);
 
-  const handleImageLoad = useCallback((imageUrl: string) => {
-    setLoadedImages((prev) => ({ ...prev, [imageUrl]: true }));
-  }, []);
-
   const checkScrollPosition = useCallback((projectIndex: number) => {
     const techScroll = document.getElementById(`technologies${projectIndex}`);
     if (techScroll) {
       const showLeft = techScroll.scrollLeft > 0;
-      const showRight = techScroll.scrollLeft < techScroll.scrollWidth - techScroll.clientWidth;
+      const showRight =
+        techScroll.scrollLeft < techScroll.scrollWidth - techScroll.clientWidth;
 
-      setShowArrows(prev => {
-        if (prev[projectIndex]?.left === showLeft && prev[projectIndex]?.right === showRight) {
+      setShowArrows((prev) => {
+        if (
+          prev[projectIndex]?.left === showLeft &&
+          prev[projectIndex]?.right === showRight
+        ) {
           return prev;
         }
         const newArrows = [...prev];
@@ -230,17 +188,20 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
     }
   }, []);
 
-  const scrollTechnologies = useCallback((direction: "left" | "right", projectIndex: number) => {
-    const techScroll = document.getElementById(`technologies${projectIndex}`);
-    if (techScroll) {
-      techScroll.scrollBy({
-        left: direction === "right" ? 150 : -150,
-        behavior: "smooth",
-      });
+  const scrollTechnologies = useCallback(
+    (direction: "left" | "right", projectIndex: number) => {
+      const techScroll = document.getElementById(`technologies${projectIndex}`);
+      if (techScroll) {
+        techScroll.scrollBy({
+          left: direction === "right" ? 150 : -150,
+          behavior: "smooth",
+        });
 
-      setTimeout(() => checkScrollPosition(projectIndex), 300);
-    }
-  }, [checkScrollPosition]);
+        setTimeout(() => checkScrollPosition(projectIndex), 300);
+      }
+    },
+    [checkScrollPosition]
+  );
 
   useEffect(() => {
     const checkAllScrollPositions = () => {
@@ -250,20 +211,20 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
     };
 
     checkAllScrollPositions();
-    window.addEventListener('resize', checkAllScrollPositions);
+    window.addEventListener("resize", checkAllScrollPositions);
 
     return () => {
-      window.removeEventListener('resize', checkAllScrollPositions);
+      window.removeEventListener("resize", checkAllScrollPositions);
     };
   }, [projectsToShow, checkScrollPosition]);
 
   return (
-    <section id="projects" className="bg-muted py-20 relative">
+    <section id="projects" className="bg-muted py-20 relative" ref={sectionRef}>
       <div className="container mx-auto px-4">
         <motion.h2
           className="mb-12 text-center text-3xl font-bold"
           initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
           {t.title}
@@ -273,10 +234,13 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
           variants={CONTAINER_VARIANTS}
           initial="hidden"
-          animate="visible"
+          animate={isInView ? "visible" : "hidden"}
         >
           {projectsToShow.map((project, index) => (
-            <motion.div key={`${project.title}-${index}`} variants={ITEM_VARIANTS}>
+            <motion.div
+              key={`${project.title}-${index}`}
+              variants={ITEM_VARIANTS}
+            >
               <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
                 <CardHeader>
                   <CardTitle>{project.title}</CardTitle>
@@ -339,7 +303,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                           image={image}
                           projectTitle={project.title}
                           index={i}
-                          onLoad={handleImageLoad}
                         />
                       ))}
                     </Slider>
@@ -348,7 +311,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       image={project.images[0]}
                       projectTitle={project.title}
                       index={0}
-                      onLoad={handleImageLoad}
                     />
                   )}
                 </CardContent>
@@ -368,8 +330,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                               size="sm"
                               className="w-full"
                             >
-                              <Github className="mr-2 h-4 w-4" />{" "}
-                              {t.viewGithub}
+                              <Github className="mr-2 h-4 w-4" /> {t.viewGithub}
                             </Button>
                           </motion.div>
                         </DropdownMenuTrigger>
@@ -413,8 +374,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              <Github className="mr-2 h-4 w-4" />{" "}
-                              {t.viewGithub}
+                              <Github className="mr-2 h-4 w-4" /> {t.viewGithub}
                             </a>
                           )}
                         </Button>
@@ -503,7 +463,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
               <motion.button
                 key="load-more"
                 onClick={loadMoreProjects}
-                className={"view-more-button " + theme}
+                className={"view-more-button " + (theme || "light")}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -517,7 +477,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                 <motion.button
                   key="show-less"
                   onClick={showLessProjects}
-                  className={"view-more-button " + theme}
+                  className={"view-more-button " + (theme || "light")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, y: 20 }}
@@ -552,6 +512,10 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       alt={`Project ${selectedProject.title} image ${i}`}
                       className="rounded-lg w-auto h-full max-h-[300px] object-contain"
                       priority
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder-image.png";
+                      }}
                     />
                   </div>
                 ))}
