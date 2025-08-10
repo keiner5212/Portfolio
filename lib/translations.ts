@@ -290,7 +290,7 @@ export const translations = {
 					description: "MC-Launcher es un lanzador personalizado para Minecraft diseñado para ofrecer una experiencia segura y confiable, evitando el uso de opciones inseguras como TLauncher. Con MC-Launcher, los jugadores pueden gestionar y ejecutar múltiples versiones del juego de manera sencilla, instalar mods, administrar perfiles y optimizar el rendimiento sin comprometer la seguridad de su cuenta.",
 					technologies: ["Java"],
 					github: ["https://github.com/keiner5212/mc-launcher"],
-					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"]
+					images: ["/assets/mc-launcher/1.png", "/assets/mc-launcher/2.png"]
 				},
 				{
 					title: "Hello Node",
