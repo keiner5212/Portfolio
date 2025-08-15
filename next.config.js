@@ -3,7 +3,7 @@ const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
   images: {
-    formats: ["image/avif", "image/webp"],
+    unoptimized: true,
   },
 
   webpack(config, { isServer, dev }) {
