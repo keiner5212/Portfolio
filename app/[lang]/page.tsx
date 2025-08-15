@@ -36,7 +36,7 @@ export default function Home({
           <Experience t={t.experience} />
         </AnimatedSection>
 
-        <AnimatedSection delay={0.2}>
+        <AnimatedSection delay={0.35}>
           <Projects t={t.projects} />
         </AnimatedSection>
 

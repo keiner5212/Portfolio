@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { motion, useInView } from "framer-motion";
 
 const githubProfilePic =
-  "https://avatars.githubusercontent.com/u/122523028?v=4";
+  "/profile.jpeg";
 
 const Hero = ({ t }: { t: any }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
