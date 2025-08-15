@@ -12,12 +12,12 @@ module.exports = {
       config.plugins.push(
         new WebpackObfuscatorPlugin(
           {
-            rotateStringArray: false,
-            stringArray: true, 
-            stringArrayEncoding: false,
-            stringArrayThreshold: 0.5, 
+            rotateStringArray: true,
+            stringArray: true,
             selfDefending: true,
-            compact: false,
+            stringArrayEncoding: ["none"],
+            stringArrayThreshold: 0.5,
+            compact: true
           },
           [],
         ),
