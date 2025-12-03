@@ -10,17 +10,62 @@ import {
 import { useRef } from "react";
 import { Briefcase, Calendar, ExternalLink } from "lucide-react";
 
+const calculateMonths = (start: string, end: Date | string) => {
+  const [sm, sy] = start.split("/").map(Number);
+  const startDate = new Date(sy, sm - 1);
+  const endDate = end instanceof Date ? end : (() => {
+    const [em, ey] = end.split("/").map(Number);
+    return new Date(ey, em - 1);
+  })();
+  return (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
+};
+
+const formatPeriod = (period: string, presentText: string, lang: string) => {
+  if (period === "No period" || period === "Sin período definido") return period;
+  if (period.includes("-xxxx")) {
+    const start = period.replace("-xxxx", "");
+    const months = calculateMonths(start, new Date());
+    return `${start} - ${presentText} (${months} ${lang === 'es' ? 'meses' : 'months'})`;
+  } else if (period.includes("-")) {
+    const [start, end] = period.split("-");
+    const months = calculateMonths(start, end);
+    const years = Math.floor(months / 12);
+    const remMonths = months % 12;
+    let duration = "";
+    if (years > 0) {
+      duration += `${years} ${lang === 'es' ? 'año' : 'year'}${years > 1 ? (lang === 'es' ? 's' : 's') : ''}`;
+    }
+    if (remMonths > 0) {
+      if (duration) duration += ` ${lang === 'es' ? 'y' : 'and'} `;
+      duration += `${remMonths} ${lang === 'es' ? 'mes' : 'month'}${remMonths > 1 ? (lang === 'es' ? 'es' : 's') : ''}`;
+    }
+    return `${period} (${duration})`;
+  }
+  return period;
+};
+
 const Experience = ({ t }: { t: any }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  const lang = t.present === "Present" ? 'en' : 'es';
+
   const experiences = [
+    {
+      title: t.OrgaAI.title,
+      company: t.OrgaAI.company,
+      period: t.OrgaAI.period,
+      description: t.OrgaAI.description,
+      link: t.OrgaAI.link,
+      logo: t.OrgaAI.logo,
+    },
     {
       title: t.TheorimAI.title,
       company: t.TheorimAI.company,
       period: t.TheorimAI.period,
       description: t.TheorimAI.description,
       link: t.TheorimAI.link,
+      logo: t.TheorimAI.logo,
     },
     {
       title: t.helloApp.title,
@@ -28,6 +73,7 @@ const Experience = ({ t }: { t: any }) => {
       period: t.helloApp.period,
       description: t.helloApp.description,
       link: t.helloApp.link,
+      logo: t.helloApp.logo,
     },
     {
       title: t.notiexpress.title,
@@ -76,23 +122,25 @@ const Experience = ({ t }: { t: any }) => {
           />
 
           <div className="space-y-12">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                transition={{
-                  delay: index * 0.2,
-                  duration: 0.5,
-                  ease: [0.4, 0, 0.2, 1],
-                }}
-                className={`relative flex items-center ${
-                  index % 2 === 0
-                    ? "lg:flex-row flex-row"
-                    : "lg:flex-row-reverse flex-row"
-                }`}
-              >
+            {experiences.map((exp, index) => {
+              const formattedPeriod = formatPeriod(exp.period, t.present, lang);
+              return (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  transition={{
+                    delay: index * 0.2,
+                    duration: 0.5,
+                    ease: [0.4, 0, 0.2, 1],
+                  }}
+                  className={`relative flex items-center ${
+                    index % 2 === 0
+                      ? "lg:flex-row flex-row"
+                      : "lg:flex-row-reverse flex-row"
+                  }`}
+                >
                 {/* Timeline dot */}
                 <motion.div
                   className="absolute left-4 lg:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10"
@@ -143,6 +191,7 @@ const Experience = ({ t }: { t: any }) => {
                         </div>
                         <div className="flex flex-col gap-2 mt-2 text-sm text-muted-foreground">
                           <div className="flex items-center gap-2 flex-wrap">
+                            {exp.logo && <img src={exp.logo} alt={exp.company} className="w-6 h-6 rounded-full object-cover" />}
                             {exp.link ? (
                               <motion.a
                                 href={exp.link}
@@ -160,7 +209,7 @@ const Experience = ({ t }: { t: any }) => {
                           </div>
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Calendar className="w-4 h-4" />
-                            <span>{exp.period}</span>
+                            <span>{formattedPeriod}</span>
                           </div>
                         </div>
                       </CardHeader>
@@ -179,7 +228,8 @@ const Experience = ({ t }: { t: any }) => {
                   </motion.div>
                 </div>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
