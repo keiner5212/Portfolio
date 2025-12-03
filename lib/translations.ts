@@ -171,11 +171,7 @@ export const translations = {
 			email: "Email",
 			message: "Message",
 			send: "Send Message",
-		},
-		footer: {
-			rights:
-				"Rights reserved. Developed with original code. Free icons from third parties..",
-		},
+		}
 	},
 	es: {
 		header: {
@@ -349,10 +345,6 @@ export const translations = {
 			email: "Correo electrónico",
 			message: "Mensaje",
 			send: "Enviar Mensaje",
-		},
-		footer: {
-			rights:
-				"Derechos reservados. Desarrollado con código original. Íconos gratuitos de terceros.",
-		},
+		}
 	},
 };

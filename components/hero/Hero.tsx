@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { useCanvasAnimation } from "./background/useCanvasAnimation";
 import { useTheme } from "next-themes";
 import { motion, useInView } from "framer-motion";
+import SocialLinks from "../SocialLinks";
 
 const githubProfilePic =
   "/profile.jpeg";
@@ -120,12 +121,14 @@ const Hero = ({ t }: { t: any }) => {
                 damping: 10,
                 delay: 0.7,
               }}
+              className="flex flex-row justify-between"
             >
               <Button asChild>
                 <a href="#contact" className="inline-flex items-center">
                   {t.cta} <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </Button>
+              <SocialLinks />
             </motion.div>
           </motion.div>
         </div>
