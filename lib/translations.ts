@@ -110,14 +110,6 @@ export const translations = {
 					images: ["/assets/autoclicker/1.png"]
 				},
 				{
-					title: "Hello Back",
-					description: "The backend of hello.app",
-					technologies: ["Go", "Node.js", "PostgreSQL", "Redis", "S3", "IPFS", "Docker"],
-					github: ["priv"],
-					website: "https://api-staging.joinhello.app/api/",
-					images: ["/assets/backend-rep.webp"]
-				},
-				{
 					title: "Educative Game",
 					description: "A small 2D game with its own graphics engine, made with vanilla javascript and the pixi.js library.",
 					technologies: ["JavaScript", "Pixi.js"],
@@ -258,14 +250,6 @@ export const translations = {
 					technologies: ["Python"],
 					github: ["https://github.com/keiner5212/AutoClicker"],
 					images: ["/assets/autoclicker/1.png"]
-				},
-				{
-					title: "Hello Back",
-					description: "El backend de hello.app",
-					technologies: ["Go", "Node.js", "PostgreSQL", "Redis", "S3", "IPFS", "Docker"],
-					github: ["priv"],
-					website: "https://api-staging.joinhello.app/api/",
-					images: ["/assets/backend-rep.webp"]
 				},
 				{
 					title: "Educative Game",
