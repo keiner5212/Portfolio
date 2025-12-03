@@ -1,226 +1,16 @@
 "use client";
 
-import { motion, useInView, stagger, animate } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Code, Database, Globe } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import Link from "next/link";
 import { useRef } from "react";
-
-const technologies = {
-  frontend: [
-    {
-      name: "React",
-      url: "https://reactjs.org/",
-      tooltip: "A JavaScript library for building user interfaces",
-    },
-    {
-      name: "React Native",
-      url: "https://reactnative.dev/",
-      tooltip: "Create native apps for Android and iOS using React",
-    },
-    {
-      name: "Tauri",
-      url: "https://tauri.app/",
-      tooltip:
-        "Build smaller, faster, and more secure desktop applications with a web frontend",
-    },
-    {
-      name: "Laravel",
-      url: "https://laravel.com/",
-      tooltip:
-        "A PHP web application framework with expressive, elegant syntax",
-    },
-    {
-      name: "Tailwind",
-      url: "https://tailwindcss.com/",
-      tooltip:
-        "A utility-first CSS framework for rapidly building custom designs",
-    },
-    {
-      name: "JavaScript",
-      url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-      tooltip:
-        "A lightweight, interpreted, or just-in-time compiled programming language",
-    },
-    {
-      name: "TypeScript",
-      url: "https://www.typescriptlang.org/",
-      tooltip:
-        "A typed superset of JavaScript that compiles to plain JavaScript",
-    },
-    {
-      name: "CSS",
-      url: "https://developer.mozilla.org/en-US/docs/Web/CSS",
-      tooltip:
-        "A stylesheet language used to describe the presentation of a document written in HTML or XML",
-    },
-    {
-      name: "SCSS",
-      url: "https://sass-lang.com/",
-      tooltip:
-        "A preprocessor scripting language that is interpreted or compiled into CSS",
-    },
-    {
-      name: "HTML",
-      url: "https://developer.mozilla.org/en-US/docs/Web/HTML",
-      tooltip:
-        "The standard markup language for documents designed to be displayed in a web browser",
-    },
-    {
-      name: "PHP",
-      url: "https://www.php.net/",
-      tooltip:
-        "A popular general-purpose scripting language that is especially suited to web development",
-    },
-  ],
-  backend: [
-    {
-      name: "Express",
-      url: "https://expressjs.com/",
-      tooltip: "Fast, unopinionated, minimalist web framework for Node.js",
-    },
-    {
-      name: "Laravel",
-      url: "https://laravel.com/",
-      tooltip:
-        "A PHP web application framework with expressive, elegant syntax",
-    },
-    {
-      name: "Spring Boot",
-      url: "https://spring.io/projects/spring-boot",
-      tooltip:
-        "An extension of the Spring framework to simplify the development of new Spring applications",
-    },
-    {
-      name: "Gin",
-      url: "https://gin-gonic.com/",
-      tooltip: "A web framework written in Go (Golang)",
-    },
-    {
-      name: "JavaScript",
-      url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
-      tooltip:
-        "A lightweight, interpreted, or just-in-time compiled programming language",
-    },
-    {
-      name: "TypeScript",
-      url: "https://www.typescriptlang.org/",
-      tooltip:
-        "A typed superset of JavaScript that compiles to plain JavaScript",
-    },
-    {
-      name: "Java",
-      url: "https://www.java.com/",
-      tooltip:
-        "A high-level, class-based, object-oriented programming language",
-    },
-    {
-      name: "Go",
-      url: "https://golang.org/",
-      tooltip:
-        "An open source programming language that makes it easy to build simple, reliable, and efficient software",
-    },
-    {
-      name: "MongoDB",
-      url: "https://www.mongodb.com/",
-      tooltip:
-        "A source-available cross-platform document-oriented database program",
-    },
-    {
-      name: "Redis",
-      url: "https://redis.io/",
-      tooltip:
-        "An open source, in-memory data structure store, used as a database, cache, and message broker",
-    },
-    {
-      name: "PostgreSQL",
-      url: "https://www.postgresql.org/",
-      tooltip: "A powerful, open source object-relational database system",
-    },
-    {
-      name: "MySQL",
-      url: "https://www.mysql.com/",
-      tooltip: "An open-source relational database management system",
-    },
-    {
-      name: "Firestore",
-      url: "https://firebase.google.com/docs/firestore",
-      tooltip:
-        "A flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud",
-    },
-  ],
-  others: [
-    {
-      name: "AWS",
-      url: "https://aws.amazon.com/",
-      tooltip:
-        "A comprehensive, evolving cloud computing platform provided by Amazon",
-    },
-    {
-      name: "Docker",
-      url: "https://www.docker.com/",
-      tooltip:
-        "A set of platform as a service products that use OS-level virtualization to deliver software in packages called containers",
-    },
-    {
-      name: "Github Actions",
-      url: "https://github.com/features/actions",
-      tooltip:
-        "Automate, customize, and execute your software development workflows right in your repository",
-    },
-    {
-      name: "CircleCI",
-      url: "https://circleci.com/",
-      tooltip:
-        "A modern continuous integration and continuous delivery (CI/CD) platform",
-    },
-    {
-      name: "Bash",
-      url: "https://www.gnu.org/software/bash/",
-      tooltip: "A Unix shell and command language",
-    },
-    {
-      name: "Python",
-      url: "https://www.python.org/",
-      tooltip:
-        "An interpreted, high-level and general-purpose programming language",
-    },
-  ],
-};
-
-const TechLink = ({ tech }: { tech: any }) => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Link
-            href={tech.url}
-            className="text-primary hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {tech.name}
-          </Link>
-        </motion.span>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>{tech.tooltip}</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-);
+import { technologies } from "@/lib/technologies";
+import { TechBadge } from "@/components/TechBadge";
 
 const About = ({ t }: { t: any }) => {
   const sectionRef = useRef(null);
@@ -282,22 +72,28 @@ const About = ({ t }: { t: any }) => {
           animate={isInView ? "visible" : "hidden"}
         >
           <motion.div variants={itemVariants}>
-            <motion.div whileHover={{ y: -5 }}>
-              <Card>
+            <motion.div 
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <Card className="h-full border-2 transition-all hover:border-primary/50 hover:shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Code className="mr-2 h-6 w-6" /> Frontend
+                  <CardTitle className="flex items-center gap-2">
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <Code className="h-6 w-6 text-primary" />
+                    </motion.div>
+                    Frontend
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
-                    {technologies.frontend.map((tech, index) => (
-                      <span key={tech.name}>
-                        <TechLink tech={tech} />
-                        {index < technologies.frontend.length - 1 ? ", " : ""}
-                      </span>
+                  <div className="flex flex-wrap gap-2">
+                    {technologies.frontend.map((tech) => (
+                      <TechBadge key={tech.name} tech={tech} />
                     ))}
-                  </CardDescription>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -305,24 +101,27 @@ const About = ({ t }: { t: any }) => {
 
           <motion.div variants={itemVariants}>
             <motion.div
-              whileHover={{ y: -5 }}
-              transition={{ delay: 0.1 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <Card>
+              <Card className="h-full border-2 transition-all hover:border-primary/50 hover:shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Database className="mr-2 h-6 w-6" /> Backend
+                  <CardTitle className="flex items-center gap-2">
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <Database className="h-6 w-6 text-primary" />
+                    </motion.div>
+                    Backend
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
-                    {technologies.backend.map((tech, index) => (
-                      <span key={tech.name}>
-                        <TechLink tech={tech} />
-                        {index < technologies.backend.length - 1 ? ", " : ""}
-                      </span>
+                  <div className="flex flex-wrap gap-2">
+                    {technologies.backend.map((tech) => (
+                      <TechBadge key={tech.name} tech={tech} />
                     ))}
-                  </CardDescription>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -330,24 +129,27 @@ const About = ({ t }: { t: any }) => {
 
           <motion.div variants={itemVariants}>
             <motion.div
-              whileHover={{ y: -5 }}
-              transition={{ delay: 0.2 }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <Card>
+              <Card className="h-full border-2 transition-all hover:border-primary/50 hover:shadow-lg">
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Globe className="mr-2 h-6 w-6" /> Cloud, DevOps & Others
+                  <CardTitle className="flex items-center gap-2">
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <Globe className="h-6 w-6 text-primary" />
+                    </motion.div>
+                    Cloud, DevOps & Others
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription>
-                    {technologies.others.map((tech, index) => (
-                      <span key={tech.name}>
-                        <TechLink tech={tech} />
-                        {index < technologies.others.length - 1 ? ", " : ""}
-                      </span>
+                  <div className="flex flex-wrap gap-2">
+                    {technologies.others.map((tech) => (
+                      <TechBadge key={tech.name} tech={tech} />
                     ))}
-                  </CardDescription>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
