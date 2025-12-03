@@ -1,8 +1,14 @@
 import { Point } from "../models/Points";
 
-export function DrawPoints(points: Point[], ctx: CanvasRenderingContext2D): void {
+export function DrawPoints(
+    points: Point[],
+    ctx: CanvasRenderingContext2D,
+    baseColor: string,
+    hoverColor: string
+): void {
     for (const point of points) {
-        const { r, g, b } = hexToRgb(point.color);
+        const useHoverColor = point.hoverProgress > 0;
+        const { r, g, b } = hexToRgb(useHoverColor ? hoverColor : baseColor);
         ctx.beginPath();
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.6)`;
         ctx.arc(point.x, point.y, point.size, 0, 2 * Math.PI);
@@ -11,7 +17,12 @@ export function DrawPoints(points: Point[], ctx: CanvasRenderingContext2D): void
     }
 }
 
-export function DrawLines(points: Point[], ctx: CanvasRenderingContext2D): void {
+export function DrawLines(
+    points: Point[],
+    ctx: CanvasRenderingContext2D,
+    baseColor: string,
+    hoverColor: string
+): void {
     let nearPoints: Point[] = [];
     for (const point of points) {
         nearPoints = [];
@@ -28,7 +39,8 @@ export function DrawLines(points: Point[], ctx: CanvasRenderingContext2D): void 
             }
         }
 
-        const { r, g, b } = hexToRgb(point.color);
+        const useHoverColor = point.hoverProgress > 0;
+        const { r, g, b } = hexToRgb(useHoverColor ? hoverColor : baseColor);
 
         for (const nearPoint of nearPoints) {
             const distanceX = point.x - nearPoint.x;

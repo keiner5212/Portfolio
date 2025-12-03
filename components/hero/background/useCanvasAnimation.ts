@@ -8,6 +8,7 @@ import {
     FPS,
     HOVER_VELOCITY_MULTIPLIER,
     INITIAL_VEL_MULIPLIER,
+    MAX_HOVER_VELOCITY,
     POINTS_BOUNCE,
 } from "./utils/constants";
 import { getRamdomX, getRamdomY, getSizePoint } from "./utils/sizesGenerator";
@@ -24,7 +25,7 @@ export function isMobileDevice(): boolean {
 
 export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>, theme: string) => {
     const [points, setPoints] = useState<Point[]>([]);
-    const animationFrameId = useRef<number | null>(null);
+    const pointsRef = useRef<Point[]>([]);
 
     const [POINTS_COLOR, setPointsColor] = useState("#fff");
     const [POINTS_HOVER_COLOR, setPointsHoverColor] = useState("#989");
@@ -50,16 +51,8 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
     }, []);
 
     useEffect(() => {
-        updatePointsTheme();
-    }, [POINTS_COLOR, POINTS_HOVER_COLOR]);
-
-    function updatePointsTheme() {
-        const updatedPoints = points.map((point) => {
-            point.color = POINTS_COLOR;
-            return point;
-        });
-        setPoints(updatedPoints);
-    }
+        pointsRef.current = points;
+    }, [points]);
 
     // Initialize points
     useEffect(() => {
@@ -73,8 +66,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
                 getRamdomY(canvas.height),
                 getSizePoint(),
                 ((Math.random() - 0.5) * INITIAL_VEL_MULIPLIER) / FPS,
-                ((Math.random() - 0.5) * INITIAL_VEL_MULIPLIER) / FPS,
-                POINTS_COLOR
+                ((Math.random() - 0.5) * INITIAL_VEL_MULIPLIER) / FPS
             );
             newPoints.push(point);
         }
@@ -98,7 +90,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
-        const updatedPoints = points.map((point) => {
+        pointsRef.current.forEach((point) => {
             // Move the point by its velocity
             point.x += point.velx;
             point.y += point.vely;
@@ -129,30 +121,21 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
                 point.x = getRamdomX(canvas.width);
                 point.y = getRamdomY(canvas.height);
             }
-
-            return point;
         });
-
-        setPoints(updatedPoints);
 
         // Draw the updated points and lines
         clearCanvas(ctx);
-        DrawPoints(updatedPoints, ctx);
-        DrawLines(updatedPoints, ctx);
-
-        // Request the next frame
-        animationFrameId.current = requestAnimationFrame(update);
+        DrawPoints(pointsRef.current, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
+        DrawLines(pointsRef.current, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
     };
 
     // Start animation
     useEffect(() => {
-        animationFrameId.current = requestAnimationFrame(update);
+        const intervalId = setInterval(update, 1000 / FPS);
         return () => {
-            if (animationFrameId.current) {
-                cancelAnimationFrame(animationFrameId.current);
-            }
+            clearInterval(intervalId);
         };
-    }, [points]);
+    }, []);
 
     // Handle window resize
     useEffect(() => {
@@ -167,32 +150,82 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
 
     // Handle hover effect
     useEffect(() => {
+        let throttleTimeout: NodeJS.Timeout | null = null;
+        let mouseX = 0;
+        let mouseY = 0;
+
         const handleMouseMove = (event: MouseEvent) => {
-            const x = event.clientX;
-            const y = event.clientY;
+            mouseX = event.clientX;
+            mouseY = event.clientY;
 
-            const updatedPoints = points.map((point) => {
+            if (throttleTimeout) return;
+
+            throttleTimeout = setTimeout(() => {
+                throttleTimeout = null;
+            }, 100);
+
+            pointsRef.current.forEach((point) => {
                 if (
-                    Math.abs(x - point.x) < 100 &&
-                    Math.abs(y - point.y) < 100
+                    Math.abs(mouseX - point.x) < 100 &&
+                    Math.abs(mouseY - point.y) < 100
                 ) {
-                    point.color = POINTS_HOVER_COLOR;
-                    point.velx *= HOVER_VELOCITY_MULTIPLIER;
-                    point.vely *= HOVER_VELOCITY_MULTIPLIER;
+                    if (point.hoverTimeout) {
+                        clearTimeout(point.hoverTimeout);
+                    }
+                    
+                    const newVelx = point.velx * HOVER_VELOCITY_MULTIPLIER;
+                    const newVely = point.vely * HOVER_VELOCITY_MULTIPLIER;
+                    
+                    const isMaxVelocity = Math.abs(newVelx) > MAX_HOVER_VELOCITY || Math.abs(newVely) > MAX_HOVER_VELOCITY;
+                    
+                    point.velx = isMaxVelocity
+                        ? Math.sign(newVelx) * MAX_HOVER_VELOCITY 
+                        : newVelx;
+                    point.vely = isMaxVelocity
+                        ? Math.sign(newVely) * MAX_HOVER_VELOCITY 
+                        : newVely;
+                    
+                    if (!isMaxVelocity) {
+                        point.hoverCount++;
+                    }
+                    point.hoverProgress = 1;
 
-                    setTimeout(() => {
-                        point.color = POINTS_COLOR;
-                        point.velx /= HOVER_VELOCITY_MULTIPLIER;
-                        point.vely /= HOVER_VELOCITY_MULTIPLIER;
+                    point.hoverTimeout = setTimeout(() => {
+                        if (
+                            Math.abs(mouseX - point.x) < 100 &&
+                            Math.abs(mouseY - point.y) < 100
+                        ) {
+                            return;
+                        }
+                        
+                        const reduceVelocity = () => {
+                            if (point.hoverCount > 0) {
+                                point.velx /= HOVER_VELOCITY_MULTIPLIER;
+                                point.vely /= HOVER_VELOCITY_MULTIPLIER;
+                                point.hoverCount--;
+                                
+                                if (point.hoverCount > 0) {
+                                    setTimeout(reduceVelocity, 50);
+                                } 
+                            }
+                        };
+                        
+                        reduceVelocity();
+                        point.hoverTimeout = undefined;
                     }, 1000);
                 }
-                return point;
             });
-
-            setPoints(updatedPoints);
         };
 
         window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [points]);
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            if (throttleTimeout) clearTimeout(throttleTimeout);
+            pointsRef.current.forEach(point => {
+                if (point.hoverTimeout) {
+                    clearTimeout(point.hoverTimeout);
+                }
+            });
+        };
+    }, []);
 };

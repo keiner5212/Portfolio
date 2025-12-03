@@ -1,4 +1,3 @@
-const WebpackObfuscatorPlugin = require("webpack-obfuscator");
 const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
@@ -9,20 +8,6 @@ module.exports = {
   webpack(config, { isServer, dev }) {
     //obfuscate
     if (!isServer && !dev) {
-      config.plugins.push(
-        new WebpackObfuscatorPlugin(
-          {
-            rotateStringArray: true,
-            stringArray: true,
-            selfDefending: true,
-            stringArrayEncoding: ["none"],
-            stringArrayThreshold: 0.5,
-            compact: true
-          },
-          [],
-        ),
-      );
-
       //gzip
       config.plugins.push(
         new CompressionPlugin({

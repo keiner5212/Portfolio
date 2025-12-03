@@ -4,14 +4,17 @@ export class Point {
     size: number;
     velx: number;
     vely: number;
-    color: string;
+    hoverProgress: number;
+    hoverCount: number;
+    hoverTimeout?: NodeJS.Timeout;
 
-    constructor(x: number, y: number, size: number, velx: number, vely: number, color: string) {
+    constructor(x: number, y: number, size: number, velx: number, vely: number) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.velx = velx;
         this.vely = vely;
-        this.color = color;
+        this.hoverProgress = 0;
+        this.hoverCount = 0;
     }
 }

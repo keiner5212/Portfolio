@@ -1,5 +1,3 @@
-import { title } from "node:process";
-
 export const translations = {
 	en: {
 		header: {
@@ -10,13 +8,16 @@ export const translations = {
 		},
 		hero: {
 			title: "Keiner José Alvarado",
-			subtitle: "Software Developer",
+			subtitle: "Full-Stack Software Developer",
+			birth: "08/11/2004",
+			country: "Colombia",
 			cta: "Get in touch",
+			yo: " yo",
 		},
 		about: {
 			title: "About Me",
 			content:
-				"Dynamic Systems Engineer adept in crafting innovative desktop and Android applications, orchestrating seamless database solutions, and sculpting engaging web experiences. I thrive on technological challenges, fueled by a relentless pursuit of knowledge and a knack for problem-solving. My forte lies not only in my technical prowess but also in my agility to adapt to ever-evolving landscapes.",
+				"Full-stack by trade, problem-solver by nature. I build things that work and enjoy every step of the process.\n\nFrom desktop apps to mobile experiences, from databases to web platforms. I've shipped real products that people actually use. Always learning, always building.",
 		},
 		experience: {
 			title: "Work Experience",
@@ -185,13 +186,16 @@ export const translations = {
 		},
 		hero: {
 			title: "Keiner José Alvarado",
-			subtitle: "Desarrollador de Software",
+			subtitle: "Desarrollador de Software Full-Stack",
+			birth: "08/11/2004",
+			country: "Colombia",
 			cta: "Contáctame",
+			yo: " años",
 		},
 		about: {
 			title: "Sobre Mí",
 			content:
-				"Ingeniero de Sistemas dinámico especializado en la creación de aplicaciones innovadoras de escritorio y Android, orquestando soluciones de bases de datos sin problemas y esculpiendo experiencias web atractivas. Prospero en desafíos tecnológicos, impulsado por una búsqueda incesante de conocimiento y una habilidad para resolver problemas. Mi fortaleza radica no solo en mi destreza técnica, sino también en mi agilidad para adaptarme a paisajes en constante evolución.",
+				"Full-stack por profesión, solucionador de problemas por naturaleza. Construyo cosas que funcionan y disfruto cada paso del proceso.\n\nDesde apps de escritorio hasta experiencias móviles, desde bases de datos hasta plataformas web. He lanzado productos reales que la gente usa de verdad. Siempre aprendiendo, siempre construyendo.",
 		},
 		experience: {
 			title: "Experiencia Laboral",

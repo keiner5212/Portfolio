@@ -17,6 +17,18 @@ const Hero = ({ t }: { t: any }) => {
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const { theme } = useTheme();
 
+  const calculateAge = (birthDate: string) => {
+    const [day, month, year] = birthDate.split('/').map(Number);
+    const birth = new Date(year, month - 1, day);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   useCanvasAnimation(canvasRef, theme || "light");
 
   return (
@@ -77,8 +89,8 @@ const Hero = ({ t }: { t: any }) => {
               {t.title}
             </motion.h1>
 
-            <motion.p
-              className="mb-8 text-xl text-muted-foreground"
+            <motion.div
+              className="mb-8 flex flex-wrap items-center justify-center md:justify-start gap-3 text-xl text-muted-foreground"
               initial={{ y: 10 }}
               animate={isInView ? { y: 0 } : {}}
               transition={{
@@ -86,8 +98,18 @@ const Hero = ({ t }: { t: any }) => {
                 delay: 0.6,
               }}
             >
-              {t.subtitle}
-            </motion.p>
+              <span className="transition-all duration-300 hover:text-foreground hover:scale-105">
+                {t.subtitle}
+              </span>
+              <span className="text-muted-foreground/50">•</span>
+              <span className="transition-all duration-300 hover:text-foreground hover:scale-105">
+                {t.country}
+              </span>
+              <span className="text-muted-foreground/50">•</span>
+              <span className="transition-all duration-300 hover:text-foreground hover:scale-105">
+                {calculateAge(t.birth)} {t.yo}
+              </span>
+            </motion.div>
 
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
