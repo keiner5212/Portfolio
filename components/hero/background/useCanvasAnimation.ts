@@ -206,7 +206,9 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
                                 
                                 if (point.hoverCount > 0) {
                                     setTimeout(reduceVelocity, 50);
-                                } 
+                                } else{
+                                    point.hoverProgress = 0;
+                                }
                             }
                         };
                         
