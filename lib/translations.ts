@@ -42,15 +42,7 @@ export const translations = {
 				period: "No period",
 				description:
 					"Provided occasional technical support to solve general problems, including hosting issues, PHP and WordPress troubleshooting, and system optimizations. Collaborated with the team to ensure smooth operation of their digital platforms.",
-			},
-			freelance: {
-				title: "Web Developer (Freelance)",
-				link: undefined,
-				company: "Perímetro Urbano",
-				period: "January 2020 - Present",
-				description:
-					"Worked on various web development projects as a freelancer, delivering custom solutions to clients.",
-			},
+			}
 		},
 		projects: {
 			title: "Projects",
@@ -200,14 +192,6 @@ export const translations = {
 				description:
 					"Brindé soporte técnico ocasional para resolver problemas generales, incluyendo problemas de hosting, troubleshooting en PHP y WordPress, y optimización de sistemas. Colaboré con el equipo para garantizar el correcto funcionamiento de sus plataformas digitales.",
 				link: "https://www.notiexpresscolor.com/",
-			},
-			freelance: {
-				title: "Desarrollador Web (Freelance)",
-				company: "Perímetro Urbano",
-				period: "Enero 2022 - Presente",
-				description:
-					"Trabajé en varios proyectos de desarrollo web como freelancer, entregando soluciones personalizadas a los clientes.",
-				link: undefined,
 			}
 		},
 		projects: {

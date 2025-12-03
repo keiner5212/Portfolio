@@ -162,7 +162,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
 
             throttleTimeout = setTimeout(() => {
                 throttleTimeout = null;
-            }, 100);
+            }, 50);
 
             pointsRef.current.forEach((point) => {
                 if (

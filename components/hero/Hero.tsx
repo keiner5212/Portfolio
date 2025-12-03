@@ -99,15 +99,15 @@ const Hero = ({ t }: { t: any }) => {
                 delay: 0.6,
               }}
             >
-              <span className="transition-all duration-300 hover:text-foreground hover:scale-105">
+              <span className="transition-all duration-300 hover:text-foreground hover:scale-105 cursor-default">
                 {t.subtitle}
               </span>
               <span className="text-muted-foreground/50">•</span>
-              <span className="transition-all duration-300 hover:text-foreground hover:scale-105">
+              <span className="transition-all duration-300 hover:text-foreground hover:scale-105 cursor-default">
                 {t.country}
               </span>
               <span className="text-muted-foreground/50">•</span>
-              <span className="transition-all duration-300 hover:text-foreground hover:scale-105">
+              <span className="transition-all duration-300 hover:text-foreground hover:scale-105 cursor-default">
                 {calculateAge(t.birth)} {t.yo}
               </span>
             </motion.div>
@@ -123,7 +123,7 @@ const Hero = ({ t }: { t: any }) => {
               }}
               className="flex flex-row justify-between"
             >
-              <Button asChild>
+              <Button asChild className="hover:translate-x-2 transition-transform duration-300">
                 <a href="#contact" className="inline-flex items-center">
                   {t.cta} <ArrowRight className="ml-2 h-4 w-4" />
                 </a>

@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -36,14 +35,7 @@ const Experience = ({ t }: { t: any }) => {
       period: t.notiexpress.period,
       description: t.notiexpress.description,
       link: t.notiexpress.link,
-    },
-    {
-      title: t.freelance.title,
-      company: t.freelance.company,
-      period: t.freelance.period,
-      description: t.freelance.description,
-      link: t.freelance.link,
-    },
+    }
   ];
 
   const itemVariants = {
@@ -63,7 +55,7 @@ const Experience = ({ t }: { t: any }) => {
       animate={isInView ? { opacity: 1 } : {}}
       transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-4 max-w-[80dvw]">
         <motion.h2
           className="mb-16 text-center text-3xl md:text-4xl font-bold"
           initial={{ y: -20, opacity: 0 }}
@@ -76,7 +68,7 @@ const Experience = ({ t }: { t: any }) => {
         <div className="relative">
           {/* Timeline line */}
           <motion.div
-            className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20"
+            className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20"
             initial={{ scaleY: 0 }}
             animate={isInView ? { scaleY: 1 } : {}}
             transition={{ duration: 1, delay: 0.3 }}
@@ -97,13 +89,13 @@ const Experience = ({ t }: { t: any }) => {
                 }}
                 className={`relative flex items-center ${
                   index % 2 === 0
-                    ? "md:flex-row flex-row"
-                    : "md:flex-row-reverse flex-row"
+                    ? "lg:flex-row flex-row"
+                    : "lg:flex-row-reverse flex-row"
                 }`}
               >
                 {/* Timeline dot */}
                 <motion.div
-                  className="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10"
+                  className="absolute left-4 lg:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10"
                   initial={{ scale: 0 }}
                   animate={isInView ? { scale: 1 } : {}}
                   transition={{ delay: 0.5 + index * 0.2, duration: 0.3 }}
@@ -126,8 +118,8 @@ const Experience = ({ t }: { t: any }) => {
 
                 {/* Content card */}
                 <div
-                  className={`w-full md:w-[calc(50%-2rem)] ml-12 md:ml-0 ${
-                    index % 2 === 0 ? "md:pr-12" : "md:pl-12"
+                  className={`w-full lg:w-[calc(50%-2rem)] ml-12 lg:ml-0 ${
+                    index % 2 === 0 ? "lg:pr-12" : "lg:pl-12"
                   }`}
                 >
                   <motion.div
@@ -149,7 +141,7 @@ const Experience = ({ t }: { t: any }) => {
                             <span>{exp.title}</span>
                           </CardTitle>
                         </div>
-                        <CardDescription className="flex flex-col gap-2 mt-2">
+                        <div className="flex flex-col gap-2 mt-2 text-sm text-muted-foreground">
                           <div className="flex items-center gap-2 flex-wrap">
                             {exp.link ? (
                               <motion.a
@@ -170,7 +162,7 @@ const Experience = ({ t }: { t: any }) => {
                             <Calendar className="w-4 h-4" />
                             <span>{exp.period}</span>
                           </div>
-                        </CardDescription>
+                        </div>
                       </CardHeader>
                       <CardContent>
                         <motion.p
