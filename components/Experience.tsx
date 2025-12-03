@@ -143,24 +143,14 @@ const Experience = ({ t }: { t: any }) => {
                 >
                 {/* Timeline dot */}
                 <motion.div
-                  className="absolute left-4 lg:left-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background z-10"
+                  className={"absolute left-4 w-4 h-4 rounded-full bg-primary border-4 border-background z-10"+ (index % 2 === 0 ? " lg:left-[calc(50%-1rem)]" : " lg:left-1/2")}
                   initial={{ scale: 0 }}
                   animate={isInView ? { scale: 1 } : {}}
                   transition={{ delay: 0.5 + index * 0.2, duration: 0.3 }}
                   whileHover={{ scale: 1.5 }}
-                  style={{ transform: "translateX(-50%)" }}
                 >
-                  <motion.div
+                  <div
                     className="absolute inset-0 rounded-full bg-primary"
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.5, 0, 0.5],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      repeatDelay: 1,
-                    }}
                   />
                 </motion.div>
 

@@ -40,6 +40,7 @@ interface Project {
   images: string[];
   github: string[];
   website?: string;
+  isTeam?: boolean;
 }
 
 interface FinalCard {
@@ -50,6 +51,7 @@ interface FinalCard {
 
 interface ProjectsTranslation {
   title: string;
+  isTeamText: string;
   viewMore: string;
   viewLess: string;
   viewGithub: string;
@@ -233,7 +235,21 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           >
             {t.data.slice(0, visibleProjects).map((project, index) => (
               <motion.div key={project.title} variants={ITEM_VARIANTS}>
-                <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+                <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 relative">
+                  <div className="absolute top-3 right-3 z-20">
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold shadow-md ${
+                          project.isTeam
+                            ? "bg-blue-500/90 text-white"
+                            : "bg-purple-500/90 text-white"
+                        }`}
+                      >
+                        {project.isTeam ? t.isTeamText : "Personal"}
+                      </motion.div>
+                    </div>
                   <CardHeader>
                     <CardTitle>{project.title}</CardTitle>
                     <div

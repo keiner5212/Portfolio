@@ -57,6 +57,7 @@ export const translations = {
 		},
 		projects: {
 			title: "Projects",
+			isTeamText: "Team - Employed",
 			viewGithub: "View on GitHub",
 			viewWebsite: "View on Website",
 			viewMore: "View more",
@@ -68,12 +69,22 @@ export const translations = {
 			},
 			data: [
 				{
+					title: "Orga AI Sonar",
+					description: "Orga AI Sonar is a platform specifically designed for voice actors, enabling them to collaborate in training Orga AI's intelligence. By recording phrases, users contribute to enhancing the AI's capabilities in voice recognition and generation across multiple languages, while ensuring it can convey real emotions. This project bridges the gap between technology and human talent, creating a more natural and expressive AI.",
+					technologies: ["React", "TypeScript", "Tailwind CSS", "Supabase", "AWS SES"],
+					website: "https://sonar.orga-ai.com/",
+					github: ["https://github.com/OrgaAI/orga-sonar"],
+					images: ["/assets/orga-sonar/4.png", "/assets/orga-sonar/1.png", "/assets/orga-sonar/2.png", "/assets/orga-sonar/3.png"],
+					isTeam: true
+				},
+				{
 					title: "Theorim.ai",
 					description: "Theorim is a platform for intuitively modeling custom datasets with granular user and permission control. It supports complex data structures (tables, selectors, markdown, validations), record management, and integration with tools like interactive visualizations and AI-powered content generation (reports, emails, etc.).",
 					technologies: ["JavaScript", "CSS", "HTML", "Node.js", "Express", "AWS CloudFormation", "DynamoDB", "S3"],
 					website: "https://cloud.theorim.io/",
 					github: ["https://github.com/Theorim-ai"],
-					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"]
+					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"],
+					isTeam: true
 				},
 				{
 					title: "Hello App",
@@ -81,7 +92,8 @@ export const translations = {
 					technologies: ["React", "TypeScript", "Tailwind CSS", "Vite", "SCSS", "IPFS"],
 					github: ["https://github.com/Hello-Storage/hello-front"],
 					website: "https://hello.app",
-					images: ["/assets/hello-front/1.png", "/assets/hello-front/2.png", "/assets/hello-front/3.png", "/assets/hello-front/4.png"]
+					images: ["/assets/hello-front/1.png", "/assets/hello-front/2.png", "/assets/hello-front/3.png", "/assets/hello-front/4.png"],
+					isTeam: true
 				},
 				{
 					title: "Skillwork",
@@ -96,7 +108,8 @@ export const translations = {
 					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "Docker"],
 					github: ["https://github.com/keiner5212/loans-app-back", "https://github.com/keiner5212/loans-app-front"],
 					images: ["/assets/loans-app/1.png", "/assets/loans-app/2.png", "/assets/loans-app/3.png",
-						"/assets/loans-app/4.png", "/assets/loans-app/5.png", "/assets/loans-app/6.png", "/assets/loans-app/7.png", "/assets/loans-app/8.png", "/assets/loans-app/9.png", "/assets/loans-app/10.png"]
+						"/assets/loans-app/4.png", "/assets/loans-app/5.png", "/assets/loans-app/6.png", "/assets/loans-app/7.png", "/assets/loans-app/8.png", "/assets/loans-app/9.png", "/assets/loans-app/10.png"],
+					isTeam: true
 				},
 				{
 					title: "Minecraft Launcher (By Keiner5212)",
@@ -119,6 +132,13 @@ export const translations = {
 					technologies: ["Python"],
 					github: ["https://github.com/keiner5212/AutoClicker"],
 					images: ["/assets/autoclicker/1.png"]
+				},
+				{
+					title: "2D_3D_learn",
+					description: "This project is a collection of interactive examples to learn about 2D and 3D graphics on the web, using different rendering technologies.",
+					technologies: ["JavaScript", "WebGL", "Three.js", "Canvas API", "CSS"],
+					github: ["https://github.com/keiner5212/2D_3D_learn"],
+					images: ["/assets/2D_3D_learn/1.png", "/assets/2D_3D_learn/2.png", "/assets/2D_3D_learn/3.png", "/assets/2D_3D_learn/4.png"]
 				},
 				{
 					title: "Educative Game",
@@ -210,6 +230,7 @@ export const translations = {
 		},
 		projects: {
 			title: "Proyectos",
+			isTeamText: "Equipo - Empleado",
 			viewGithub: "Ver en GitHub",
 			viewWebsite: "Ver en Sitio Web",
 			viewMore: "Ver más",
@@ -221,12 +242,22 @@ export const translations = {
 			},
 			data: [
 				{
+					title: "Orga AI Sonar",
+					description: "Orga AI Sonar es una plataforma diseñada específicamente para actores de voz, permitiéndoles colaborar en el entrenamiento de la inteligencia artificial de Orga AI. A través de la grabación de frases, los usuarios contribuyen a mejorar las capacidades de la IA en el reconocimiento y la generación de voz en múltiples idiomas, mientras se asegura que esta pueda transmitir emociones reales. Este proyecto establece un puente entre la tecnología y el talento humano, creando una IA más natural y expresiva.",
+					technologies: ["React", "TypeScript", "Tailwind CSS", "Supabase", "AWS SES"],
+					website: "https://sonar.orga-ai.com/",
+					github: ["https://github.com/OrgaAI/orga-sonar"],
+					images: ["/assets/orga-sonar/4.png", "/assets/orga-sonar/1.png", "/assets/orga-sonar/2.png", "/assets/orga-sonar/3.png"],
+					isTeam: true
+				},
+				{
 					title: "Theorim.ai",
 					description: "Theorim es una plataforma para modelar intuitivamente conjuntos de datos personalizados con control granular de usuarios y permisos. Soporta estructuras de datos complejas (tablas, selectores, markdown, validaciones), gestión de registros e integración con herramientas como visualizaciones interactivas y generación de contenido impulsada por IA (reportes, correos electrónicos, etc.).",
 					technologies: ["JavaScript", "CSS", "HTML", "Node.js", "Express", "AWS CloudFormation", "DynamoDB", "S3"],
 					website: "https://cloud.theorim.io/",
 					github: ["https://github.com/Theorim-ai"],
-					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"]
+					images: ["/assets/theorim/1.png", "/assets/theorim/2.png", "/assets/theorim/3.png"],
+					isTeam: true
 				},
 				{
 					title: "Hello App",
@@ -234,7 +265,8 @@ export const translations = {
 					technologies: ["React", "TypeScript", "Tailwind CSS", "Vite", "SCSS", "IPFS"],
 					github: ["https://github.com/Hello-Storage/hello-front"],
 					website: "https://hello.app",
-					images: ["/assets/hello-front/1.png", "/assets/hello-front/2.png", "/assets/hello-front/3.png", "/assets/hello-front/4.png"]
+					images: ["/assets/hello-front/1.png", "/assets/hello-front/2.png", "/assets/hello-front/3.png", "/assets/hello-front/4.png"],
+					isTeam: true
 				},
 				{
 					title: "Skillwork",
@@ -249,7 +281,8 @@ export const translations = {
 					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "Docker"],
 					github: ["https://github.com/keiner5212/loans-app-back", "https://github.com/keiner5212/loans-app-front"],
 					images: ["/assets/loans-app/1.png", "/assets/loans-app/2.png", "/assets/loans-app/3.png",
-						"/assets/loans-app/4.png", "/assets/loans-app/5.png", "/assets/loans-app/6.png", "/assets/loans-app/7.png", "/assets/loans-app/8.png", "/assets/loans-app/9.png", "/assets/loans-app/10.png"]
+						"/assets/loans-app/4.png", "/assets/loans-app/5.png", "/assets/loans-app/6.png", "/assets/loans-app/7.png", "/assets/loans-app/8.png", "/assets/loans-app/9.png", "/assets/loans-app/10.png"],
+					isTeam: true
 				},
 				{
 					title: "Minecraft Launcher (By Keiner5212)",
@@ -264,7 +297,8 @@ export const translations = {
 					technologies: ["React", "Tauri", "Node.js", "Express", "TypeScript", "Tailwind CSS", "Vite", "IPFS"],
 					github: ["https://github.com/Hello-Storage/hello-ipfs-user-node-front/tree/app-v0.0.1",
 						"https://github.com/Hello-Storage/hello-ipfs-user-node"],
-					images: ["/assets/hello-ipfs-user-node-front/1.png"]
+					images: ["/assets/hello-ipfs-user-node-front/1.png"],
+					isTeam: true
 				},
 				{
 					title: "Autockicker",
@@ -272,6 +306,13 @@ export const translations = {
 					technologies: ["Python"],
 					github: ["https://github.com/keiner5212/AutoClicker"],
 					images: ["/assets/autoclicker/1.png"]
+				},
+				{
+					title: "2D_3D_learn",
+					description: "Este proyecto es una colección de ejemplos interactivos para aprender sobre gráficos 2D y 3D en la web, usando diferentes tecnologías de renderizado.",
+					technologies: ["JavaScript", "WebGL", "Three.js", "Canvas API", "CSS"],
+					github: ["https://github.com/keiner5212/2D_3D_learn"],
+					images: ["/assets/2D_3D_learn/1.png", "/assets/2D_3D_learn/2.png", "/assets/2D_3D_learn/3.png", "/assets/2D_3D_learn/4.png"]
 				},
 				{
 					title: "Educative Game",
