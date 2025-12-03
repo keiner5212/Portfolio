@@ -26,30 +26,14 @@ export const translations = {
 				link: "https://cloud.theorim.io/",
 				company: "Theorim.ai",
 				period: "January 2025 - Present",
-				description:
-					"Designed and implemented core features for a custom data modeling platform, using AWS technologies and pure JavaScript to ensure performance, security, and scalability:\n" +
-					"- AWS Infrastructure: Built complex deployments with services like ALB, S3, CloudFront, DynamoDB, Lambda, and CloudWatch.\n" +
-					"- Backend with Express: Responsible for business logic, authentication, permissions management, and dynamic data processing.\n" +
-					"- Frontend with Vanilla JavaScript: Created fully interactive interfaces without frameworks, using modular architecture and robust design patterns.\n" +
-					"- Deployment and upgrade system: Implemented secure update flows using AWS UpdateStack for dev, QA, and production environments.\n" +
-					"- Data modeling and visualization: Developed modules for building complex datasets and generating interactive reports and dashboards.\n" +
-					"Worked closely with cross-functional teams to deliver scalable and maintainable solutions across the entire stack.",
+				description: "Together with my team, I built the core of a custom data platform from scratch, secure, and scalable. We led AWS deployments, designed backend logic, and created interactive UIs without relying on frameworks. We set up safe update flows for every environment and made complex data easy to visualize.",
 			},
 			helloApp: {
 				title: "Full Stack Developer",
 				link: "https://hello.app",
 				company: "hello.app",
 				period: "May 2023 - November 2024 (1 year, 6 months)",
-				description:
-					"Enhanced the usability and functionality of the company's platform by working on multiple projects:\n" +
-					"- Mobile App: Developed using React Native, focusing on delivering a seamless cross-platform user experience.\n" +
-					"- Web App: Built with Tauri, ensuring high performance and a modern user interface.\n" +
-					"- Backend Systems: Worked on two distinct backend systems:\n" +
-					"  - Gin: Designed to serve files efficiently.\n" +
-					"  - Express: Managed user authentication, statistics, and specific services.\n" +
-					"- Website: Developed using React, ensuring a responsive and interactive user experience.\n" +
-					"Integrated IPFS (InterPlanetary File System) across multiple projects to enable decentralized file storage and sharing.\n" +
-					"Collaborated closely with cross-functional teams to implement scalable and efficient technological solutions, improving user experience.",
+					description: "Worked with a talented team to make the platform easier and more enjoyable to use. We built the mobile app with React Native, created a fast web app with Tauri, and developed backend systems for file serving and user management. I helped design a responsive website and brought IPFS integration to several projects. Together, we made sure everything ran smoothly and users had a great experience.",
 			},
 			notiexpress: {
 				title: "Technical Consultant (Freelance)",
@@ -168,7 +152,7 @@ export const translations = {
 		contact: {
 			title: "Get in Touch",
 			name: "Name",
-			email: "Email",
+			email: "Your Email",
 			message: "Message",
 			send: "Send Message",
 		}
@@ -200,30 +184,14 @@ export const translations = {
 				link: "https://cloud.theorim.io/",
 				company: "Theorim.ai",
 				period: "Enero 2025 - Present",
-				description:
-					"Desarrollé e integré funcionalidades clave para una plataforma de modelado de datos personalizados, trabajando con tecnologías de AWS y JavaScript puro para garantizar rendimiento, seguridad y escalabilidad:\n" +
-					"- Infraestructura en AWS: Implementaciones complejas usando servicios como ALB, S3, CloudFront, DynamoDB, Lambda y CloudWatch.\n" +
-					"- Backend en Express: Encargado de la lógica de negocio, autenticación, manejo de permisos y procesamiento de datos dinámicos.\n" +
-					"- Frontend con JavaScript Vanilla: Construcción de interfaces reactivas sin frameworks, aplicando estructuras modulares y patrones robustos.\n" +
-					"- Sistema de despliegue y upgrades: Implementación de procesos seguros de actualización usando AWS UpdateStack para entornos dev, QA y producción.\n" +
-					"- Modelado y visualización de datos: Desarrollo de módulos para construir datasets complejos y generar reportes visuales interactivos.\n" +
-					"Trabajé en estrecha colaboración con otros desarrolladores y equipos de producto, manteniendo altos estándares de calidad, seguridad y mantenibilidad en todo el stack.",
+				description: "Junto con mi equipo, construí desde cero el núcleo de una plataforma de datos personalizada, rápida, segura y escalable. Lideramos despliegues en AWS, diseñamos la lógica de backend y creamos interfaces interactivas sin depender de frameworks. Implementamos flujos de actualización seguros para cada entorno y convertimos datos complejos en visualizaciones claras.",
 			},
 			helloApp: {
 				title: "Desarrollador Full Stack",
 				link: "https://hello.app",
 				company: "hello.app",
 				period: "Mayo 2023 - Noviembre 2024 (1 año y 6 meses)",
-				description:
-					"Mejoró la usabilidad y la funcionalidad de la plataforma de la empresa trabajando en varios proyectos:\n" +
-					"- Aplicación Móvil: Desarrollada utilizando React Native, enfocada en ofrecer una experiencia de usuario cross-platform sin problemas.\n" +
-					"- Aplicación Web: Construida con Tauri, garantizando un rendimiento alto y una interfaz de usuario moderna.\n" +
-					"- Sistemas de Backend: Trabajé en dos sistemas de backend distintos:\n" +
-					"  - Gin: Disenado para servir archivos eficientemente.\n" +
-					"  - Express: Administró la autenticación de usuarios, estadísticas y servicios especiales.\n" +
-					"- Sitio Web: Desarrollado utilizando React, garantizando una experiencia de usuario responsive y interactiva.\n" +
-					"Integró IPFS (InterPlanetary File System) en varios proyectos para permitir almacenamiento y compartimiento de archivos descentralizados.\n" +
-					"Trabajé en equipo con equipos transversales para implementar soluciones tecnológicas escalables y eficientes, mejorando la experiencia del usuario",
+					description: "Junto a un gran equipo, mejoré la plataforma para que fuera más fácil y agradable de usar. Construimos la app móvil con React Native, creamos una web rápida con Tauri y desarrollamos sistemas backend para servir archivos y gestionar usuarios. Ayudé a diseñar un sitio web responsive e integramos IPFS en varios proyectos. Nos aseguramos de que todo funcionara bien y que los usuarios tuvieran una experiencia excelente.",
 			},
 			notiexpress: {
 				title: "Consultor Técnico (Freelance)",
@@ -342,7 +310,7 @@ export const translations = {
 		contact: {
 			title: "Contáctame",
 			name: "Nombre",
-			email: "Correo electrónico",
+			email: "Tu Correo electrónico",
 			message: "Mensaje",
 			send: "Enviar Mensaje",
 		}

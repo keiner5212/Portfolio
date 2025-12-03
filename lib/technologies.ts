@@ -148,6 +148,12 @@ export const technologies = {
       tooltip: "A powerful, open source object-relational database system",
       isStrong: true,
     },
+    { 
+      name: "DynamoDB",
+      url: "https://aws.amazon.com/dynamodb/",
+      tooltip: "A key-value and document database that delivers single-digit millisecond performance at any scale",
+      isStrong: true,
+    },
     {
       name: "MySQL",
       url: "https://www.mysql.com/",
