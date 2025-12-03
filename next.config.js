@@ -6,6 +6,9 @@ module.exports = {
   },
 
   webpack(config, { isServer, dev }) {
+    // Use memory cache to avoid serialization warnings
+    config.cache = { type: 'memory' };
+
     //obfuscate
     if (!isServer && !dev) {
       //gzip

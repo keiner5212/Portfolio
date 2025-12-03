@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -28,17 +29,15 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
     const pointsRef = useRef<Point[]>([]);
 
     const [POINTS_COLOR, setPointsColor] = useState("#fff");
-    const [POINTS_HOVER_COLOR, setPointsHoverColor] = useState("#989");
+    const [POINTS_HOVER_COLOR, _setPointsHoverColor] = useState("#989");
     const [NUMBER_OF_POINTS, setNumberOfPoints] = useState(0);
 
 
     useEffect(() => {
         if (theme == 'dark') {
             setPointsColor("#fff");
-            setPointsHoverColor("#989");
         } else if (theme == 'light') {
             setPointsColor("#000");
-            setPointsHoverColor("#989");
         }
     }, [theme]);
 
@@ -83,7 +82,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
     };
 
     // Update points and canvas
-    const update = () => {
+    const update = useCallback(() => {
         if (!canvasRef.current) return;
 
         const canvas = canvasRef.current;
@@ -127,7 +126,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         clearCanvas(ctx);
         DrawPoints(pointsRef.current, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
         DrawLines(pointsRef.current, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
-    };
+    }, [POINTS_COLOR, POINTS_HOVER_COLOR, canvasRef]);
 
     // Start animation
     useEffect(() => {
@@ -135,7 +134,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         return () => {
             clearInterval(intervalId);
         };
-    }, []);
+    }, [update]);
 
     // Handle window resize
     useEffect(() => {
