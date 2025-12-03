@@ -45,7 +45,7 @@ export default function Home({
         </AnimatedSection>
       </main>
 
-      <Footer t={t.footer} />
+      <Footer />
     </div>
   );
 }

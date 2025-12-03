@@ -1,6 +1,6 @@
 import SocialLinks from "./SocialLinks";
 
-const Footer = ({ t }: { t: any }) => {
+const Footer = () => {
   return (
     <footer className="bg-muted py-8">
       <div className="container mx-auto px-4">
