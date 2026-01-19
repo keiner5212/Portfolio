@@ -12,11 +12,12 @@ export function generateStaticParams() {
   return [{ lang: "en" }, { lang: "es" }];
 }
 
-export default function Home({
-  params: { lang },
+export default async function Home({
+  params,
 }: {
-  params: { lang: "en" | "es" };
+  params: Promise<{ lang: "en" | "es" }>;
 }) {
+  const { lang } = await params;
   const t = translations[lang as keyof typeof translations];
 
   return (
@@ -28,19 +29,19 @@ export default function Home({
           <Hero t={t.hero} />
         </AnimatedSection>
 
-        <AnimatedSection delay={0.2}>
+        <AnimatedSection delay={0.3}>
           <About t={t.about} />
         </AnimatedSection>
 
-        <AnimatedSection delay={0.2}>
+        <AnimatedSection delay={0.3}>
           <Experience t={t.experience} />
         </AnimatedSection>
 
-        <AnimatedSection delay={0.35}>
+        <AnimatedSection delay={0.3}>
           <Projects t={t.projects} />
         </AnimatedSection>
 
-        <AnimatedSection delay={0.2}>
+        <AnimatedSection delay={0.3}>
           <Contact t={t.contact} lang={lang} />
         </AnimatedSection>
       </main>

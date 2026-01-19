@@ -3,11 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useCanvasAnimation } from "./background/useCanvasAnimation";
 import { useTheme } from "next-themes";
 import { motion, useInView } from "framer-motion";
 import SocialLinks from "../SocialLinks";
+import { DEFAULT_THEME } from "@/lib/constants";
 
 const githubProfilePic =
   "/profile.jpeg";
@@ -16,7 +17,12 @@ const Hero = ({ t }: { t: any }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const { theme = DEFAULT_THEME } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const calculateAge = (birthDate: string) => {
     const [day, month, year] = birthDate.split('/').map(Number);
@@ -30,7 +36,7 @@ const Hero = ({ t }: { t: any }) => {
     return age;
   };
 
-  useCanvasAnimation(canvasRef, theme || "light");
+  useCanvasAnimation(canvasRef, mounted ? theme || "light" : "light");
 
   return (
     <section

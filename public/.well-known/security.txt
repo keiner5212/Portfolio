@@ -1,0 +1,7 @@
+Contact: mailto:keinerjosealvaradoquintero@gmail.com
+Expires: 2027-01-19T00:00:00.000Z
+Preferred-Languages: en, es
+Canonical: https://keiner-alvarado-quintero.top/.well-known/security.txt
+
+# If you have found a security vulnerability, please report it responsibly.
+# We appreciate your efforts to improve the security of this project.

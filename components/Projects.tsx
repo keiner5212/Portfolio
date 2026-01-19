@@ -32,6 +32,7 @@ import {
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
 import { ImageViewerDialog } from "./ui/image-viewer";
+import { DEFAULT_THEME } from "@/lib/constants";
 
 interface Project {
   title: string;
@@ -144,7 +145,8 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   const [visibleProjects, setVisibleProjects] = useState(3);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const { theme = DEFAULT_THEME } = useTheme();
   const sectionRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -196,6 +198,10 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   );
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     const checkAllScrollPositions = () => {
       t.data.forEach((_project, index) => {
         checkScrollPosition(index);
@@ -234,7 +240,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
             animate={isInView ? "visible" : "hidden"}
           >
             {t.data.slice(0, visibleProjects).map((project, index) => (
-              <motion.div key={project.title} variants={ITEM_VARIANTS}>
+              <motion.div key={`${project.title}-${index}`} variants={ITEM_VARIANTS}>
                 <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 relative">
                   <div className="absolute top-3 right-3 z-20">
                       <motion.div
@@ -478,7 +484,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                 <motion.button
                   key="load-more"
                   onClick={loadMoreProjects}
-                  className={"view-more-button " + (theme || "light")}
+                  className={"view-more-button " + (mounted ? theme || "light" : "light")}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, y: 20 }}
@@ -492,7 +498,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                   <motion.button
                     key="show-less"
                     onClick={showLessProjects}
-                    className={"view-more-button " + (theme || "light")}
+                    className={"view-more-button " + (mounted ? theme || "light" : "light")}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
