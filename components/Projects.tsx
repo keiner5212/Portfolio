@@ -120,7 +120,7 @@ const ProjectImage = memo(
     return (
       <div
         ref={ref}
-        className="flex justify-center items-center w-full h-[210px]"
+        className="flex justify-center items-center w-full h-[180px] sm:h-[200px] md:h-[210px]"
       >
         {isInView ? (
           <Image
@@ -132,7 +132,7 @@ const ProjectImage = memo(
             priority={index < 3}
           />
         ) : (
-          <div className="w-full h-[210px] bg-muted rounded-lg animate-pulse" />
+          <div className="w-full h-[180px] sm:h-[200px] md:h-[210px] bg-muted rounded-lg animate-pulse" />
         )}
       </div>
     );
@@ -240,14 +240,14 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
             animate={isInView ? "visible" : "hidden"}
           >
             {t.data.slice(0, visibleProjects).map((project, index) => (
-              <motion.div key={`${project.title}-${index}`} variants={ITEM_VARIANTS}>
+              <motion.div key={`${project.title}-${index}`} variants={ITEM_VARIANTS} animate={isInView ? "visible" : "hidden"}>
                 <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 relative">
-                  <div className="absolute top-3 right-3 z-20">
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2 }}
-                        className={`px-3 py-1 rounded-full text-xs font-semibold shadow-md ${
+                        className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold shadow-md ${
                           project.isTeam
                             ? "bg-blue-500/90 text-white"
                             : "bg-purple-500/90 text-white"
@@ -256,13 +256,13 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                         {project.isTeam ? t.isTeamText : "Personal"}
                       </motion.div>
                     </div>
-                  <CardHeader>
-                    <CardTitle>{project.title}</CardTitle>
+                  <CardHeader className="px-4 sm:px-6 pt-4 pb-3">
+                    <CardTitle className="text-base sm:text-lg pr-16 sm:pr-20">{project.title}</CardTitle>
                     <div
                       onClick={() => openModal(project)}
                       className="cursor-pointer"
                     >
-                      <CardDescription className="line-clamp-1">
+                      <CardDescription className="line-clamp-2 sm:line-clamp-1 text-xs sm:text-sm">
                         {project.description}
                       </CardDescription>
                       <span className="text-sm text-blue-600 hover:underline mt-1 inline-block">
@@ -272,25 +272,25 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                   </CardHeader>
 
                   <CardContent className="mb-4">
-                    <div className="relative flex items-center mb-4">
+                    <div className="relative flex items-center mb-4 min-h-[32px]">
                       {showArrows[index]?.left && (
                         <motion.span
                           onClick={() => scrollTechnologies("left", index)}
-                          className="cursor-pointer rounded-full bg-primary/10 p-1 text-xs text-primary mx-2 absolute left-0 z-10"
+                          className="cursor-pointer rounded-full bg-primary/10 p-1.5 sm:p-1 text-xs text-primary mx-1 sm:mx-2 absolute left-0 z-10 shadow-sm"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
-                          <ChevronLeft className="h-4 w-4" />
+                          <ChevronLeft className="h-5 w-5 sm:h-4 sm:w-4" />
                         </motion.span>
                       )}
                       <div
-                        className="flex overflow-x-hidden space-x-2 px-2 w-[85%] absolute left-1/2 transform -translate-x-1/2 z-10"
+                        className="flex overflow-x-hidden space-x-2 px-1 sm:px-2 w-[80%] sm:w-[85%] absolute left-1/2 transform -translate-x-1/2 z-0"
                         id={`technologies${index}`}
                       >
                         {project.technologies.map((tech, i) => (
                           <motion.span
                             key={`${tech}-${i}`}
-                            className="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary whitespace-nowrap"
+                            className="rounded-full bg-primary/10 px-2 py-1 text-[10px] sm:text-xs text-primary whitespace-nowrap"
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: i * 0.05 }}
@@ -302,11 +302,11 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       {showArrows[index]?.right && (
                         <motion.span
                           onClick={() => scrollTechnologies("right", index)}
-                          className="cursor-pointer rounded-full bg-primary/10 p-1 text-xs text-primary mx-2 absolute right-0 z-10"
+                          className="cursor-pointer rounded-full bg-primary/10 p-1.5 sm:p-1 text-xs text-primary mx-1 sm:mx-2 absolute right-0 z-10 shadow-sm"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                         >
-                          <ChevronRight className="h-4 w-4" />
+                          <ChevronRight className="h-5 w-5 sm:h-4 sm:w-4" />
                         </motion.span>
                       )}
                     </div>
@@ -333,8 +333,8 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       />
                     )}
                   </CardContent>
-                  <CardFooter className="flex flex-col space-y-2 mt-auto">
-                    <div className="flex gap-2 w-full">
+                  <CardFooter className="flex flex-col space-y-2 mt-auto px-3 sm:px-6 pb-4">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full">
                       {project.github.length > 1 ? (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -342,14 +342,14 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                               whileHover="hover"
                               whileTap="tap"
                               variants={BUTTON_VARIANTS}
-                              className="w-full"
+                              className="w-full sm:flex-1"
                             >
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="w-full"
+                                className="w-full h-9 sm:h-8 text-xs sm:text-sm"
                               >
-                                <Github className="mr-2 h-4 w-4" />{" "}
+                                <Github className="mr-1 sm:mr-2 h-4 w-4" />{" "}
                                 {t.viewGithub}
                               </Button>
                             </motion.div>
@@ -376,17 +376,17 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                           whileHover="hover"
                           whileTap="tap"
                           variants={BUTTON_VARIANTS}
-                          className="w-full"
+                          className="w-full sm:flex-1"
                         >
                           <Button
                             variant="outline"
                             size="sm"
                             asChild
-                            className="w-full"
+                            className="w-full h-9 sm:h-8 text-xs sm:text-sm"
                           >
                             {project.github[0].includes("priv") ? (
                               <span className="cursor-not-allowed">
-                                <Github className="mr-2 h-4 w-4" /> (Privado)
+                                <Github className="mr-1 sm:mr-2 h-4 w-4" /> (Privado)
                               </span>
                             ) : (
                               <a
@@ -394,7 +394,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <Github className="mr-2 h-4 w-4" />{" "}
+                                <Github className="mr-1 sm:mr-2 h-4 w-4" />{" "}
                                 {t.viewGithub}
                               </a>
                             )}
@@ -406,13 +406,13 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                           whileHover="hover"
                           whileTap="tap"
                           variants={BUTTON_VARIANTS}
-                          className="w-full"
+                          className="w-full sm:flex-1"
                         >
                           <Button
                             variant="outline"
                             size="sm"
                             asChild
-                            className="w-full"
+                            className="w-full h-9 sm:h-8 text-xs sm:text-sm"
                           >
                             <a
                               href={project.website}
@@ -431,7 +431,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
               </motion.div>
             ))}
             {visibleProjects >= t.data.length && (
-              <motion.div key="final-card" variants={ITEM_VARIANTS}>
+              <motion.div key="final-card" variants={ITEM_VARIANTS} animate={isInView ? "visible" : "hidden"}>
                 <Card className="flex flex-col h-full">
                   <CardHeader>
                     <CardTitle>{t.finalCard.title}</CardTitle>
@@ -513,22 +513,22 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           </div>
         </div>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-          <DialogContent className="max-w-[95vw] sm:max-w-[80vw] md:max-w-[700px] max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-xl md:text-2xl">
+          <DialogContent className="max-w-[95vw] sm:max-w-[85vw] md:max-w-[700px] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+            <DialogHeader className="pr-6 sm:pr-0">
+              <DialogTitle className="text-lg sm:text-xl md:text-2xl pr-2">
                 {selectedProject?.title}
               </DialogTitle>
-              <DialogDescription className="text-sm md:text-base">
+              <DialogDescription className="text-xs sm:text-sm md:text-base">
                 {selectedProject?.description}
               </DialogDescription>
             </DialogHeader>
 
             {selectedProject?.images && (
-              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="mt-3 sm:mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                 {selectedProject.images.map((image, i) => (
                   <div
                     key={`modal-image-${i}`}
-                    className="relative w-full aspect-square cursor-pointer"
+                    className="relative w-full aspect-square cursor-pointer hover:opacity-80 transition-opacity"
                     onClick={() => setSelectedImage(image)}
                   >
                     <Image
@@ -547,26 +547,26 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
               </div>
             )}
 
-            <div className="flex flex-wrap gap-2 mt-4 justify-center sm:justify-start">
+            <div className="flex flex-col sm:flex-row gap-2 mt-3 sm:mt-4">
               {selectedProject?.github && (
-                <Button variant="outline" asChild className="w-full sm:w-auto">
+                <Button variant="outline" asChild className="w-full sm:w-auto h-10 sm:h-9">
                   <a
                     href={selectedProject.github[0]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center"
+                    className="flex items-center justify-center text-sm"
                   >
                     <Github className="mr-2 h-4 w-4" /> {t.viewGithub}
                   </a>
                 </Button>
               )}
               {selectedProject?.website && (
-                <Button variant="outline" asChild className="w-full sm:w-auto">
+                <Button variant="outline" asChild className="w-full sm:w-auto h-10 sm:h-9">
                   <a
                     href={selectedProject.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center"
+                    className="flex items-center justify-center text-sm"
                   >
                     <ExternalLink className="mr-2 h-4 w-4" /> {t.viewWebsite}
                   </a>
