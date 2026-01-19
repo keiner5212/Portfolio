@@ -8,6 +8,8 @@ import { useToast } from "@/components/ui/use-toast";
 import Quote from "./ui/quote-component";
 import { motion, useInView } from "framer-motion";
 
+const BACKEND_URL = 'https://backend.keiner-alvarado-quintero.top'
+
 const Contact = ({ t, lang }: { t: any, lang: string }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +30,7 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
   useEffect(() => {
     const fetchQuote = async () => {
       try {
-        const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/quote", {
+        const response = await fetch(BACKEND_URL + "/quote", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ lang }),
@@ -58,7 +60,7 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/send-email", {
+      const response = await fetch(BACKEND_URL + "/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
