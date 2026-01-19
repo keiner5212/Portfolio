@@ -9,11 +9,13 @@ export const metadata: Metadata = {
 		"Professional portfolio of Keiner José Alvarado Quintero - Software Developer",
 };
 
-export default function RootLayout({
-	children
+export default async function RootLayout({
+	children,
+	params
 }: {
 	children: React.ReactNode;
-	params: { lang: string };
+	params: Promise<{ lang: string }>;
 }) {
+	await params;
 	return <Providers>{children}</Providers>;
 }
