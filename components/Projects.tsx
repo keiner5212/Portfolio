@@ -30,9 +30,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { useTheme } from "next-themes";
 import { ImageViewerDialog } from "./ui/image-viewer";
-import { DEFAULT_THEME } from "@/lib/constants";
 
 interface Project {
   title: string;
@@ -113,30 +111,19 @@ const ProjectImage = memo(
     image: string;
     projectTitle: string;
     index: number;
-  }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "200px 0px" });
-
-    return (
-      <div
-        ref={ref}
-        className="flex justify-center items-center w-full h-[180px] sm:h-[200px] md:h-[210px]"
-      >
-        {isInView ? (
-          <Image
-            src={image}
-            width={200}
-            height={200}
-            alt={`Project ${projectTitle} image ${index}`}
-            className="rounded-lg w-auto h-full object-cover"
-            priority={index < 3}
-          />
-        ) : (
-          <div className="w-full h-[180px] sm:h-[200px] md:h-[210px] bg-muted rounded-lg animate-pulse" />
-        )}
-      </div>
-    );
-  }
+  }) => (
+    <div className="flex justify-center items-center w-full h-[180px] sm:h-[200px] md:h-[210px]">
+      <Image
+        src={image}
+        width={200}
+        height={200}
+        alt={`Project ${projectTitle} image ${index}`}
+        className="rounded-lg w-auto h-full object-cover"
+        sizes="200px"
+        priority={index === 0}
+      />
+    </div>
+  )
 );
 
 ProjectImage.displayName = "ProjectImage";
@@ -145,8 +132,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   const [visibleProjects, setVisibleProjects] = useState(3);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { theme = DEFAULT_THEME } = useTheme();
   const sectionRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -196,10 +181,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
     },
     [checkScrollPosition]
   );
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const checkAllScrollPositions = () => {
@@ -478,27 +459,33 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
               </motion.div>
             )}
           </motion.div>
-          <div className="text-center mt-8 w-full flex justify-center">
+          <div className="text-center mt-8 w-full flex justify-center min-h-[40px]">
             <AnimatePresence mode="wait">
               {visibleProjects < t.data.length ? (
-                <Button asChild className="hover:translate-y-1 transition-transform duration-300 cursor-pointer"
-                  onClick={loadMoreProjects}
+                <motion.div
+                  key="load-more"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <span className="inline-flex items-center">
-                    {t.viewMore} <ArrowDown className="ml-2 h-4 w-4" />
-                  </span>
-                </Button>
-              ) : (
-                visibleProjects > 3 && (
-                  <Button asChild className="hover:translate-y-1 transition-transform duration-300 cursor-pointer"
-                    onClick={showLessProjects}
-                    >
-                    <span className="inline-flex items-center">
-                      {t.viewLess} <ArrowUp className="ml-2 h-4 w-4" />
-                    </span>
+                  <Button onClick={loadMoreProjects} className="inline-flex items-center gap-2">
+                    {t.viewMore} <ArrowDown className="h-4 w-4" />
                   </Button>
-                )
-              )}
+                </motion.div>
+              ) : visibleProjects > 3 ? (
+                <motion.div
+                  key="show-less"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Button onClick={showLessProjects} className="inline-flex items-center gap-2">
+                    {t.viewLess} <ArrowUp className="h-4 w-4" />
+                  </Button>
+                </motion.div>
+              ) : null}
             </AnimatePresence>
           </div>
         </div>
@@ -526,7 +513,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       fill
                       alt={`Project ${selectedProject.title} image ${i}`}
                       className="rounded-lg object-cover"
-                      priority
+                      sizes="(max-width: 640px) 45vw, (max-width: 768px) 30vw, 220px"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder-image.jpg";

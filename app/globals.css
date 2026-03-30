@@ -82,10 +82,14 @@
 }
 
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
-  
   scrollbar-color: #00000091 transparent;
-  &.dark {
-    scrollbar-color: #ffffff91 transparent;
-  }
+}
+
+.dark * {
+  scrollbar-color: #ffffff91 transparent;
 }
