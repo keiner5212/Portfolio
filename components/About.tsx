@@ -12,30 +12,30 @@ import { useRef } from "react";
 import { technologies } from "@/lib/technologies";
 import { TechBadge } from "@/components/TechBadge";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 const About = ({ t }: { t: any }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
 
   return (
     <motion.section
@@ -54,6 +54,7 @@ const About = ({ t }: { t: any }) => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {t.title}
+          <span className="section-accent" />
         </motion.h2>
 
         <motion.div
@@ -76,7 +77,7 @@ const About = ({ t }: { t: any }) => {
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <Card className="h-full border-2 transition-all hover:border-primary/50 hover:shadow-lg">
+              <Card className="h-full border-2 transition-all hover:border-foreground/20 hover:shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <motion.div
@@ -104,7 +105,7 @@ const About = ({ t }: { t: any }) => {
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <Card className="h-full border-2 transition-all hover:border-primary/50 hover:shadow-lg">
+              <Card className="h-full border-2 transition-all hover:border-foreground/20 hover:shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <motion.div
@@ -132,7 +133,7 @@ const About = ({ t }: { t: any }) => {
               whileHover={{ y: -8, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <Card className="h-full border-2 transition-all hover:border-primary/50 hover:shadow-lg">
+              <Card className="h-full border-2 transition-all hover:border-foreground/20 hover:shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <motion.div

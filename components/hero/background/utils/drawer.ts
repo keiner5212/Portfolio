@@ -1,3 +1,4 @@
+import { LINE_DISTANCE_SQ, LINE_MAX_DISTANCE, POINT_ALPHA } from "./constants";
 import { Point } from "../models/Points";
 
 export function DrawPoints(
@@ -10,7 +11,7 @@ export function DrawPoints(
         const useHoverColor = point.hoverProgress > 0;
         const { r, g, b } = hexToRgb(useHoverColor ? hoverColor : baseColor);
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.6)`;
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${POINT_ALPHA})`;
         ctx.arc(point.x, point.y, point.size, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
@@ -33,7 +34,7 @@ export function DrawLines(
                 const distanceY = point.y - nearPoint.y;
 
                 const distanceSquared = distanceX * distanceX + distanceY * distanceY;
-                if (distanceSquared < 10000) {
+                if (distanceSquared < LINE_DISTANCE_SQ) {
                     nearPoints.push(nearPoint);
                 }
             }
@@ -48,7 +49,7 @@ export function DrawLines(
             const distanceSquared = distanceX * distanceX + distanceY * distanceY;
 
             const distance = Math.sqrt(distanceSquared);
-            const opacity = Math.max(0.05, 1 - (distance / 170));
+            const opacity = Math.max(0.05, 1 - (distance / LINE_MAX_DISTANCE));
 
             ctx.beginPath();
             ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;

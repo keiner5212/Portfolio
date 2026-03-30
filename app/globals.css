@@ -2,20 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -37,11 +23,6 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
   .dark {
@@ -64,11 +45,6 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
   }
 }
 
@@ -78,14 +54,33 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body), system-ui, sans-serif;
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), system-ui, sans-serif;
+    line-height: 1.2;
   }
 }
 
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
-  
-  scrollbar-color: #00000091 transparent;
-  &.dark {
-    scrollbar-color: #ffffff91 transparent;
-  }
+  scrollbar-color: #00000091 transparent !important;
+}
+
+.dark * {
+  scrollbar-color: #ffffff91 transparent !important;
+}
+
+.section-accent {
+  display: block;
+  height: 3px;
+  width: 3rem;
+  border-radius: 9999px;
+  margin: 0.75rem auto 0;
+  background: linear-gradient(90deg, hsl(var(--foreground)), hsl(var(--muted-foreground)));
 }

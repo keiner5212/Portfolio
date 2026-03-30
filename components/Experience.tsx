@@ -109,6 +109,7 @@ const Experience = ({ t }: { t: any }) => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {t.title}
+          <span className="section-accent" />
         </motion.h2>
 
         <div className="relative">
@@ -170,7 +171,7 @@ const Experience = ({ t }: { t: any }) => {
                   >
                     <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 bg-card/50 backdrop-blur-sm">
                       {/* Gradient accent */}
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-foreground via-foreground/50 to-transparent" />
 
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between gap-2">

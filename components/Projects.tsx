@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { Github, ExternalLink, ChevronLeft, ChevronRight, ArrowDown, ArrowUp } from "lucide-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -30,9 +30,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import { useTheme } from "next-themes";
 import { ImageViewerDialog } from "./ui/image-viewer";
-import { DEFAULT_THEME } from "@/lib/constants";
 
 interface Project {
   title: string;
@@ -113,30 +111,19 @@ const ProjectImage = memo(
     image: string;
     projectTitle: string;
     index: number;
-  }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "200px 0px" });
-
-    return (
-      <div
-        ref={ref}
-        className="flex justify-center items-center w-full h-[180px] sm:h-[200px] md:h-[210px]"
-      >
-        {isInView ? (
-          <Image
-            src={image}
-            width={200}
-            height={200}
-            alt={`Project ${projectTitle} image ${index}`}
-            className="rounded-lg w-auto h-full object-cover"
-            priority={index < 3}
-          />
-        ) : (
-          <div className="w-full h-[180px] sm:h-[200px] md:h-[210px] bg-muted rounded-lg animate-pulse" />
-        )}
-      </div>
-    );
-  }
+  }) => (
+    <div className="flex justify-center items-center w-full h-[180px] sm:h-[200px] md:h-[210px]">
+      <Image
+        src={image}
+        width={200}
+        height={200}
+        alt={`Project ${projectTitle} image ${index}`}
+        className="rounded-lg w-auto h-full object-cover"
+        sizes="200px"
+        priority={index === 0}
+      />
+    </div>
+  )
 );
 
 ProjectImage.displayName = "ProjectImage";
@@ -145,8 +132,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   const [visibleProjects, setVisibleProjects] = useState(3);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { theme = DEFAULT_THEME } = useTheme();
   const sectionRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -198,10 +183,6 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
   );
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
     const checkAllScrollPositions = () => {
       t.data.forEach((_project, index) => {
         checkScrollPosition(index);
@@ -231,6 +212,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
             transition={{ duration: 0.5 }}
           >
             {t.title}
+            <span className="section-accent" />
           </motion.h2>
 
           <motion.div
@@ -241,7 +223,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           >
             {t.data.slice(0, visibleProjects).map((project, index) => (
               <motion.div key={`${project.title}-${index}`} variants={ITEM_VARIANTS} animate={isInView ? "visible" : "hidden"}>
-                <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 relative">
+                <Card className="flex flex-col h-full transition-all duration-300 hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/40 hover:border-foreground/20 hover:-translate-y-1 relative">
                   <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
                       <motion.div
                         initial={{ scale: 0 }}
@@ -265,7 +247,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       <CardDescription className="line-clamp-2 sm:line-clamp-1 text-xs sm:text-sm">
                         {project.description}
                       </CardDescription>
-                      <span className="text-sm text-blue-600 hover:underline mt-1 inline-block">
+                      <span className="text-sm text-foreground hover:text-foreground hover:underline mt-1 inline-block font-medium transition-colors duration-200">
                         {t.viewMore}
                       </span>
                     </div>
@@ -347,7 +329,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="w-full h-9 sm:h-8 text-xs sm:text-sm"
+                                className="w-full min-h-[44px] text-xs sm:text-sm"
                               >
                                 <Github className="mr-1 sm:mr-2 h-4 w-4" />{" "}
                                 {t.viewGithub}
@@ -382,7 +364,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                             variant="outline"
                             size="sm"
                             asChild
-                            className="w-full h-9 sm:h-8 text-xs sm:text-sm"
+                            className="w-full min-h-[44px] text-xs sm:text-sm"
                           >
                             {project.github[0].includes("priv") ? (
                               <span className="cursor-not-allowed">
@@ -412,7 +394,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                             variant="outline"
                             size="sm"
                             asChild
-                            className="w-full h-9 sm:h-8 text-xs sm:text-sm"
+                            className="w-full min-h-[44px] text-xs sm:text-sm"
                           >
                             <a
                               href={project.website}
@@ -478,37 +460,33 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
               </motion.div>
             )}
           </motion.div>
-          <div className="text-center mt-8 w-full flex justify-center">
+          <div className="text-center mt-8 w-full flex justify-center min-h-[40px]">
             <AnimatePresence mode="wait">
               {visibleProjects < t.data.length ? (
-                <motion.button
+                <motion.div
                   key="load-more"
-                  onClick={loadMoreProjects}
-                  className={"view-more-button " + (mounted ? theme || "light" : "light")}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <span>{t.viewMore}</span>
-                </motion.button>
-              ) : (
-                visibleProjects > 3 && (
-                  <motion.button
-                    key="show-less"
-                    onClick={showLessProjects}
-                    className={"view-more-button " + (mounted ? theme || "light" : "light")}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                  >
-                    <span>{t.viewLess}</span>
-                  </motion.button>
-                )
-              )}
+                  <Button onClick={loadMoreProjects} className="inline-flex items-center gap-2 hover:translate-y-1 transition-transform duration-300">
+                    {t.viewMore} <ArrowDown className="h-4 w-4" />
+                  </Button>
+                </motion.div>
+              ) : visibleProjects > 3 ? (
+                <motion.div
+                  key="show-less"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Button onClick={showLessProjects} className="inline-flex items-center gap-2 hover:translate-y-1 transition-transform duration-300">
+                    {t.viewLess} <ArrowUp className="h-4 w-4" />
+                  </Button>
+                </motion.div>
+              ) : null}
             </AnimatePresence>
           </div>
         </div>
@@ -536,7 +514,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       fill
                       alt={`Project ${selectedProject.title} image ${i}`}
                       className="rounded-lg object-cover"
-                      priority
+                      sizes="(max-width: 640px) 45vw, (max-width: 768px) 30vw, 220px"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder-image.jpg";

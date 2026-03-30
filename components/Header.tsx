@@ -47,18 +47,34 @@ const Header = ({ lang, t }: { lang: string; t: any }) => {
             </motion.span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Link href={`/${lang}#about`}>{t.about}</Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Link href={`/${lang}#experience`}>{t.experience}</Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Link href={`/${lang}#projects`}>{t.projects}</Link>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Link href={`/${lang}#contact`}>{t.contact}</Link>
-            </motion.div>
+            <Link
+              href={`/${lang}#about`}
+              className="relative group text-muted-foreground hover:text-foreground transition-colors duration-200 py-1"
+            >
+              {t.about}
+              <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-foreground rounded-full transition-all duration-300 group-hover:w-full" />
+            </Link>
+            <Link
+              href={`/${lang}#experience`}
+              className="relative group text-muted-foreground hover:text-foreground transition-colors duration-200 py-1"
+            >
+              {t.experience}
+              <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-foreground rounded-full transition-all duration-300 group-hover:w-full" />
+            </Link>
+            <Link
+              href={`/${lang}#projects`}
+              className="relative group text-muted-foreground hover:text-foreground transition-colors duration-200 py-1"
+            >
+              {t.projects}
+              <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-foreground rounded-full transition-all duration-300 group-hover:w-full" />
+            </Link>
+            <Link
+              href={`/${lang}#contact`}
+              className="relative group text-muted-foreground hover:text-foreground transition-colors duration-200 py-1"
+            >
+              {t.contact}
+              <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-foreground rounded-full transition-all duration-300 group-hover:w-full" />
+            </Link>
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
@@ -73,6 +89,8 @@ const Header = ({ lang, t }: { lang: string; t: any }) => {
                 size="icon"
                 className="md:hidden"
                 onClick={toggleMenu}
+                aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={isMenuOpen}
               >
                 {isMenuOpen ? (
                   <X className="h-5 w-5" />
@@ -98,25 +116,25 @@ const Header = ({ lang, t }: { lang: string; t: any }) => {
               variants={containerVariants}
               initial="hidden"
               animate="show"
-              className="flex flex-col space-y-3 py-4"
+              className="flex flex-col py-2"
             >
               <motion.div variants={itemVariants}>
-                <Link href={`/${lang}#about`} onClick={toggleMenu}>
+                <Link href={`/${lang}#about`} onClick={toggleMenu} className="flex items-center py-3 px-2 text-base text-muted-foreground hover:text-foreground transition-colors duration-200 border-b border-border/50">
                   {t.about}
                 </Link>
               </motion.div>
               <motion.div variants={itemVariants}>
-                <Link href={`/${lang}#experience`} onClick={toggleMenu}>
+                <Link href={`/${lang}#experience`} onClick={toggleMenu} className="flex items-center py-3 px-2 text-base text-muted-foreground hover:text-foreground transition-colors duration-200 border-b border-border/50">
                   {t.experience}
                 </Link>
               </motion.div>
               <motion.div variants={itemVariants}>
-                <Link href={`/${lang}#projects`} onClick={toggleMenu}>
+                <Link href={`/${lang}#projects`} onClick={toggleMenu} className="flex items-center py-3 px-2 text-base text-muted-foreground hover:text-foreground transition-colors duration-200 border-b border-border/50">
                   {t.projects}
                 </Link>
               </motion.div>
               <motion.div variants={itemVariants}>
-                <Link href={`/${lang}#contact`} onClick={toggleMenu}>
+                <Link href={`/${lang}#contact`} onClick={toggleMenu} className="flex items-center py-3 px-2 text-base text-muted-foreground hover:text-foreground transition-colors duration-200">
                   {t.contact}
                 </Link>
               </motion.div>

@@ -7,20 +7,25 @@ import {
 } from "react";
 import {
     FPS,
+    HOVER_RADIUS,
+    HOVER_RESET_DELAY_MS,
+    HOVER_THROTTLE_MS,
     HOVER_VELOCITY_MULTIPLIER,
     INITIAL_VEL_MULIPLIER,
     MAX_HOVER_VELOCITY,
     POINTS_BOUNCE,
+    POINTS_DESKTOP,
+    POINTS_HOVER_COLOR,
+    POINTS_MOBILE,
 } from "./utils/constants";
 import { getRamdomX, getRamdomY, getSizePoint } from "./utils/sizesGenerator";
 import { Point } from "./models/Points";
 import { DrawLines, DrawPoints, clearCanvas } from "./utils/drawer";
+import { WebGPURenderer } from "./webgpuRenderer";
 
 export function isMobileDevice(): boolean {
     if (typeof window === "undefined") return false;
-
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-
     return /android|iphone|ipad|ipod|blackberry|windows phone/i.test(userAgent.toLowerCase());
 }
 
@@ -28,51 +33,66 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
     const [points, setPoints] = useState<Point[]>([]);
     const pointsRef = useRef<Point[]>([]);
 
-    const [POINTS_COLOR, setPointsColor] = useState("#fff");
-    const [POINTS_HOVER_COLOR, _setPointsHoverColor] = useState("#989");
+    // Renderer: WebGPU if available, otherwise null (Canvas 2D used directly)
+    const rendererRef = useRef<WebGPURenderer | null>(null);
+    const useWebGPURef = useRef(false);
+
+    const [POINTS_COLOR, setPointsColor] = useState<string>("#fff");
     const [NUMBER_OF_POINTS, setNumberOfPoints] = useState(0);
 
-
     useEffect(() => {
-        if (theme == 'dark') {
+        if (theme === "dark") {
             setPointsColor("#fff");
-        } else if (theme == 'light') {
+        } else if (theme === "light") {
             setPointsColor("#000");
         }
     }, [theme]);
 
     useEffect(() => {
-        if (isMobileDevice()) {
-            setNumberOfPoints(10);
-        } else {
-            setNumberOfPoints(30);
-        }
+        setNumberOfPoints(isMobileDevice() ? POINTS_MOBILE : POINTS_DESKTOP);
     }, []);
 
     useEffect(() => {
         pointsRef.current = points;
     }, [points]);
 
+    // Initialize renderer: lock canvas to WebGPU immediately if supported.
+    // Canvas 2D and WebGPU contexts are mutually exclusive — the decision is made
+    // once at mount time. Frames are skipped while WebGPU finishes its async setup.
+    useEffect(() => {
+        if (!canvasRef.current) return;
+
+        if ("gpu" in navigator && !isMobileDevice()) {
+            const renderer = new WebGPURenderer(canvasRef.current);
+            rendererRef.current = renderer;
+            useWebGPURef.current = true;
+        }
+
+        return () => {
+            rendererRef.current?.destroy();
+            rendererRef.current = null;
+            useWebGPURef.current = false;
+        };
+    }, []);
+
     // Initialize points
     useEffect(() => {
         if (!canvasRef.current) return;
 
         const canvas = canvasRef.current;
-        const newPoints = [];
-        for (let index = 0; index < NUMBER_OF_POINTS; index++) {
-            const point = new Point(
+        const newPoints: Point[] = [];
+        for (let i = 0; i < NUMBER_OF_POINTS; i++) {
+            newPoints.push(new Point(
                 getRamdomX(canvas.width),
                 getRamdomY(canvas.height),
                 getSizePoint(),
                 ((Math.random() - 0.5) * INITIAL_VEL_MULIPLIER) / FPS,
                 ((Math.random() - 0.5) * INITIAL_VEL_MULIPLIER) / FPS
-            );
-            newPoints.push(point);
+            ));
         }
         setPoints(newPoints);
     }, [NUMBER_OF_POINTS]);
 
-    // Resize canvas
     const resizeCanvas = () => {
         if (canvasRef.current) {
             const parent = canvasRef.current.parentElement as HTMLElement;
@@ -81,20 +101,17 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         }
     };
 
-    // Update points and canvas
     const update = useCallback(() => {
         if (!canvasRef.current) return;
 
         const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+        const pts = pointsRef.current;
 
-        pointsRef.current.forEach((point) => {
-            // Move the point by its velocity
+        // Physics — identical for both renderers
+        for (const point of pts) {
             point.x += point.velx;
             point.y += point.vely;
 
-            // Check if the point is out of bounds
             if (point.x < 0 || point.x > canvas.width) {
                 if (POINTS_BOUNCE) {
                     point.velx *= -1;
@@ -109,8 +126,6 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
                     point.y = point.y < 0 ? canvas.height : 0;
                 }
             }
-
-            // Reset position if the point is completely out of bounds
             if (
                 point.x < -point.size ||
                 point.x > canvas.width + point.size ||
@@ -120,34 +135,34 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
                 point.x = getRamdomX(canvas.width);
                 point.y = getRamdomY(canvas.height);
             }
-        });
+        }
 
-        // Draw the updated points and lines
-        clearCanvas(ctx);
-        DrawPoints(pointsRef.current, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
-        DrawLines(pointsRef.current, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
-    }, [POINTS_COLOR, POINTS_HOVER_COLOR, canvasRef]);
+        if (useWebGPURef.current) {
+            // WebGPU path — skip frame while pipeline is still being compiled
+            if (rendererRef.current?.ready) {
+                rendererRef.current.render(pts, POINTS_COLOR, POINTS_HOVER_COLOR, canvas.width, canvas.height);
+            }
+        } else {
+            // Canvas 2D fallback
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+            clearCanvas(ctx);
+            DrawPoints(pts, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
+            DrawLines(pts, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
+        }
+    }, [POINTS_COLOR, canvasRef]);
 
-    // Start animation
     useEffect(() => {
-        const intervalId = setInterval(update, 1000 / FPS);
-        return () => {
-            clearInterval(intervalId);
-        };
+        const id = setInterval(update, 1000 / FPS);
+        return () => clearInterval(id);
     }, [update]);
 
-    // Handle window resize
     useEffect(() => {
         resizeCanvas();
-        const handleResize = () => {
-            resizeCanvas();
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
+        window.addEventListener("resize", resizeCanvas);
+        return () => window.removeEventListener("resize", resizeCanvas);
     }, []);
 
-    // Handle hover effect
     useEffect(() => {
         let throttleTimeout: NodeJS.Timeout | null = null;
         let mouseX = 0;
@@ -158,62 +173,53 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
             mouseY = event.clientY;
 
             if (throttleTimeout) return;
-
-            throttleTimeout = setTimeout(() => {
-                throttleTimeout = null;
-            }, 50);
+            throttleTimeout = setTimeout(() => { throttleTimeout = null; }, HOVER_THROTTLE_MS);
 
             pointsRef.current.forEach((point) => {
                 if (
-                    Math.abs(mouseX - point.x) < 100 &&
-                    Math.abs(mouseY - point.y) < 100
+                    Math.abs(mouseX - point.x) < HOVER_RADIUS &&
+                    Math.abs(mouseY - point.y) < HOVER_RADIUS
                 ) {
                     if (point.hoverTimeout) {
                         clearTimeout(point.hoverTimeout);
                     }
-                    
+
                     const newVelx = point.velx * HOVER_VELOCITY_MULTIPLIER;
                     const newVely = point.vely * HOVER_VELOCITY_MULTIPLIER;
-                    
-                    const isMaxVelocity = Math.abs(newVelx) > MAX_HOVER_VELOCITY || Math.abs(newVely) > MAX_HOVER_VELOCITY;
-                    
-                    point.velx = isMaxVelocity
-                        ? Math.sign(newVelx) * MAX_HOVER_VELOCITY 
-                        : newVelx;
-                    point.vely = isMaxVelocity
-                        ? Math.sign(newVely) * MAX_HOVER_VELOCITY 
-                        : newVely;
-                    
-                    if (!isMaxVelocity) {
-                        point.hoverCount++;
-                    }
+                    const isMaxVelocity =
+                        Math.abs(newVelx) > MAX_HOVER_VELOCITY ||
+                        Math.abs(newVely) > MAX_HOVER_VELOCITY;
+
+                    point.velx = isMaxVelocity ? Math.sign(newVelx) * MAX_HOVER_VELOCITY : newVelx;
+                    point.vely = isMaxVelocity ? Math.sign(newVely) * MAX_HOVER_VELOCITY : newVely;
+
+                    if (!isMaxVelocity) point.hoverCount++;
                     point.hoverProgress = 1;
 
                     point.hoverTimeout = setTimeout(() => {
                         if (
-                            Math.abs(mouseX - point.x) < 100 &&
-                            Math.abs(mouseY - point.y) < 100
+                            Math.abs(mouseX - point.x) < HOVER_RADIUS &&
+                            Math.abs(mouseY - point.y) < HOVER_RADIUS
                         ) {
                             return;
                         }
-                        
+
                         const reduceVelocity = () => {
                             if (point.hoverCount > 0) {
                                 point.velx /= HOVER_VELOCITY_MULTIPLIER;
                                 point.vely /= HOVER_VELOCITY_MULTIPLIER;
                                 point.hoverCount--;
-                                
                                 if (point.hoverCount > 0) {
-                                    setTimeout(reduceVelocity, 50);
-                                } else{
+                                    setTimeout(reduceVelocity, HOVER_THROTTLE_MS);
+                                } else {
                                     point.hoverProgress = 0;
                                 }
                             }
                         };
-                        
+
                         reduceVelocity();
                         point.hoverTimeout = undefined;
-                    }, 1000);
+                    }, HOVER_RESET_DELAY_MS);
                 }
             });
         };
@@ -223,10 +229,9 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
             window.removeEventListener("mousemove", handleMouseMove);
             if (throttleTimeout) clearTimeout(throttleTimeout);
             pointsRef.current.forEach(point => {
-                if (point.hoverTimeout) {
-                    clearTimeout(point.hoverTimeout);
-                }
+                if (point.hoverTimeout) clearTimeout(point.hoverTimeout);
             });
         };
     }, []);
 };
+

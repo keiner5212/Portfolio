@@ -1,11 +1,21 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Archivo, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { DEFAULT_THEME } from "@/lib/constants";
 
-const inter = Inter({ subsets: ["latin"] });
+const archivo = Archivo({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -77,7 +87,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={inter.className}>
+      <body className={`${archivo.variable} ${spaceGrotesk.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme={DEFAULT_THEME}
