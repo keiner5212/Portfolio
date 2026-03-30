@@ -56,6 +56,9 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body), system-ui, sans-serif;
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading), system-ui, sans-serif;
@@ -83,4 +86,17 @@ html {
   border-radius: 9999px;
   margin: 0.75rem auto 0;
   background: linear-gradient(90deg, hsl(var(--foreground)), hsl(var(--muted-foreground)));
+}
+
+/* GPU layer preparation — prevents text size glitches during transforms */
+section,
+[class*="card"],
+[class*="motion"] {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+section {
+  will-change: transform;
 }

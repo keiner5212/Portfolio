@@ -28,6 +28,8 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
   const isQuoteInView = useInView(quoteRef, { once: true });
 
   useEffect(() => {
+    if (process.env.NODE_ENV === "development") return;
+
     const fetchQuote = async () => {
       try {
         const response = await fetch(BACKEND_URL + "/quote", {

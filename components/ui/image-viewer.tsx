@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogOverlay, DialogTitle } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -16,6 +16,7 @@ export const ImageViewerDialog = ({ src, onClose }: ImageViewerDialogProps) => {
       <AnimatePresence>
         {src && (
           <DialogContent className="bg-transparent border-none p-0 z-[99999] max-w-screen max-h-screen flex items-center justify-center">
+            <DialogTitle className="sr-only">Image viewer</DialogTitle>
             <motion.div
               className="relative z-10 my-8 p-4 h-[95vh] w-[80vw]"
               initial={{ opacity: 0 }}

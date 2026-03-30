@@ -16,18 +16,21 @@
     justify-content: center;
     height: 100px;
     width: 100px;
-    background-color: #0a0a0a;
     border-radius: 5px;
-    color: #0f0f0f;
+    color: hsl(var(--foreground));
     font-weight: 700;
     transition: 300ms;
-    outline: #0f0f0f 2px solid;
+    outline: hsl(var(--foreground)) 2px solid;
     outline-offset: 20px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: outline-offset, color;
 }
 
 .light-button a.bt .button-holder svg {
     height: 50px;
-    fill: #0f0f0f;
+    fill: hsl(var(--foreground));
     transition: 300ms;
 }
 
@@ -45,9 +48,12 @@
     top: 0;
     width: 10px;
     height: 10px;
-    background-color: rgba(101, 101, 121, 1);
+    background-color: hsl(var(--primary));
     border-radius: 10px;
     z-index: 2;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: opacity;
 }
 
 .light-button a.bt .light-holder .light {
@@ -60,19 +66,19 @@
 }
 
 .light-button a.bt:hover .button-holder svg {
-    fill: rgba(101, 101, 121, 1);
+    fill: hsl(var(--primary));
 }
 
 .light-button a.bt:hover .button-holder {
-    color: rgba(101, 101, 121, 1);
-    outline: rgba(101, 101, 121, 1) 2px solid;
+    color: hsl(var(--primary));
+    outline: hsl(var(--primary)) 2px solid;
     outline-offset: 2px;
 }
 
 .light-button a.bt:hover .light-holder .light {
-    background: rgb(255, 255, 255);
+    background: hsl(var(--background));
     background: linear-gradient(180deg,
-            rgba(101, 101, 121, 1) 0%,
-            rgba(255, 255, 255, 0) 75%,
-            rgba(255, 255, 255, 0) 100%);
+            hsl(var(--primary)) 0%,
+            transparent 75%,
+            transparent 100%);
 }
