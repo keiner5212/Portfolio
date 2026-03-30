@@ -212,6 +212,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
             transition={{ duration: 0.5 }}
           >
             {t.title}
+            <span className="section-accent" />
           </motion.h2>
 
           <motion.div
@@ -222,7 +223,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           >
             {t.data.slice(0, visibleProjects).map((project, index) => (
               <motion.div key={`${project.title}-${index}`} variants={ITEM_VARIANTS} animate={isInView ? "visible" : "hidden"}>
-                <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-300 relative">
+                <Card className="flex flex-col h-full transition-all duration-300 hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/40 hover:border-foreground/20 hover:-translate-y-1 relative">
                   <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
                       <motion.div
                         initial={{ scale: 0 }}
@@ -246,7 +247,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                       <CardDescription className="line-clamp-2 sm:line-clamp-1 text-xs sm:text-sm">
                         {project.description}
                       </CardDescription>
-                      <span className="text-sm text-blue-600 hover:underline mt-1 inline-block">
+                      <span className="text-sm text-foreground hover:text-foreground hover:underline mt-1 inline-block font-medium transition-colors duration-200">
                         {t.viewMore}
                       </span>
                     </div>
@@ -328,7 +329,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="w-full h-9 sm:h-8 text-xs sm:text-sm"
+                                className="w-full min-h-[44px] text-xs sm:text-sm"
                               >
                                 <Github className="mr-1 sm:mr-2 h-4 w-4" />{" "}
                                 {t.viewGithub}
@@ -363,7 +364,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                             variant="outline"
                             size="sm"
                             asChild
-                            className="w-full h-9 sm:h-8 text-xs sm:text-sm"
+                            className="w-full min-h-[44px] text-xs sm:text-sm"
                           >
                             {project.github[0].includes("priv") ? (
                               <span className="cursor-not-allowed">
@@ -393,7 +394,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                             variant="outline"
                             size="sm"
                             asChild
-                            className="w-full h-9 sm:h-8 text-xs sm:text-sm"
+                            className="w-full min-h-[44px] text-xs sm:text-sm"
                           >
                             <a
                               href={project.website}
@@ -469,7 +470,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Button onClick={loadMoreProjects} className="inline-flex items-center gap-2">
+                  <Button onClick={loadMoreProjects} className="inline-flex items-center gap-2 hover:translate-y-1 transition-transform duration-300">
                     {t.viewMore} <ArrowDown className="h-4 w-4" />
                   </Button>
                 </motion.div>
@@ -481,7 +482,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Button onClick={showLessProjects} className="inline-flex items-center gap-2">
+                  <Button onClick={showLessProjects} className="inline-flex items-center gap-2 hover:translate-y-1 transition-transform duration-300">
                     {t.viewLess} <ArrowUp className="h-4 w-4" />
                   </Button>
                 </motion.div>

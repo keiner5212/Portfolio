@@ -109,6 +109,7 @@ const Contact = ({ t, lang }: { t: any, lang: string }) => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {t.title}
+          <span className="section-accent" />
         </motion.h2>
         
         <div className="flex flex-col md:flex-row gap-12 items-center justify-center">
