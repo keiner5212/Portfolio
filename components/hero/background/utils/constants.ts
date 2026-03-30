@@ -5,7 +5,7 @@ export const BASE_VELOCITY_Y_RANGE = 1
 export const MIN_SIZE_POINTS = 5
 export const MAX_SIZE_POINTS = 15
 export const POINTS_BOUNCE = true
-export const HOVER_VELOCITY_MULTIPLIER = 1.5
+export const HOVER_VELOCITY_MULTIPLIER = 1.3
 // MAX_HOVER_VELOCITY must always be a multiple of HOVER_VELOCITY_MULTIPLIER so a point can return to its original velocity
 export const MAX_HOVER_VELOCITY = HOVER_VELOCITY_MULTIPLIER * 7
 

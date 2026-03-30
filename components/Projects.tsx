@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { Github, ExternalLink, ChevronLeft, ChevronRight, ArrowDown, ArrowUp } from "lucide-react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -481,32 +481,22 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
           <div className="text-center mt-8 w-full flex justify-center">
             <AnimatePresence mode="wait">
               {visibleProjects < t.data.length ? (
-                <motion.button
-                  key="load-more"
+                <Button asChild className="hover:translate-y-1 transition-transform duration-300 cursor-pointer"
                   onClick={loadMoreProjects}
-                  className={"view-more-button " + (mounted ? theme || "light" : "light")}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
                 >
-                  <span>{t.viewMore}</span>
-                </motion.button>
+                  <span className="inline-flex items-center">
+                    {t.viewMore} <ArrowDown className="ml-2 h-4 w-4" />
+                  </span>
+                </Button>
               ) : (
                 visibleProjects > 3 && (
-                  <motion.button
-                    key="show-less"
+                  <Button asChild className="hover:translate-y-1 transition-transform duration-300 cursor-pointer"
                     onClick={showLessProjects}
-                    className={"view-more-button " + (mounted ? theme || "light" : "light")}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                  >
-                    <span>{t.viewLess}</span>
-                  </motion.button>
+                    >
+                    <span className="inline-flex items-center">
+                      {t.viewLess} <ArrowUp className="ml-2 h-4 w-4" />
+                    </span>
+                  </Button>
                 )
               )}
             </AnimatePresence>
