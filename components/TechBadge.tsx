@@ -31,6 +31,7 @@ export const TechBadge = ({ tech }: { tech: Technology }) => (
             href={tech.url}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`${tech.name} documentation, opens in new tab`}
             className="inline-block"
           >
             <Badge

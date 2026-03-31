@@ -159,7 +159,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
 
     useEffect(() => {
         resizeCanvas();
-        window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("resize", resizeCanvas, { passive: true });
         return () => window.removeEventListener("resize", resizeCanvas);
     }, []);
 
@@ -224,7 +224,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
             });
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mousemove", handleMouseMove, { passive: true });
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
             if (throttleTimeout) clearTimeout(throttleTimeout);

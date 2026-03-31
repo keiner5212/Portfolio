@@ -7,10 +7,11 @@ import Image from "next/image";
 
 interface ImageViewerDialogProps {
   src: string | null;
+  alt?: string;
   onClose: () => void;
 }
 
-export const ImageViewerDialog = ({ src, onClose }: ImageViewerDialogProps) => {
+export const ImageViewerDialog = ({ src, alt, onClose }: ImageViewerDialogProps) => {
   return (
     <Dialog open={!!src} onOpenChange={(open) => !open && onClose()}>
       <AnimatePresence>
@@ -25,7 +26,7 @@ export const ImageViewerDialog = ({ src, onClose }: ImageViewerDialogProps) => {
             >
               <Image
                 src={src}
-                alt="Fullscreen"
+                alt={alt ?? "Fullscreen image"}
                 className="h-full w-full"
                 style={{ objectFit: "contain" }}
                 width={0}

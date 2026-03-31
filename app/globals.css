@@ -96,7 +96,3 @@ section,
   -webkit-backface-visibility: hidden;
   transform: translateZ(0);
 }
-
-section {
-  will-change: transform;
-}

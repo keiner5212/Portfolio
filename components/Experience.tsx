@@ -182,7 +182,7 @@ const Experience = ({ t }: { t: any }) => {
                         </div>
                         <div className="flex flex-col gap-2 mt-2 text-sm text-muted-foreground">
                           <div className="flex items-center gap-2 flex-wrap">
-                            {exp.logo && <img src={exp.logo} alt={exp.company} className="w-6 h-6 rounded-full object-cover" />}
+                            {exp.logo && <img src={exp.logo} alt={exp.company} width={24} height={24} loading="lazy" className="w-6 h-6 rounded-full object-cover" />}
                             {exp.link ? (
                               <motion.a
                                 href={exp.link}

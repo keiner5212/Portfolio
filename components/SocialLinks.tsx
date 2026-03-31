@@ -1,7 +1,8 @@
 "use client";
 
 import { links } from "@/lib/links";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Linkedin, Mail } from "lucide-react";
+import { GithubIcon } from "./ui/github-icon";
 import { useToast } from "@/components/ui/use-toast";
 
 const SocialLinks = () => {
@@ -24,7 +25,7 @@ const SocialLinks = () => {
 				className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-all duration-200"
 				aria-label="Visit my GitHub profile"
 			>
-				<Github className="h-5 w-5" />
+				<GithubIcon className="h-5 w-5" />
 			</a>
 			<a
 				href={links.linkedin}

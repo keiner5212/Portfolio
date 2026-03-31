@@ -68,7 +68,7 @@ const Hero = ({ t }: { t: any }) => {
           >
             <Image
               src={githubProfilePic}
-              alt="GitHub Profile"
+              alt="Keiner José Alvarado"
               width={100}
               height={100}
               className="rounded-full border-4 border-primary/20 shadow-lg"
