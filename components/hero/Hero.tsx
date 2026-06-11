@@ -1,146 +1,139 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
-import { useCanvasAnimation } from "./background/useCanvasAnimation";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
-import { motion, useInView } from "framer-motion";
-import SocialLinks from "../SocialLinks";
-import { DEFAULT_THEME } from "@/lib/constants";
 
-const githubProfilePic =
-  "/profile.jpeg";
+import { useCanvasAnimation } from "./background/useCanvasAnimation";
+import SocialLinks from "@/components/SocialLinks";
+import { Button } from "@/components/ui/button";
+import { EASE } from "@/lib/motion";
 
-const Hero = ({ t }: { t: any }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const [mounted, setMounted] = useState(false);
-  const { theme = DEFAULT_THEME } = useTheme();
+interface HeroTranslation {
+	title: string;
+	subtitle: string;
+	birth: string;
+	country: string;
+	cta: string;
+	yo: string;
+}
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+const calculateAge = (birthDate: string) => {
+	const [day, month, year] = birthDate.split("/").map(Number);
+	const birth = new Date(year, month - 1, day);
+	const today = new Date();
+	let age = today.getFullYear() - birth.getFullYear();
+	const monthDiff = today.getMonth() - birth.getMonth();
+	if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+		age--;
+	}
+	return age;
+};
 
-  const calculateAge = (birthDate: string) => {
-    const [day, month, year] = birthDate.split('/').map(Number);
-    const birth = new Date(year, month - 1, day);
-    const today = new Date();
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-      age--;
-    }
-    return age;
-  };
+const Hero = ({ t }: { t: HeroTranslation }) => {
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [mounted, setMounted] = useState(false);
+	const { resolvedTheme } = useTheme();
+	const effectiveTheme = resolvedTheme === "dark" ? "dark" : "light";
 
-  useCanvasAnimation(canvasRef, mounted ? theme || "light" : "light");
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
-  return (
-    <section
-      ref={sectionRef}
-      className="bg-background py-20 relative h-[400px] md:h-[300px] overflow-hidden"
-    >
-      <canvas
-        ref={canvasRef}
-        className="absolute top-0 left-0 w-full h-[400px] md:h-[300px] z-0"
-      />
+	useCanvasAnimation(canvasRef, mounted ? effectiveTheme : "light");
 
-      <motion.div
-        className="container px-4 absolute z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="flex flex-col items-center text-center md:flex-row md:justify-center md:items-center md:text-left">
-          <motion.div
-            className="mb-8 md:mb-0 md:mr-8"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={isInView ? { scale: 1, opacity: 1 } : {}}
-            transition={{
-              type: "spring",
-              stiffness: 100,
-              damping: 10,
-              delay: 0.2,
-            }}
-          >
-            <Image
-              src={githubProfilePic}
-              alt="Keiner José Alvarado"
-              width={100}
-              height={100}
-              className="rounded-full border-4 border-primary/20 shadow-lg"
-              priority
-            />
-          </motion.div>
+	return (
+		<section className="relative overflow-hidden bg-background py-10 md:py-14">
+			{/* Custom animated points layer (drift + twinkle) */}
+			<div
+				aria-hidden
+				className="floating-points [mask-image:radial-gradient(70%_65%_at_50%_50%,black,transparent_85%)]"
+			/>
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={isInView ? { y: 0, opacity: 1 } : {}}
-            transition={{
-              duration: 0.6,
-              delay: 0.4,
-            }}
-          >
-            <motion.h1
-              className="mb-4 text-4xl font-bold sm:text-5xl md:text-6xl"
-              initial={{ y: 10 }}
-              animate={isInView ? { y: 0 } : {}}
-              transition={{
-                duration: 0.5,
-                delay: 0.5,
-              }}
-            >
-              {t.title}
-            </motion.h1>
+			{/* Canvas points animation (WebGPU / Canvas 2D fallback) */}
+			<canvas
+				ref={canvasRef}
+				aria-hidden
+				className="pointer-events-none absolute inset-0 h-full w-full opacity-60"
+			/>
 
-            <motion.div
-              className="mb-8 flex flex-wrap items-center justify-center md:justify-start gap-3 text-xl text-muted-foreground"
-              initial={{ y: 10 }}
-              animate={isInView ? { y: 0 } : {}}
-              transition={{
-                duration: 0.5,
-                delay: 0.6,
-              }}
-            >
-              <span className="transition-all duration-300 hover:text-foreground hover:scale-105 cursor-default">
-                {t.subtitle}
-              </span>
-              <span className="text-muted-foreground/50">•</span>
-              <span className="transition-all duration-300 hover:text-foreground hover:scale-105 cursor-default">
-                {t.country}
-              </span>
-              <span className="text-muted-foreground/50">•</span>
-              <span className="transition-all duration-300 hover:text-foreground hover:scale-105 cursor-default">
-                {calculateAge(t.birth)} {t.yo}
-              </span>
-            </motion.div>
+			<div className="relative z-10 mx-auto max-w-7xl px-6">
+				<div className="flex flex-col items-center text-center md:flex-row md:justify-center md:items-center md:gap-10 md:text-left">
+					{/* Profile picture — appears first */}
+					<motion.div
+						initial={{ opacity: 0, scale: 0.85 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ duration: 0.55, delay: 0, ease: EASE.outExpo }}
+						className="relative mb-6 md:mb-0 shrink-0"
+					>
+						<Image
+							src="/profile.jpeg"
+							alt="Keiner José Alvarado"
+							width={100}
+							height={100}
+							priority
+							className="size-[100px] rounded-full border-4 border-primary/20 object-cover shadow-lg"
+						/>
+					</motion.div>
 
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 1 } : {}}
-              transition={{
-                type: "spring",
-                stiffness: 200,
-                damping: 10,
-                delay: 0.7,
-              }}
-              className="flex flex-row justify-between"
-            >
-              <Button asChild className="hover:translate-x-2 transition-transform duration-300">
-                <a href="#contact" className="inline-flex items-center">
-                  {t.cta} <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-              <SocialLinks />
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.div>
-    </section>
-  );
+					{/* Text block */}
+					<div className="flex flex-col items-center md:items-start max-w-2xl">
+						{/* Name — slightly after pic */}
+						<motion.h1
+							initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+							animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+							transition={{ duration: 0.6, delay: 0.18, ease: EASE.outExpo }}
+							className="font-heading font-bold text-balance text-4xl sm:text-5xl md:text-6xl tracking-tight"
+						>
+							{t.title}
+						</motion.h1>
+
+						{/* Subtitle row — noticeably after name */}
+						<motion.div
+							initial={{ opacity: 0, y: 16 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.55, delay: 0.35, ease: EASE.outExpo }}
+							className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-base md:text-xl text-muted-foreground"
+						>
+							<span className="transition-all duration-300 hover:text-foreground">
+								{t.subtitle}
+							</span>
+							<span className="text-muted-foreground/50">•</span>
+							<span className="transition-all duration-300 hover:text-foreground">
+								{t.country}
+							</span>
+							<span className="text-muted-foreground/50">•</span>
+							<span className="transition-all duration-300 hover:text-foreground">
+								{calculateAge(t.birth)} {t.yo}
+							</span>
+						</motion.div>
+
+						{/* CTA + socials — last to arrive */}
+						<motion.div
+							initial={{ opacity: 0, y: 16 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.55, delay: 0.5, ease: EASE.outExpo }}
+							className="mt-8 flex flex-row flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-5"
+						>
+							<Button
+								asChild
+								size="default"
+								className="group h-11 rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground shadow-glow-primary transition-all duration-300 hover:translate-x-1 active:scale-[0.98]"
+							>
+								<a href="#contact" className="inline-flex items-center gap-2">
+									{t.cta}
+									<ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+								</a>
+							</Button>
+							<SocialLinks />
+						</motion.div>
+					</div>
+				</div>
+			</div>
+		</section>
+	);
 };
 
 export default Hero;

@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@radix-ui/react-accordion": "1.2.12",
@@ -42,7 +42,7 @@
     "clsx": "2.1.1",
     "framer-motion": "^12.23.25",
     "lucide-react": "0.446.0",
-    "next": "^15.1.4",
+    "next": "^15.5.19",
     "next-themes": "0.4.4",
     "normalize.css": "8.0.1",
     "react": "^19.0.0",
@@ -54,17 +54,19 @@
     "tailwindcss-animate": "1.0.7"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
     "@types/node": "20.6.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "compression-webpack-plugin": "^12.0.0",
     "eslint": "10.1.0",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "15.5.19",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "postcss": "8.4.47",
-    "typescript": "5.2.2"
+    "postcss": "8.5.15",
+    "typescript": "5.2.2",
+    "typescript-eslint": "^8.61.0"
   }
 }

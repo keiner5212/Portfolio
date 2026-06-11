@@ -67,6 +67,7 @@ function hexToRgb(hex: string): [number, number, number] {
 }
 
 export class WebGPURenderer {
+    private canvas: HTMLCanvasElement;
     private context: any = null;
     private device: any = null;
     private format: string = "bgra8unorm";
@@ -74,112 +75,141 @@ export class WebGPURenderer {
     private linePipeline: any = null;
     private circleBuf: any = null;
     private lineBuf: any = null;
+    private circleData: Float32Array | null = null;
+    private lineData: Float32Array | null = null;
     private _ready = false;
     private _destroyed = false;
+    private _unsupported = false;
 
     constructor(canvas: HTMLCanvasElement) {
-        // Lock canvas to WebGPU synchronously — must happen before any getContext("2d")
-        this.context = canvas.getContext("webgpu");
-        if (!this.context) return;
-        this.initAsync().catch(() => {});
+        this.canvas = canvas;
     }
 
     get ready() { return this._ready; }
+    get unsupported() { return this._unsupported; }
+    get destroyed() { return this._destroyed; }
 
-    private async initAsync() {
+    async initialize(): Promise<void> {
+        if (this._destroyed || this._ready) return;
+
         const gpu = (navigator as any).gpu;
-
-        const adapter = await gpu.requestAdapter();
-        if (!adapter || this._destroyed || !this.context) return;
-
-        const device = await adapter.requestDevice();
-        if (this._destroyed || !this.context) {
-            device.destroy();
+        if (!gpu) {
+            this._unsupported = true;
             return;
         }
 
-        this.format = gpu.getPreferredCanvasFormat();
+        try {
+            const adapter = await gpu.requestAdapter();
+            if (!adapter || this._destroyed) {
+                this._unsupported = true;
+                return;
+            }
 
-        (this.context as any).configure({
-            device,
-            format: this.format,
-            alphaMode: "premultiplied",
-        });
+            const device = await adapter.requestDevice();
+            if (this._destroyed) {
+                device.destroy();
+                this._unsupported = true;
+                return;
+            }
 
-        const premulBlend = {
-            color: { srcFactor: "one", dstFactor: "one-minus-src-alpha", operation: "add" },
-            alpha: { srcFactor: "one", dstFactor: "one-minus-src-alpha", operation: "add" },
-        };
+            // Lock canvas to WebGPU ONLY after adapter + device are confirmed
+            this.context = this.canvas.getContext("webgpu");
+            if (!this.context) {
+                device.destroy();
+                this._unsupported = true;
+                return;
+            }
 
-        const circleModule = device.createShaderModule({ code: CIRCLE_SHADER });
-        const lineModule   = device.createShaderModule({ code: LINE_SHADER });
+            this.format = gpu.getPreferredCanvasFormat();
 
-        this.circlePipeline = device.createRenderPipeline({
-            layout: "auto",
-            vertex: {
-                module: circleModule,
-                entryPoint: "vs",
-                buffers: [{
-                    arrayStride: CIRCLE_STRIDE,
-                    attributes: [
-                        { shaderLocation: 0, offset: 0,  format: "float32x2" },
-                        { shaderLocation: 1, offset: 8,  format: "float32x2" },
-                        { shaderLocation: 2, offset: 16, format: "float32x4" },
-                    ],
-                }],
-            },
-            fragment: {
-                module: circleModule,
-                entryPoint: "fs",
-                targets: [{ format: this.format, blend: premulBlend }],
-            },
-            primitive: { topology: "triangle-list" },
-        });
+            (this.context as any).configure({
+                device,
+                format: this.format,
+                alphaMode: "premultiplied",
+            });
 
-        this.linePipeline = device.createRenderPipeline({
-            layout: "auto",
-            vertex: {
-                module: lineModule,
-                entryPoint: "vs",
-                buffers: [{
-                    arrayStride: LINE_STRIDE,
-                    attributes: [
-                        { shaderLocation: 0, offset: 0, format: "float32x2" },
-                        { shaderLocation: 1, offset: 8, format: "float32x4" },
-                    ],
-                }],
-            },
-            fragment: {
-                module: lineModule,
-                entryPoint: "fs",
-                targets: [{ format: this.format, blend: premulBlend }],
-            },
-            primitive: { topology: "line-list" },
-        });
+            const premulBlend = {
+                color: { srcFactor: "one", dstFactor: "one-minus-src-alpha", operation: "add" },
+                alpha: { srcFactor: "one", dstFactor: "one-minus-src-alpha", operation: "add" },
+            };
 
-        this.circleBuf = device.createBuffer({
-            size: POINTS_DESKTOP * CIRCLE_VERTS_PER_POINT * CIRCLE_STRIDE,
-            usage: USAGE_VERTEX_COPY_DST,
-        });
-        this.lineBuf = device.createBuffer({
-            size: MAX_LINE_VERTS * LINE_STRIDE,
-            usage: USAGE_VERTEX_COPY_DST,
-        });
+            const circleModule = device.createShaderModule({ code: CIRCLE_SHADER });
+            const lineModule   = device.createShaderModule({ code: LINE_SHADER });
 
-        this.device = device;
-        this._ready = true;
+            this.circlePipeline = device.createRenderPipeline({
+                layout: "auto",
+                vertex: {
+                    module: circleModule,
+                    entryPoint: "vs",
+                    buffers: [{
+                        arrayStride: CIRCLE_STRIDE,
+                        attributes: [
+                            { shaderLocation: 0, offset: 0,  format: "float32x2" },
+                            { shaderLocation: 1, offset: 8,  format: "float32x2" },
+                            { shaderLocation: 2, offset: 16, format: "float32x4" },
+                        ],
+                    }],
+                },
+                fragment: {
+                    module: circleModule,
+                    entryPoint: "fs",
+                    targets: [{ format: this.format, blend: premulBlend }],
+                },
+                primitive: { topology: "triangle-list" },
+            });
+
+            this.linePipeline = device.createRenderPipeline({
+                layout: "auto",
+                vertex: {
+                    module: lineModule,
+                    entryPoint: "vs",
+                    buffers: [{
+                        arrayStride: LINE_STRIDE,
+                        attributes: [
+                            { shaderLocation: 0, offset: 0, format: "float32x2" },
+                            { shaderLocation: 1, offset: 8, format: "float32x4" },
+                        ],
+                    }],
+                },
+                fragment: {
+                    module: lineModule,
+                    entryPoint: "fs",
+                    targets: [{ format: this.format, blend: premulBlend }],
+                },
+                primitive: { topology: "line-list" },
+            });
+
+            this.circleBuf = device.createBuffer({
+                size: POINTS_DESKTOP * CIRCLE_VERTS_PER_POINT * CIRCLE_STRIDE,
+                usage: USAGE_VERTEX_COPY_DST,
+            });
+            this.lineBuf = device.createBuffer({
+                size: MAX_LINE_VERTS * LINE_STRIDE,
+                usage: USAGE_VERTEX_COPY_DST,
+            });
+            this.circleData = new Float32Array(POINTS_DESKTOP * CIRCLE_VERTS_PER_POINT * 8);
+            this.lineData = new Float32Array(MAX_LINE_VERTS * 6);
+
+            this.device = device;
+            this._ready = true;
+        } catch {
+            this._unsupported = true;
+        }
     }
 
     render(points: Point[], pointsColor: string, hoverColor: string, width: number, height: number) {
         if (!this._ready || !this.device || !this.context) return;
+        const circleData = this.circleData;
+        const lineData = this.lineData;
+        if (!circleData || !lineData) return;
 
         const w = Math.max(width, 1);
         const h = Math.max(height, 1);
 
-        // Build circle vertex data (premultiplied alpha)
-        const circleData = new Float32Array(points.length * CIRCLE_VERTS_PER_POINT * 8);
+        // Build circle vertex data (premultiplied alpha) into preallocated buffer
         let ci = 0;
-        for (const pt of points) {
+        for (let p = 0; p < points.length; p++) {
+            const pt = points[p];
             const [r, g, b] = hexToRgb(pt.hoverProgress > 0 ? hoverColor : pointsColor);
             const a = POINT_ALPHA;
             // Convert from canvas pixel space to NDC (Y flipped)
@@ -201,8 +231,8 @@ export class WebGPURenderer {
             }
         }
 
-        // Build line vertex data (premultiplied alpha)
-        const lineVerts: number[] = [];
+        // Build line vertex data (premultiplied alpha) into preallocated buffer
+        let li = 0;
         for (let p = 0; p < points.length; p++) {
             const pt = points[p];
             const [r, g, b] = hexToRgb(pt.hoverProgress > 0 ? hoverColor : pointsColor);
@@ -219,17 +249,28 @@ export class WebGPURenderer {
                 const opacity = Math.max(0.05, 1 - dist / LINE_MAX_DISTANCE);
                 const x2 = (2 * np.x / w) - 1;
                 const y2 = 1 - (2 * np.y / h);
-                lineVerts.push(x1, y1, r * opacity, g * opacity, b * opacity, opacity);
-                lineVerts.push(x2, y2, r * opacity, g * opacity, b * opacity, opacity);
+                if (li + 6 > lineData.length) break;
+                lineData[li++] = x1;
+                lineData[li++] = y1;
+                lineData[li++] = r * opacity;
+                lineData[li++] = g * opacity;
+                lineData[li++] = b * opacity;
+                lineData[li++] = opacity;
+                lineData[li++] = x2;
+                lineData[li++] = y2;
+                lineData[li++] = r * opacity;
+                lineData[li++] = g * opacity;
+                lineData[li++] = b * opacity;
+                lineData[li++] = opacity;
             }
         }
 
         this.device.queue.writeBuffer(this.circleBuf, 0, circleData);
-
-        const lineData = new Float32Array(lineVerts);
-        if (lineData.byteLength > 0) {
-            this.device.queue.writeBuffer(this.lineBuf, 0, lineData);
+        if (li > 0) {
+            this.device.queue.writeBuffer(this.lineBuf, 0, lineData, 0, li);
         }
+
+        const lineCount = li / 6;
 
         const encoder = this.device.createCommandEncoder();
         const pass = encoder.beginRenderPass({
@@ -246,7 +287,6 @@ export class WebGPURenderer {
         pass.setVertexBuffer(0, this.circleBuf);
         pass.draw(points.length * CIRCLE_VERTS_PER_POINT);
 
-        const lineCount = lineVerts.length / 6;
         if (lineCount > 0) {
             pass.setPipeline(this.linePipeline);
             pass.setVertexBuffer(0, this.lineBuf);

@@ -78,6 +78,32 @@ export const translations = {
 					isTeam: true
 				},
 				{
+					title: "Orga Platform",
+					description: "The API platform from Orga AI lets anyone build on top of the Orga AI tech. From a single dashboard you can manage API keys, browse MCP servers, test endpoints in the playground, clone voices, track usage, and pick a tier, all wired up with Stripe billing and an admin panel behind the scenes.",
+					technologies: [
+						"Next.js",
+						"React",
+						"TypeScript",
+						"Tailwind CSS",
+						"Firebase",
+						"Framer Motion",
+						"i18next",
+						"Node.js",
+						"Express",
+						"MongoDB",
+						"Stripe",
+						"JWT",
+						"Zod"
+					],
+					website: "https://platform.orga-ai.com/",
+					github: [
+						"https://github.com/OrgaAI/orga-platform-nextjs",
+						"https://github.com/OrgaAI/orga-platform-core-api"
+					],
+					images: ["/assets/orga-platform/1.png", "/assets/orga-platform/2.png", "/assets/orga-platform/3.png", "/assets/orga-platform/4.png"],
+					isTeam: true
+				},
+				{
 					title: "Theorim.ai",
 					description: "Theorim is a platform for intuitively modeling custom datasets with granular user and permission control. It supports complex data structures (tables, selectors, markdown, validations), record management, and integration with tools like interactive visualizations and AI-powered content generation (reports, emails, etc.).",
 					technologies: ["JavaScript", "CSS", "HTML", "Node.js", "Express", "AWS CloudFormation", "DynamoDB", "S3"],
@@ -170,6 +196,11 @@ export const translations = {
 			email: "Your Email",
 			message: "Message",
 			send: "Send Message",
+			sending: "Sending...",
+			errors: {
+				required: "Required",
+				invalidEmail: "Invalid email",
+			},
 		}
 	},
 	es: {
@@ -248,6 +279,32 @@ export const translations = {
 					website: "https://sonar.orga-ai.com/",
 					github: ["https://github.com/OrgaAI/orga-sonar"],
 					images: ["/assets/orga-sonar/4.png", "/assets/orga-sonar/1.png", "/assets/orga-sonar/2.png", "/assets/orga-sonar/3.png"],
+					isTeam: true
+				},
+				{
+					title: "Orga Platform",
+					description: "La plataforma de APIs de Orga AI permite a cualquier persona construir sobre la tecnología de Orga AI. Desde un único dashboard puedes gestionar API keys, explorar servidores MCP, probar endpoints en el playground, clonar voces, monitorear el uso y elegir un plan, todo conectado con facturación Stripe y un panel de administración detrás de escena.",
+					technologies: [
+						"Next.js",
+						"React",
+						"TypeScript",
+						"Tailwind CSS",
+						"Firebase",
+						"Framer Motion",
+						"i18next",
+						"Node.js",
+						"Express",
+						"MongoDB",
+						"Stripe",
+						"JWT",
+						"Zod"
+					],
+					website: "https://platform.orga-ai.com/",
+					github: [
+						"https://github.com/OrgaAI/orga-platform-nextjs",
+						"https://github.com/OrgaAI/orga-platform-core-api"
+					],
+					images: ["/assets/orga-platform/1.png", "/assets/orga-platform/2.png", "/assets/orga-platform/3.png", "/assets/orga-platform/4.png"],
 					isTeam: true
 				},
 				{
@@ -344,6 +401,11 @@ export const translations = {
 			email: "Tu Correo electrónico",
 			message: "Mensaje",
 			send: "Enviar Mensaje",
+			sending: "Enviando...",
+			errors: {
+				required: "Requerido",
+				invalidEmail: "Correo inválido",
+			},
 		}
 	},
 };
