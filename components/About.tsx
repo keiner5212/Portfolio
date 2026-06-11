@@ -1,164 +1,105 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { motion, useReducedMotion } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Code, Database, Globe } from "lucide-react";
-import { useRef } from "react";
 import { technologies } from "@/lib/technologies";
 import { TechBadge } from "@/components/TechBadge";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { Orb } from "@/components/ui/orb";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { DUR, EASE, fadeUp, hoverLift, inViewTrigger, staggerContainer } from "@/lib/motion";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+interface AboutTranslation {
+	title: string;
+	content: string;
+}
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-};
+const CATEGORIES = [
+	{ key: "frontend" as const, label: "Frontend", icon: Code },
+	{ key: "backend" as const, label: "Backend", icon: Database },
+	{ key: "others" as const, label: "Cloud, DevOps & Others", icon: Globe },
+];
 
-const About = ({ t }: { t: any }) => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+const About = ({ t }: { t: AboutTranslation }) => {
+	const reduced = useReducedMotion();
 
-  return (
-    <motion.section
-      id="about"
-      className="bg-muted py-20"
-      ref={sectionRef}
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="container mx-auto px-4">
-        <motion.h2
-          className="mb-12 text-center text-3xl font-bold"
-          initial={{ y: -20, opacity: 0 }}
-          animate={isInView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {t.title}
-          <span className="section-accent" />
-        </motion.h2>
+	return (
+		<section
+			id="about"
+			className="relative bg-surface-1 py-20 md:py-24 lg:py-32 overflow-hidden"
+		>
+			<Orb
+				tone="primary"
+				className="w-[400px] h-[400px] -top-32 -left-32 animate-float-slow"
+			/>
+			<Orb
+				tone="cyan"
+				className="w-[350px] h-[350px] -bottom-32 -right-20 animate-float-slower"
+			/>
 
-        <motion.div
-          className="mb-12"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <p className="text-center text-lg">{t.content}</p>
-        </motion.div>
+			<div
+				aria-hidden
+				className="pointer-events-none absolute inset-0 opacity-30 bg-dot-grid [mask-image:radial-gradient(50%_50%_at_50%_50%,black_30%,transparent_80%)]"
+			/>
 
-        <motion.div
-          className="grid gap-8 md:grid-cols-3"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <motion.div variants={itemVariants}>
-            <motion.div 
-              whileHover={{ y: -8, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <Card className="h-full border-2 transition-all hover:border-foreground/20 hover:shadow-lg">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <motion.div
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <Code className="h-6 w-6 text-primary" />
-                    </motion.div>
-                    Frontend
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {technologies.frontend.map((tech) => (
-                      <TechBadge key={tech.name} tech={tech} />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
+			<div className="relative z-10 mx-auto max-w-7xl px-6">
+				<SectionHeading title={t.title} />
 
-          <motion.div variants={itemVariants}>
-            <motion.div
-              whileHover={{ y: -8, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <Card className="h-full border-2 transition-all hover:border-foreground/20 hover:shadow-lg">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <motion.div
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <Database className="h-6 w-6 text-primary" />
-                    </motion.div>
-                    Backend
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {technologies.backend.map((tech) => (
-                      <TechBadge key={tech.name} tech={tech} />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
+				<motion.p
+					initial="hidden"
+					whileInView="visible"
+					viewport={inViewTrigger}
+					variants={fadeUp}
+					transition={{ duration: reduced ? 0 : DUR.slow, ease: EASE.outExpo, delay: reduced ? 0 : 0.1 }}
+					className="mx-auto mb-16 max-w-3xl text-center text-base md:text-lg text-muted-foreground text-pretty whitespace-pre-line leading-relaxed"
+				>
+					{t.content}
+				</motion.p>
 
-          <motion.div variants={itemVariants}>
-            <motion.div
-              whileHover={{ y: -8, scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <Card className="h-full border-2 transition-all hover:border-foreground/20 hover:shadow-lg">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <motion.div
-                      whileHover={{ rotate: 360 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <Globe className="h-6 w-6 text-primary" />
-                    </motion.div>
-                    Cloud, DevOps & Others
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {technologies.others.map((tech) => (
-                      <TechBadge key={tech.name} tech={tech} />
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </motion.section>
-  );
+				<TooltipProvider delayDuration={200}>
+					<motion.div
+						initial="hidden"
+						whileInView="visible"
+						viewport={inViewTrigger}
+						variants={staggerContainer(0.12)}
+						className="grid gap-6 md:grid-cols-3"
+					>
+						{CATEGORIES.map(({ key, label, icon: Icon }) => (
+							<motion.div
+								key={key}
+								variants={fadeUp}
+								{...hoverLift}
+								className="group"
+							>
+								<Card className="relative h-full rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl p-6 transition-all duration-300 hover:border-primary/40 hover:shadow-glow-primary">
+									<span
+										aria-hidden
+										className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+									/>
+									<CardHeader className="p-0 pb-4">
+										<CardTitle className="flex items-center gap-3 text-lg md:text-xl">
+											<span className="inline-flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/15">
+												<Icon className="size-5" />
+											</span>
+											{label}
+										</CardTitle>
+									</CardHeader>
+									<CardContent className="p-0">
+										<div className="flex flex-wrap gap-2">
+											{technologies[key].map((tech) => (
+												<TechBadge key={tech.name} tech={tech} />
+											))}
+										</div>
+									</CardContent>
+								</Card>
+							</motion.div>
+						))}
+					</motion.div>
+				</TooltipProvider>
+			</div>
+		</section>
+	);
 };
 
 export default About;

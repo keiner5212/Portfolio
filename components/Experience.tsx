@@ -1,231 +1,220 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
-import { useRef } from "react";
 import { Briefcase, Calendar, ExternalLink } from "lucide-react";
+import Image from "next/image";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { Orb } from "@/components/ui/orb";
+import { DUR, EASE, fadeLeft, fadeRight, fadeUp, inViewTrigger } from "@/lib/motion";
+import type { ExperienceEntry } from "@/lib/i18n";
+
+interface ExperienceTranslation {
+	title: string;
+	present: string;
+	OrgaAI: ExperienceEntry;
+	TheorimAI: ExperienceEntry;
+	helloApp: ExperienceEntry;
+	notiexpress: ExperienceEntry;
+}
 
 const calculateMonths = (start: string, end: Date | string) => {
-  const [sm, sy] = start.split("/").map(Number);
-  const startDate = new Date(sy, sm - 1);
-  const endDate = end instanceof Date ? end : (() => {
-    const [em, ey] = end.split("/").map(Number);
-    return new Date(ey, em - 1);
-  })();
-  return (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
+	const [sm, sy] = start.split("/").map(Number);
+	const startDate = new Date(sy, sm - 1);
+	const endDate =
+		end instanceof Date
+			? end
+			: (() => {
+					const [em, ey] = end.split("/").map(Number);
+					return new Date(ey, em - 1);
+				})();
+	return (
+		(endDate.getFullYear() - startDate.getFullYear()) * 12 +
+		(endDate.getMonth() - startDate.getMonth())
+	);
+};
+
+const monthLabel = (n: number, lang: string) =>
+	lang === "es" ? (n === 1 ? "mes" : "meses") : n === 1 ? "month" : "months";
+
+const yearLabel = (n: number, lang: string) =>
+	lang === "es" ? (n === 1 ? "año" : "años") : n === 1 ? "year" : "years";
+
+const formatDuration = (totalMonths: number, lang: string) => {
+	const years = Math.floor(totalMonths / 12);
+	const remMonths = totalMonths % 12;
+	const parts: string[] = [];
+	if (years > 0) parts.push(`${years} ${yearLabel(years, lang)}`);
+	if (remMonths > 0) parts.push(`${remMonths} ${monthLabel(remMonths, lang)}`);
+	return parts.length > 0 ? parts.join(" ") : `0 ${monthLabel(0, lang)}`;
 };
 
 const formatPeriod = (period: string, presentText: string, lang: string) => {
-  if (period === "No period" || period === "Sin período definido") return period;
-  if (period.includes("-xxxx")) {
-    const start = period.replace("-xxxx", "");
-    const months = calculateMonths(start, new Date());
-    return `${start} - ${presentText} (${months} ${lang === 'es' ? 'meses' : 'months'})`;
-  } else if (period.includes("-")) {
-    const [start, end] = period.split("-");
-    const months = calculateMonths(start, end);
-    const years = Math.floor(months / 12);
-    const remMonths = months % 12;
-    let duration = "";
-    if (years > 0) {
-      duration += `${years} ${lang === 'es' ? 'año' : 'year'}${years > 1 ? (lang === 'es' ? 's' : 's') : ''}`;
-    }
-    if (remMonths > 0) {
-      if (duration) duration += ` ${lang === 'es' ? 'y' : 'and'} `;
-      duration += `${remMonths} ${lang === 'es' ? 'mes' : 'month'}${remMonths > 1 ? (lang === 'es' ? 'es' : 's') : ''}`;
-    }
-    return `${period} (${duration})`;
-  }
-  return period;
+	if (period === "No period" || period === "Sin período definido") return period;
+	if (period.includes("-xxxx")) {
+		const start = period.replace("-xxxx", "");
+		const months = calculateMonths(start, new Date());
+		return `${start} - ${presentText} (${formatDuration(months, lang)})`;
+	}
+	if (period.includes("-")) {
+		const [start, end] = period.split("-");
+		const months = calculateMonths(start, end);
+		return `${period} (${formatDuration(months, lang)})`;
+	}
+	return period;
 };
 
-const Experience = ({ t }: { t: any }) => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+const Experience = ({ t }: { t: ExperienceTranslation }) => {
+	const reduced = useReducedMotion();
+	const lang = t.present === "Present" ? "en" : "es";
 
-  const lang = t.present === "Present" ? 'en' : 'es';
+	const experiences: ExperienceEntry[] = [
+		t.OrgaAI,
+		t.TheorimAI,
+		t.helloApp,
+		t.notiexpress,
+	];
 
-  const experiences = [
-    {
-      title: t.OrgaAI.title,
-      company: t.OrgaAI.company,
-      period: t.OrgaAI.period,
-      description: t.OrgaAI.description,
-      link: t.OrgaAI.link,
-      logo: t.OrgaAI.logo,
-    },
-    {
-      title: t.TheorimAI.title,
-      company: t.TheorimAI.company,
-      period: t.TheorimAI.period,
-      description: t.TheorimAI.description,
-      link: t.TheorimAI.link,
-      logo: t.TheorimAI.logo,
-    },
-    {
-      title: t.helloApp.title,
-      company: t.helloApp.company,
-      period: t.helloApp.period,
-      description: t.helloApp.description,
-      link: t.helloApp.link,
-      logo: t.helloApp.logo,
-    },
-    {
-      title: t.notiexpress.title,
-      company: t.notiexpress.company,
-      period: t.notiexpress.period,
-      description: t.notiexpress.description,
-      link: t.notiexpress.link,
-    }
-  ];
+	return (
+		<section
+			id="experience"
+			className="relative bg-background py-20 md:py-24 lg:py-32 overflow-hidden"
+		>
+			<Orb
+				tone="cyan"
+				className="w-[400px] h-[400px] -top-32 right-0 animate-float-slow"
+			/>
 
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: {
-      opacity: 1,
-      x: 0,
-    },
-  };
+			<div className="relative z-10 mx-auto max-w-7xl px-6">
+				<SectionHeading title={t.title} />
 
-  return (
-    <motion.section
-      id="experience"
-      className="bg-background py-20 overflow-hidden"
-      ref={sectionRef}
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : {}}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="container mx-auto px-4 max-w-[80dvw]">
-        <motion.h2
-          className="mb-16 text-center text-3xl md:text-4xl font-bold"
-          initial={{ y: -20, opacity: 0 }}
-          animate={isInView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          {t.title}
-          <span className="section-accent" />
-        </motion.h2>
+				<div className="relative">
+					{/* Timeline line */}
+					<motion.div
+						className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/40 to-transparent"
+						initial={{ scaleY: 0 }}
+						whileInView={{ scaleY: 1 }}
+						viewport={inViewTrigger}
+						transition={{ duration: reduced ? 0 : 1, delay: reduced ? 0 : 0.3 }}
+						style={{ transformOrigin: "top" }}
+						aria-hidden
+					/>
 
-        <div className="relative">
-          {/* Timeline line */}
-          <motion.div
-            className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-primary/20"
-            initial={{ scaleY: 0 }}
-            animate={isInView ? { scaleY: 1 } : {}}
-            transition={{ duration: 1, delay: 0.3 }}
-            style={{ transformOrigin: "top" }}
-          />
+					<div className="space-y-12">
+						{experiences.map((exp, index) => {
+							const isEven = index % 2 === 0;
+							const formattedPeriod = formatPeriod(exp.period, t.present, lang);
+							const variants = isEven ? fadeLeft : fadeRight;
 
-          <div className="space-y-12">
-            {experiences.map((exp, index) => {
-              const formattedPeriod = formatPeriod(exp.period, t.present, lang);
-              return (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  initial="hidden"
-                  animate={isInView ? "visible" : "hidden"}
-                  transition={{
-                    delay: index * 0.2,
-                    duration: 0.5,
-                    ease: [0.4, 0, 0.2, 1],
-                  }}
-                  className={`relative flex items-center ${
-                    index % 2 === 0
-                      ? "lg:flex-row flex-row"
-                      : "lg:flex-row-reverse flex-row"
-                  }`}
-                >
-                {/* Timeline dot */}
-                <motion.div
-                  className={"absolute left-4 w-4 h-4 rounded-full bg-primary border-4 border-background z-10"+ (index % 2 === 0 ? " lg:left-[calc(50%-1rem)]" : " lg:left-1/2")}
-                  initial={{ scale: 0 }}
-                  animate={isInView ? { scale: 1 } : {}}
-                  transition={{ delay: 0.5 + index * 0.2, duration: 0.3 }}
-                  whileHover={{ scale: 1.5 }}
-                >
-                  <div
-                    className="absolute inset-0 rounded-full bg-primary"
-                  />
-                </motion.div>
+							return (
+								<motion.div
+									key={exp.company + index}
+									initial="hidden"
+									whileInView="visible"
+									viewport={inViewTrigger}
+									variants={variants}
+									transition={{
+										duration: reduced ? 0 : DUR.slow,
+										ease: EASE.outExpo,
+										delay: reduced ? 0 : index * 0.15,
+									}}
+									className={`relative flex items-center ${
+										isEven ? "lg:flex-row" : "lg:flex-row-reverse"
+									} flex-row`}
+								>
+									{/* Timeline dot */}
+									<motion.div
+										className={`absolute left-4 z-10 size-4 rounded-full bg-primary border-4 border-background ${
+											isEven
+												? "lg:left-[calc(50%-0.875rem)]"
+												: "lg:left-[calc(50%-0.875rem)]"
+										}`}
+										initial={{ scale: 0 }}
+										whileInView={{ scale: 1 }}
+										viewport={inViewTrigger}
+										transition={{
+											duration: reduced ? 0 : 0.3,
+											delay: reduced ? 0 : 0.5 + index * 0.15,
+										}}
+										whileHover={{ scale: 1.5 }}
+										aria-hidden
+									>
+										<span className="absolute inset-0 rounded-full bg-primary animate-glow-pulse" />
+									</motion.div>
 
-                {/* Content card */}
-                <div
-                  className={`w-full lg:w-[calc(50%-2rem)] ml-12 lg:ml-0 ${
-                    index % 2 === 0 ? "lg:pr-12" : "lg:pl-12"
-                  }`}
-                >
-                  <motion.div
-                    whileHover={{
-                      scale: 1.02,
-                      boxShadow:
-                        "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                    }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card className="relative overflow-hidden border-2 hover:border-primary transition-all duration-300 bg-card/50 backdrop-blur-sm">
-                      {/* Gradient accent */}
-                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-foreground via-foreground/50 to-transparent" />
-
-                      <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between gap-2">
-                          <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
-                            <Briefcase className="w-5 h-5 text-primary flex-shrink-0" />
-                            <span>{exp.title}</span>
-                          </CardTitle>
-                        </div>
-                        <div className="flex flex-col gap-2 mt-2 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            {exp.logo && <img src={exp.logo} alt={exp.company} width={24} height={24} loading="lazy" className="w-6 h-6 rounded-full object-cover" />}
-                            {exp.link ? (
-                              <motion.a
-                                href={exp.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-semibold hover:text-primary transition-colors flex items-center gap-1 group"
-                                whileHover={{ x: 2 }}
-                              >
-                                {exp.company}
-                                <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </motion.a>
-                            ) : (
-                              <span className="font-semibold">{exp.company}</span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="w-4 h-4" />
-                            <span>{formattedPeriod}</span>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <motion.p
-                          className="text-muted-foreground leading-relaxed"
-                          style={{ whiteSpace: "pre-line" }}
-                          initial={{ opacity: 0 }}
-                          animate={isInView ? { opacity: 1 } : {}}
-                          transition={{ delay: 0.7 + index * 0.2 }}
-                        >
-                          {exp.description}
-                        </motion.p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </div>
-              </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </motion.section>
-  );
+									<div
+										className={`w-full lg:w-[calc(50%-2.5rem)] ml-12 lg:ml-0 ${
+											isEven ? "lg:pr-8" : "lg:pl-8"
+										}`}
+									>
+										<Card className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 backdrop-blur-xl p-0 transition-all duration-300 hover:border-primary/40 hover:shadow-glow-primary">
+											<span
+												aria-hidden
+												className={`pointer-events-none absolute top-0 h-full w-px bg-gradient-to-b from-primary/0 via-primary/60 to-primary/0 ${
+													isEven ? "right-0" : "left-0"
+												}`}
+											/>
+											<CardHeader className="p-5 pb-3">
+												<CardTitle className="text-lg md:text-xl flex items-center gap-2 font-semibold">
+													<span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+														<Briefcase className="size-4" />
+													</span>
+													{exp.title}
+												</CardTitle>
+												<div className="mt-3 flex flex-col gap-2 text-sm text-muted-foreground">
+													<div className="flex items-center gap-2 flex-wrap">
+														{exp.logo && (
+															<Image
+																src={exp.logo}
+																alt={`${exp.company} logo`}
+																width={24}
+																height={24}
+																loading="lazy"
+																className="size-6 rounded-full object-cover ring-1 ring-border"
+															/>
+														)}
+														{exp.link ? (
+															<a
+																href={exp.link}
+																target="_blank"
+																rel="noopener noreferrer"
+																className="font-semibold text-foreground hover:text-primary transition-colors flex items-center gap-1 group"
+															>
+																{exp.company}
+																<ExternalLink className="size-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+															</a>
+														) : (
+															<span className="font-semibold text-foreground">
+																{exp.company}
+															</span>
+														)}
+													</div>
+													<div className="inline-flex w-fit items-center gap-2 rounded-full bg-muted px-2.5 py-1 text-xs">
+														<Calendar className="size-3.5" />
+														<span>{formattedPeriod}</span>
+													</div>
+												</div>
+											</CardHeader>
+											<CardContent className="p-5 pt-0">
+												<p className="text-muted-foreground leading-relaxed text-pretty whitespace-pre-line">
+													{exp.description}
+												</p>
+											</CardContent>
+										</Card>
+									</div>
+								</motion.div>
+							);
+						})}
+					</div>
+				</div>
+			</div>
+		</section>
+	);
 };
 
 export default Experience;

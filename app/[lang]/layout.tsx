@@ -1,5 +1,3 @@
-import "../globals.css";
-import "normalize.css";
 import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
 
@@ -11,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
 	children,
-	params
+	params,
 }: {
 	children: React.ReactNode;
 	params: Promise<{ lang: string }>;

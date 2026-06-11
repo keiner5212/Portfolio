@@ -1,10 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
     FPS,
     HOVER_RADIUS,
@@ -29,11 +24,16 @@ export function isMobileDevice(): boolean {
     return /android|iphone|ipad|ipod|blackberry|windows phone/i.test(userAgent.toLowerCase());
 }
 
-export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>, theme: string) => {
+export const useCanvasAnimation = (
+    canvasRef: React.RefObject<HTMLCanvasElement>,
+    theme: string,
+) => {
     const [points, setPoints] = useState<Point[]>([]);
     const pointsRef = useRef<Point[]>([]);
 
-    // Renderer: WebGPU if available, otherwise null (Canvas 2D used directly)
+    // Canvas 2D is the default. WebGPU is tried once at mount; only enabled
+    // after the renderer reports `ready`. This avoids locking the canvas to
+    // a WebGPU context that never finishes initializing.
     const rendererRef = useRef<WebGPURenderer | null>(null);
     const useWebGPURef = useRef(false);
 
@@ -56,20 +56,26 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         pointsRef.current = points;
     }, [points]);
 
-    // Initialize renderer: lock canvas to WebGPU immediately if supported.
-    // Canvas 2D and WebGPU contexts are mutually exclusive — the decision is made
-    // once at mount time. Frames are skipped while WebGPU finishes its async setup.
+    // Initialize WebGPU renderer lazily. Canvas 2D is used until ready (or
+    // permanently if WebGPU is unavailable).
     useEffect(() => {
         if (!canvasRef.current) return;
+        if (isMobileDevice()) return;
+        if (!("gpu" in navigator)) return;
 
-        if ("gpu" in navigator && !isMobileDevice()) {
-            const renderer = new WebGPURenderer(canvasRef.current);
-            rendererRef.current = renderer;
-            useWebGPURef.current = true;
-        }
+        const canvas = canvasRef.current;
+        const renderer = new WebGPURenderer(canvas);
+        rendererRef.current = renderer;
+
+        renderer.initialize().then(() => {
+            if (renderer.destroyed) return;
+            if (renderer.ready) {
+                useWebGPURef.current = true;
+            }
+        });
 
         return () => {
-            rendererRef.current?.destroy();
+            renderer.destroy();
             rendererRef.current = null;
             useWebGPURef.current = false;
         };
@@ -93,13 +99,13 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         setPoints(newPoints);
     }, [NUMBER_OF_POINTS]);
 
-    const resizeCanvas = () => {
+    const resizeCanvas = useCallback(() => {
         if (canvasRef.current) {
             const parent = canvasRef.current.parentElement as HTMLElement;
             canvasRef.current.width = parent.clientWidth;
             canvasRef.current.height = parent.clientHeight;
         }
-    };
+    }, []);
 
     const update = useCallback(() => {
         if (!canvasRef.current) return;
@@ -137,19 +143,23 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
             }
         }
 
-        if (useWebGPURef.current) {
-            // WebGPU path — skip frame while pipeline is still being compiled
-            if (rendererRef.current?.ready) {
-                rendererRef.current.render(pts, POINTS_COLOR, POINTS_HOVER_COLOR, canvas.width, canvas.height);
-            }
-        } else {
-            // Canvas 2D fallback
-            const ctx = canvas.getContext("2d");
-            if (!ctx) return;
-            clearCanvas(ctx);
-            DrawPoints(pts, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
-            DrawLines(pts, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
+        if (useWebGPURef.current && rendererRef.current?.ready) {
+            rendererRef.current.render(
+                pts,
+                POINTS_COLOR,
+                POINTS_HOVER_COLOR,
+                canvas.width,
+                canvas.height,
+            );
+            return;
         }
+
+        // Canvas 2D fallback (default and only path when WebGPU is off / not ready)
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+        clearCanvas(ctx);
+        DrawPoints(pts, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
+        DrawLines(pts, ctx, POINTS_COLOR, POINTS_HOVER_COLOR);
     }, [POINTS_COLOR, canvasRef]);
 
     useEffect(() => {
@@ -161,7 +171,7 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         resizeCanvas();
         window.addEventListener("resize", resizeCanvas, { passive: true });
         return () => window.removeEventListener("resize", resizeCanvas);
-    }, []);
+    }, [resizeCanvas]);
 
     useEffect(() => {
         let throttleTimeout: NodeJS.Timeout | null = null;
@@ -228,10 +238,9 @@ export const useCanvasAnimation = (canvasRef: React.RefObject<HTMLCanvasElement>
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
             if (throttleTimeout) clearTimeout(throttleTimeout);
-            pointsRef.current.forEach(point => {
+            pointsRef.current.forEach((point) => {
                 if (point.hoverTimeout) clearTimeout(point.hoverTimeout);
             });
         };
     }, []);
 };
-

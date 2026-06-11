@@ -6,47 +6,37 @@ import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { translations } from "@/lib/translations";
-import { AnimatedSection } from "@/components/AnimatedSection";
+import type { Lang } from "@/lib/i18n";
 
 export function generateStaticParams() {
-  return [{ lang: "en" }, { lang: "es" }];
+	return [{ lang: "en" }, { lang: "es" }];
 }
 
 export default async function Home({
-  params,
+	params,
 }: {
-  params: Promise<{ lang: "en" | "es" }>;
+	params: Promise<{ lang: Lang }>;
 }) {
-  const { lang } = await params;
-  const t = translations[lang as keyof typeof translations];
+	const { lang } = await params;
+	const t = translations[lang];
 
-  return (
-    <div className="min-h-screen bg-background">
-      <Header lang={lang} t={t.header} />
+	return (
+		<div className="min-h-screen bg-background">
+			<Header lang={lang} t={t.header} />
 
-      <main>
-        <AnimatedSection>
-          <Hero t={t.hero} />
-        </AnimatedSection>
+			<main id="main">
+				<Hero t={t.hero} />
 
-        <AnimatedSection delay={0.3}>
-          <About t={t.about} />
-        </AnimatedSection>
+				<About t={t.about} />
 
-        <AnimatedSection delay={0.3}>
-          <Experience t={t.experience} />
-        </AnimatedSection>
+				<Experience t={t.experience} />
 
-        <AnimatedSection delay={0.3}>
-          <Projects t={t.projects} />
-        </AnimatedSection>
+				<Projects t={t.projects} />
 
-        <AnimatedSection delay={0.3}>
-          <Contact t={t.contact} lang={lang} />
-        </AnimatedSection>
-      </main>
+				<Contact t={t.contact} lang={lang} />
+			</main>
 
-      <Footer />
-    </div>
-  );
+			<Footer />
+		</div>
+	);
 }
