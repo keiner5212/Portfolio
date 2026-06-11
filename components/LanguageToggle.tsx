@@ -32,7 +32,7 @@ const LanguageToggle = () => {
 			variant="outline"
 			size="sm"
 			aria-label={`Switch language to ${isEs ? "English" : "Spanish"}`}
-			className="rounded-md gap-1.5 font-medium"
+			className="h-10 rounded-md gap-1.5 font-medium px-3"
 		>
 			<Languages className="size-3.5" aria-hidden />
 			<span className="text-xs uppercase tracking-wider">

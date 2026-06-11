@@ -17,7 +17,7 @@ export function SectionHeading({ title, className }: SectionHeadingProps) {
 			whileInView="visible"
 			viewport={inViewTrigger}
 			variants={fadeUp}
-			className={cn("mb-12 text-center", className)}
+			className={cn("mb-8 text-center", className)}
 		>
 			<h2 className="text-3xl md:text-4xl font-bold text-balance">{title}</h2>
 			<span className="accent-bar" />

@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { useCanvasAnimation } from "./background/useCanvasAnimation";
 import SocialLinks from "@/components/SocialLinks";
 import { Button } from "@/components/ui/button";
-import { fadeUp, heroReveal, scaleIn, staggerContainer } from "@/lib/motion";
+import { EASE } from "@/lib/motion";
 
 interface HeroTranslation {
 	title: string;
@@ -45,15 +45,11 @@ const Hero = ({ t }: { t: HeroTranslation }) => {
 	useCanvasAnimation(canvasRef, mounted ? effectiveTheme : "light");
 
 	return (
-		<section className="relative overflow-hidden bg-background py-20 md:py-24">
+		<section className="relative overflow-hidden bg-background py-10 md:py-14">
 			{/* Custom animated points layer (drift + twinkle) */}
 			<div
 				aria-hidden
 				className="floating-points [mask-image:radial-gradient(70%_65%_at_50%_50%,black,transparent_85%)]"
-			/>
-			<div
-				aria-hidden
-				className="floating-points-twinkle [mask-image:radial-gradient(65%_60%_at_50%_50%,black,transparent_85%)]"
 			/>
 
 			{/* Canvas points animation (WebGPU / Canvas 2D fallback) */}
@@ -63,16 +59,13 @@ const Hero = ({ t }: { t: HeroTranslation }) => {
 				className="pointer-events-none absolute inset-0 h-full w-full opacity-60"
 			/>
 
-			<motion.div
-				initial="hidden"
-				animate="visible"
-				variants={staggerContainer(0.12)}
-				className="relative z-10 mx-auto max-w-7xl px-6"
-			>
+			<div className="relative z-10 mx-auto max-w-7xl px-6">
 				<div className="flex flex-col items-center text-center md:flex-row md:justify-center md:items-center md:gap-10 md:text-left">
-					{/* Profile picture — left on desktop, top on mobile */}
+					{/* Profile picture — appears first */}
 					<motion.div
-						variants={scaleIn}
+						initial={{ opacity: 0, scale: 0.85 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ duration: 0.55, delay: 0, ease: EASE.outExpo }}
 						className="relative mb-6 md:mb-0 shrink-0"
 					>
 						<Image
@@ -87,15 +80,21 @@ const Hero = ({ t }: { t: HeroTranslation }) => {
 
 					{/* Text block */}
 					<div className="flex flex-col items-center md:items-start max-w-2xl">
+						{/* Name — slightly after pic */}
 						<motion.h1
-							variants={heroReveal}
+							initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+							animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+							transition={{ duration: 0.6, delay: 0.18, ease: EASE.outExpo }}
 							className="font-heading font-bold text-balance text-4xl sm:text-5xl md:text-6xl tracking-tight"
 						>
 							{t.title}
 						</motion.h1>
 
+						{/* Subtitle row — noticeably after name */}
 						<motion.div
-							variants={fadeUp}
+							initial={{ opacity: 0, y: 16 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.55, delay: 0.35, ease: EASE.outExpo }}
 							className="mt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 text-base md:text-xl text-muted-foreground"
 						>
 							<span className="transition-all duration-300 hover:text-foreground">
@@ -111,8 +110,11 @@ const Hero = ({ t }: { t: HeroTranslation }) => {
 							</span>
 						</motion.div>
 
+						{/* CTA + socials — last to arrive */}
 						<motion.div
-							variants={fadeUp}
+							initial={{ opacity: 0, y: 16 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.55, delay: 0.5, ease: EASE.outExpo }}
 							className="mt-8 flex flex-row flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-5"
 						>
 							<Button
@@ -129,7 +131,7 @@ const Hero = ({ t }: { t: HeroTranslation }) => {
 						</motion.div>
 					</div>
 				</div>
-			</motion.div>
+			</div>
 		</section>
 	);
 };

@@ -196,6 +196,11 @@ export const translations = {
 			email: "Your Email",
 			message: "Message",
 			send: "Send Message",
+			sending: "Sending...",
+			errors: {
+				required: "Required",
+				invalidEmail: "Invalid email",
+			},
 		}
 	},
 	es: {
@@ -396,6 +401,11 @@ export const translations = {
 			email: "Tu Correo electrónico",
 			message: "Mensaje",
 			send: "Enviar Mensaje",
+			sending: "Enviando...",
+			errors: {
+				required: "Requerido",
+				invalidEmail: "Correo inválido",
+			},
 		}
 	},
 };

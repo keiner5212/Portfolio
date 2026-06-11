@@ -38,3 +38,18 @@ export interface ExperienceEntry {
 	logo?: string;
 	description: string;
 }
+
+export interface ContactErrors {
+	required: string;
+	invalidEmail: string;
+}
+
+export interface ContactTranslation {
+	title: string;
+	name: string;
+	email: string;
+	message: string;
+	send: string;
+	sending: string;
+	errors: ContactErrors;
+}

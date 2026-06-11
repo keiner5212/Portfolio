@@ -61,8 +61,8 @@ export function DrawLines(
     }
 }
 
-export function clearCanvas(ctx: CanvasRenderingContext2D): void {
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
+export function clearCanvas(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+    ctx.clearRect(0, 0, width, height);
 }
 
 function hexToRgb(hex: string): { r: number, g: number, b: number } {

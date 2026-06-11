@@ -24,9 +24,18 @@ export function TechChips({ technologies, projectIndex }: TechChipsProps) {
 
 	useEffect(() => {
 		checkScroll();
+		const el = scrollRef.current;
+		let ro: ResizeObserver | null = null;
+		if (typeof ResizeObserver !== "undefined" && el) {
+			ro = new ResizeObserver(checkScroll);
+			ro.observe(el);
+		}
 		window.addEventListener("resize", checkScroll, { passive: true });
-		return () => window.removeEventListener("resize", checkScroll);
-	}, []);
+		return () => {
+			window.removeEventListener("resize", checkScroll);
+			ro?.disconnect();
+		};
+	}, [technologies.length]);
 
 	const scroll = (direction: "left" | "right") => {
 		const el = scrollRef.current;

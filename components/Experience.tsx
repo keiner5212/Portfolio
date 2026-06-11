@@ -11,7 +11,7 @@ import { Briefcase, Calendar, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Orb } from "@/components/ui/orb";
-import { DUR, EASE, fadeLeft, fadeRight, fadeUp, inViewTrigger } from "@/lib/motion";
+import { DUR, EASE, fadeLeft, fadeRight, fadeUp, inViewTrigger, sectionReveal } from "@/lib/motion";
 import type { ExperienceEntry } from "@/lib/i18n";
 
 interface ExperienceTranslation {
@@ -83,14 +83,20 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 	return (
 		<section
 			id="experience"
-			className="relative bg-background py-20 md:py-24 lg:py-32 overflow-hidden"
+			className="relative bg-background py-10 md:py-14 lg:py-16 overflow-hidden"
 		>
 			<Orb
 				tone="cyan"
 				className="w-[400px] h-[400px] -top-32 right-0 animate-float-slow"
 			/>
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6">
+			<motion.div
+				initial="hidden"
+				whileInView="visible"
+				viewport={inViewTrigger}
+				variants={sectionReveal}
+				className="relative z-10 mx-auto max-w-7xl px-6"
+			>
 				<SectionHeading title={t.title} />
 
 				<div className="relative">
@@ -105,7 +111,7 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 						aria-hidden
 					/>
 
-					<div className="space-y-12">
+					<div className="space-y-8">
 						{experiences.map((exp, index) => {
 							const isEven = index % 2 === 0;
 							const formattedPeriod = formatPeriod(exp.period, t.present, lang);
@@ -150,8 +156,17 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 									<div
 										className={`w-full lg:w-[calc(50%-2.5rem)] ml-12 lg:ml-0 ${
 											isEven ? "lg:pr-8" : "lg:pl-8"
-										}`}
+										} relative`}
 									>
+										{/* Horizontal connector from card edge to center dot (desktop only) */}
+										<span
+											aria-hidden
+											className={`hidden lg:block absolute top-[2.25rem] w-8 h-px bg-gradient-to-r ${
+												isEven
+													? "right-0 from-primary/60 to-primary/20"
+													: "left-0 from-primary/20 to-primary/60"
+											}`}
+										/>
 										<Card className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 backdrop-blur-xl p-0 transition-all duration-300 hover:border-primary/40 hover:shadow-glow-primary">
 											<span
 												aria-hidden
@@ -159,7 +174,7 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 													isEven ? "right-0" : "left-0"
 												}`}
 											/>
-											<CardHeader className="p-5 pb-3">
+											<CardHeader className="p-6 pb-3">
 												<CardTitle className="text-lg md:text-xl flex items-center gap-2 font-semibold">
 													<span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
 														<Briefcase className="size-4" />
@@ -200,7 +215,7 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 													</div>
 												</div>
 											</CardHeader>
-											<CardContent className="p-5 pt-0">
+											<CardContent className="p-6 pt-0">
 												<p className="text-muted-foreground leading-relaxed text-pretty whitespace-pre-line">
 													{exp.description}
 												</p>
@@ -212,7 +227,7 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 						})}
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</section>
 	);
 };

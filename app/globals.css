@@ -148,10 +148,6 @@
 		@apply border-border;
 	}
 
-	html {
-		scroll-behavior: smooth;
-	}
-
 	body {
 		@apply bg-background text-foreground font-body;
 		line-height: 1.6;
@@ -235,7 +231,6 @@
 		border-radius: 9999px;
 		filter: blur(80px);
 		pointer-events: none;
-		will-change: transform;
 	}
 	.orb-primary {
 		background: var(--orb-1);
@@ -277,7 +272,6 @@
 		pointer-events: none;
 		overflow: hidden;
 		background-repeat: repeat;
-		will-change: transform;
 	}
 	.floating-points::before,
 	.floating-points::after {
@@ -289,8 +283,7 @@
 				hsl(var(--primary) / 0.45) 1.4px,
 				transparent 1.6px
 			);
-		background-size: 28px 28px;
-		will-change: transform;
+		background-size: 40px 40px;
 	}
 	.floating-points::before {
 		animation: points-drift 18s ease-in-out infinite;
@@ -301,7 +294,7 @@
 				hsl(var(--brand-cyan) / 0.55) 1.6px,
 				transparent 1.8px
 			);
-		background-size: 44px 44px;
+		background-size: 64px 64px;
 		animation: points-drift 26s ease-in-out infinite reverse;
 		opacity: 0.65;
 		mix-blend-mode: screen;
@@ -316,10 +309,9 @@
 				hsl(var(--foreground) / 0.55) 1px,
 				transparent 1.2px
 			);
-		background-size: 88px 88px;
+		background-size: 120px 120px;
 		background-position: 22px 14px;
 		animation: points-twinkle 4s ease-in-out infinite;
-		will-change: opacity;
 	}
 	.dark .floating-points::before {
 		background-image:

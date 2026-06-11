@@ -1,6 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Archivo, Space_Grotesk } from "next/font/google";
+import { headers } from "next/headers";
+import type { Lang } from "@/lib/i18n";
 
 const archivo = Archivo({
 	subsets: ["latin"],
@@ -96,13 +98,14 @@ const jsonLd = {
 	],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const lang = (await headers()).get("x-lang") as Lang | null;
 	return (
-		<html lang="en" className="scroll-smooth" suppressHydrationWarning>
+		<html lang={lang ?? "en"} className="scroll-smooth" suppressHydrationWarning>
 			<head>
 				<link rel="icon" href="/favicon.ico" sizes="any" />
 				<script

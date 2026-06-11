@@ -8,7 +8,7 @@ import { TechBadge } from "@/components/TechBadge";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Orb } from "@/components/ui/orb";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { DUR, EASE, fadeUp, hoverLift, inViewTrigger, staggerContainer } from "@/lib/motion";
+import { DUR, EASE, fadeUp, hoverLift, inViewTrigger, sectionReveal, staggerContainer } from "@/lib/motion";
 
 interface AboutTranslation {
 	title: string;
@@ -27,7 +27,7 @@ const About = ({ t }: { t: AboutTranslation }) => {
 	return (
 		<section
 			id="about"
-			className="relative bg-surface-1 py-20 md:py-24 lg:py-32 overflow-hidden"
+			className="relative bg-surface-1 py-10 md:py-14 lg:py-16 overflow-hidden"
 		>
 			<Orb
 				tone="primary"
@@ -43,7 +43,13 @@ const About = ({ t }: { t: AboutTranslation }) => {
 				className="pointer-events-none absolute inset-0 opacity-30 bg-dot-grid [mask-image:radial-gradient(50%_50%_at_50%_50%,black_30%,transparent_80%)]"
 			/>
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6">
+			<motion.div
+				initial="hidden"
+				whileInView="visible"
+				viewport={inViewTrigger}
+				variants={sectionReveal}
+				className="relative z-10 mx-auto max-w-7xl px-6"
+			>
 				<SectionHeading title={t.title} />
 
 				<motion.p
@@ -52,7 +58,7 @@ const About = ({ t }: { t: AboutTranslation }) => {
 					viewport={inViewTrigger}
 					variants={fadeUp}
 					transition={{ duration: reduced ? 0 : DUR.slow, ease: EASE.outExpo, delay: reduced ? 0 : 0.1 }}
-					className="mx-auto mb-16 max-w-3xl text-center text-base md:text-lg text-muted-foreground text-pretty whitespace-pre-line leading-relaxed"
+					className="mx-auto mb-10 text-center text-base md:text-lg text-muted-foreground text-pretty whitespace-pre-line leading-relaxed"
 				>
 					{t.content}
 				</motion.p>
@@ -97,7 +103,7 @@ const About = ({ t }: { t: AboutTranslation }) => {
 						))}
 					</motion.div>
 				</TooltipProvider>
-			</div>
+			</motion.div>
 		</section>
 	);
 };

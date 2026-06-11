@@ -21,9 +21,9 @@ export const ImageViewerDialog = ({
 	onClose,
 }: ImageViewerDialogProps) => {
 	return (
-		<Dialog open={!!src} onOpenChange={(open) => !open && onClose()}>
-			<AnimatePresence>
-				{src && (
+		<AnimatePresence>
+			{src && (
+				<Dialog open={!!src} onOpenChange={(open) => !open && onClose()}>
 					<DialogContent
 						showCloseButton={false}
 						className="bg-transparent border-none p-0 gap-0 z-[99999] w-screen h-screen max-w-none max-h-none sm:rounded-none flex items-center justify-center"
@@ -60,8 +60,8 @@ export const ImageViewerDialog = ({
 							/>
 						</motion.div>
 					</DialogContent>
-				)}
-			</AnimatePresence>
-		</Dialog>
+				</Dialog>
+			)}
+		</AnimatePresence>
 	);
 };

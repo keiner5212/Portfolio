@@ -4,17 +4,12 @@ import Image from "next/image";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 
-const SLIDER_SETTINGS = {
-	dots: true,
-	infinite: true,
-	speed: 500,
-	slidesToShow: 1,
-	slidesToScroll: 1,
-	autoplay: true,
-	autoplaySpeed: 3000,
-};
+function getAutoplay(): boolean {
+	if (typeof window === "undefined") return true;
+	return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 const ProjectImage = memo(function ProjectImage({
 	image,
@@ -47,9 +42,28 @@ export function ProjectGallery({
 	images: string[];
 	title: string;
 }) {
+	const [autoplay, setAutoplay] = useState(true);
+
+	useEffect(() => {
+		setAutoplay(getAutoplay());
+		const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const onChange = () => setAutoplay(getAutoplay());
+		mq.addEventListener("change", onChange);
+		return () => mq.removeEventListener("change", onChange);
+	}, []);
+
 	if (images.length > 1) {
 		return (
-			<Slider {...SLIDER_SETTINGS} dots={false} className="w-full">
+			<Slider
+				dots={false}
+				infinite
+				speed={500}
+				slidesToShow={1}
+				slidesToScroll={1}
+				autoplay={autoplay}
+				autoplaySpeed={3000}
+				className="w-full"
+			>
 				{images.map((image, i) => (
 					<ProjectImage
 						key={`${title}-${i}`}

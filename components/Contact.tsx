@@ -10,9 +10,12 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Orb } from "@/components/ui/orb";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { Send, Mail, User, MessageSquare } from "lucide-react";
-import { DUR, EASE, fadeLeft, fadeRight } from "@/lib/motion";
+import { DUR, EASE, fadeLeft, fadeRight, sectionReveal } from "@/lib/motion";
+import type { Lang } from "@/lib/i18n";
 
-const BACKEND_URL = "https://backend.keiner-alvarado-quintero.top";
+const BACKEND_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL ??
+    "https://backend.keiner-alvarado-quintero.top";
 
 interface ContactTranslation {
 	title: string;
@@ -20,6 +23,8 @@ interface ContactTranslation {
 	email: string;
 	message: string;
 	send: string;
+	sending: string;
+	errors: { required: string; invalidEmail: string };
 }
 
 interface FormState {
@@ -33,7 +38,7 @@ const Contact = ({
 	lang,
 }: {
 	t: ContactTranslation;
-	lang: string;
+	lang: Lang;
 }) => {
 	const [formData, setFormData] = useState<FormState>({
 		name: "",
@@ -75,16 +80,16 @@ const Contact = ({
 
 	const validate = useCallback((): boolean => {
 		const next: Partial<FormState> = {};
-		if (!formData.name.trim()) next.name = "Required";
+		if (!formData.name.trim()) next.name = t.errors.required;
 		if (!formData.email.trim()) {
-			next.email = "Required";
+			next.email = t.errors.required;
 		} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-			next.email = "Invalid email";
+			next.email = t.errors.invalidEmail;
 		}
-		if (!formData.message.trim()) next.message = "Required";
+		if (!formData.message.trim()) next.message = t.errors.required;
 		setErrors(next);
 		return Object.keys(next).length === 0;
-	}, [formData]);
+	}, [formData, t.errors]);
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -137,7 +142,7 @@ const Contact = ({
 	return (
 		<section
 			id="contact"
-			className="relative bg-surface-1 py-20 md:py-24 lg:py-32 overflow-hidden"
+			className="relative bg-background py-10 md:py-14 lg:py-16 overflow-hidden"
 		>
 			<Orb
 				tone="primary"
@@ -153,10 +158,16 @@ const Contact = ({
 				className="pointer-events-none absolute inset-0 opacity-30 bg-dot-grid [mask-image:radial-gradient(60%_60%_at_50%_0%,black,transparent_70%)]"
 			/>
 
-			<div className="relative z-10 mx-auto max-w-7xl px-6">
+			<motion.div
+				initial="hidden"
+				whileInView="visible"
+				viewport={{ once: true, margin: "-80px" }}
+				variants={sectionReveal}
+				className="relative z-10 mx-auto max-w-7xl px-6"
+			>
 				<SectionHeading title={t.title} />
 
-				<div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
+				<div className="grid gap-8 lg:grid-cols-2 lg:gap-10 items-start">
 					{/* Form */}
 					<motion.div
 						ref={formRef}
@@ -170,9 +181,13 @@ const Contact = ({
 					>
 						<form
 							onSubmit={handleSubmit}
-							className="gradient-border p-6 md:p-8 space-y-5"
+							className="relative rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl p-6 md:p-8 space-y-5 hover:border-primary/40 transition-colors duration-300"
 							noValidate
 						>
+							<span
+								aria-hidden
+								className="pointer-events-none absolute inset-x-0 top-0 h-px rounded-t-2xl bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+							/>
 							<Field
 								id="name"
 								label={t.name}
@@ -181,7 +196,7 @@ const Contact = ({
 								value={formData.name}
 								onChange={handleChange}
 								error={errors.name}
-								icon={<User className="size-4" />}
+								icon={								<User className="size-3.5" />}
 								placeholder="Jane Doe"
 							/>
 							<Field
@@ -192,7 +207,7 @@ const Contact = ({
 								value={formData.email}
 								onChange={handleChange}
 								error={errors.email}
-								icon={<Mail className="size-4" />}
+								icon={								<Mail className="size-3.5" />}
 								placeholder="jane@example.com"
 							/>
 							<div>
@@ -213,7 +228,7 @@ const Contact = ({
 									aria-invalid={!!errors.message}
 									aria-describedby={errors.message ? "message-error" : undefined}
 									placeholder="Tell me about your project..."
-									className="bg-surface-1/50 border-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary rounded-lg resize-none"
+									className="bg-background/60 border-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary rounded-lg resize-none"
 								/>
 								{errors.message && (
 									<p
@@ -230,12 +245,12 @@ const Contact = ({
 								type="submit"
 								size="lg"
 								disabled={loading}
-								className="w-full h-12 rounded-lg bg-primary text-primary-foreground font-medium shadow-glow-primary hover:shadow-[0_0_0_1px_hsl(var(--primary)/0.4),0_15px_50px_-10px_hsl(var(--primary)/0.6)] transition-all duration-300 active:scale-[0.98]"
+								className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-medium shadow-glow-primary hover:shadow-[0_0_0_1px_hsl(var(--primary)/0.4),0_15px_50px_-10px_hsl(var(--primary)/0.6)] transition-all duration-300 active:scale-[0.98]"
 							>
 								{loading ? (
 									<>
 										<span className="size-2 rounded-full bg-primary-foreground animate-glow-pulse" />
-										Sending...
+										{t.sending}
 									</>
 								) : (
 									<>
@@ -265,7 +280,7 @@ const Contact = ({
 						/>
 					</motion.div>
 				</div>
-			</div>
+			</motion.div>
 		</section>
 	);
 };
@@ -311,7 +326,7 @@ const Field = ({
 			aria-invalid={!!error}
 			aria-describedby={error ? `${id}-error` : undefined}
 			placeholder={placeholder}
-			className="bg-surface-1/50 border-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary rounded-lg h-11"
+			className="bg-background/60 border-border focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary rounded-lg h-11"
 		/>
 		{error && (
 			<p id={`${id}-error`} role="alert" className="mt-1.5 text-xs text-destructive">

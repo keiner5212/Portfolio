@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowDown, ArrowUp } from "lucide-react";
@@ -10,9 +10,8 @@ import { ImageViewerDialog } from "@/components/ui/image-viewer";
 import { ProjectCard } from "./projects/project-card";
 import { ProjectModal } from "./projects/project-modal";
 import { FinalCard } from "./projects/final-card";
-import { DUR, EASE, fadeUp, staggerContainer } from "@/lib/motion";
+import { DUR, EASE, fadeUp, sectionReveal, staggerContainer } from "@/lib/motion";
 import type { Project, ProjectsTranslation } from "@/lib/i18n";
-import { useRef } from "react";
 
 const INITIAL_VISIBLE = 3;
 
@@ -43,7 +42,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
 			<section
 				ref={sectionRef}
 				id="projects"
-				className="relative bg-surface-1 py-20 md:py-24 lg:py-32 overflow-hidden"
+				className="relative bg-surface-1 py-10 md:py-14 lg:py-16 overflow-hidden"
 			>
 				<Orb
 					tone="violet"
@@ -59,7 +58,13 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
 					className="pointer-events-none absolute inset-0 opacity-30 bg-dot-grid [mask-image:radial-gradient(60%_60%_at_50%_50%,black_30%,transparent_80%)]"
 				/>
 
-				<div className="relative z-10 mx-auto max-w-7xl px-6">
+				<motion.div
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, margin: "-80px" }}
+					variants={sectionReveal}
+					className="relative z-10 mx-auto max-w-7xl px-6"
+				>
 					<SectionHeading title={t.title} />
 
 					<motion.div
@@ -90,7 +95,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
 						)}
 					</motion.div>
 
-					<div className="mt-12 flex min-h-[44px] justify-center">
+					<div className="mt-8 flex min-h-[44px] justify-center">
 						<AnimatePresence mode="wait">
 							{showLoadMore ? (
 								<motion.div
@@ -131,7 +136,7 @@ const Projects = ({ t }: { t: ProjectsTranslation }) => {
 							) : null}
 						</AnimatePresence>
 					</div>
-				</div>
+				</motion.div>
 			</section>
 
 			<ProjectModal

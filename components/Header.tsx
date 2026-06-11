@@ -30,7 +30,10 @@ const Header = ({ lang, t }: HeaderProps) => {
 	const reduced = useReducedMotion();
 
 	useEffect(() => {
-		const onScroll = () => setScrolled(window.scrollY > 16);
+		const onScroll = () => {
+			const next = window.scrollY > 16;
+			setScrolled((prev) => (prev === next ? prev : next));
+		};
 		onScroll();
 		window.addEventListener("scroll", onScroll, { passive: true });
 		return () => window.removeEventListener("scroll", onScroll);
