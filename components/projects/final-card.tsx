@@ -26,7 +26,7 @@ export function FinalCard({ title, description, buttonText, href }: FinalCardPro
 				    points down at the GitHub button. */}
 				<div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
 					<div
-						className="spotlight-beam absolute left-1/2 top-0 -translate-x-1/2 origin-top animate-spotlight-sway animate-spotlight-flicker"
+						className="spotlight-beam absolute left-1/2 top-0 -translate-x-1/2 origin-top animate-spotlight-sway"
 					/>
 					{/* Dust / haze inside the beam */}
 					<div
@@ -47,7 +47,7 @@ export function FinalCard({ title, description, buttonText, href }: FinalCardPro
 						href={href}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="spotlight-target group relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-border bg-background/70 px-4 py-3 text-sm font-medium transition-all hover:border-primary/60 hover:bg-primary/5 hover:shadow-glow-primary"
+						className="spotlight-target group relative inline-flex items-center gap-2 overflow-hidden rounded-lg border border-border bg-background/60 px-4 py-3 text-sm font-medium transition-all hover:border-primary/60 hover:bg-primary/5 hover:shadow-glow-primary"
 					>
 						<GithubIcon className="size-5" aria-hidden />
 						<span>{buttonText}</span>

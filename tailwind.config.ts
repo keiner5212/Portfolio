@@ -130,12 +130,8 @@ const config: Config = {
 					"50%": { opacity: "0.9" },
 				},
 				"spotlight-sway": {
-					"0%, 100%": { transform: "translateX(-14%) rotate(-3deg) scaleY(1)" },
-					"50%": { transform: "translateX(14%) rotate(3deg) scaleY(1.06)" },
-				},
-				"spotlight-flicker": {
-					"0%, 100%": { opacity: "0.85" },
-					"50%": { opacity: "1" },
+					"0%, 100%": { transform: "translateX(-14%) rotate(-3deg) scaleY(1)", opacity: "0.85" },
+					"50%": { transform: "translateX(14%) rotate(3deg) scaleY(1.06)", opacity: "1" },
 				},
 			},
 			animation: {
@@ -150,7 +146,6 @@ const config: Config = {
 				"points-drift": "points-drift 18s ease-in-out infinite",
 				"points-twinkle": "points-twinkle 4s ease-in-out infinite",
 				"spotlight-sway": "spotlight-sway 5.5s ease-in-out infinite",
-				"spotlight-flicker": "spotlight-flicker 3.2s ease-in-out infinite",
 			},
 			transitionTimingFunction: {
 				"out-expo": "cubic-bezier(0.16, 1, 0.3, 1)",

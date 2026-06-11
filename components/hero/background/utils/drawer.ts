@@ -24,10 +24,8 @@ export function DrawLines(
     baseColor: string,
     hoverColor: string
 ): void {
-    let nearPoints: Point[] = [];
     for (const point of points) {
-        nearPoints = [];
-
+        const nearPoints: Point[] = [];
         for (const nearPoint of points) {
             if (point !== nearPoint) {
                 const distanceX = point.x - nearPoint.x;
@@ -72,10 +70,10 @@ function hexToRgb(hex: string): { r: number, g: number, b: number } {
         hex = hex.split('').map(c => c + c).join('');
     }
 
-    let bigint = parseInt(hex, 16);
-    let r = (bigint >> 16) & 255;
-    let g = (bigint >> 8) & 255;
-    let b = bigint & 255;
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
 
     return { r, g, b };
 }

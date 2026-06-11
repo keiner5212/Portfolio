@@ -78,7 +78,7 @@ const About = ({ t }: { t: AboutTranslation }) => {
 								{...hoverLift}
 								className="group"
 							>
-								<Card className="relative h-full rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl p-6 transition-all duration-300 hover:border-primary/40 hover:shadow-glow-primary">
+								<Card className="relative h-full rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow-primary">
 									<span
 										aria-hidden
 										className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"

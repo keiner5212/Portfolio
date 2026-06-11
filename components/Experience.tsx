@@ -167,7 +167,7 @@ const Experience = ({ t }: { t: ExperienceTranslation }) => {
 													: "left-0 from-primary/20 to-primary/60"
 											}`}
 										/>
-										<Card className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 backdrop-blur-xl p-0 transition-all duration-300 hover:border-primary/40 hover:shadow-glow-primary">
+										<Card className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/60 backdrop-blur-xl p-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-glow-primary">
 											<span
 												aria-hidden
 												className={`pointer-events-none absolute top-0 h-full w-px bg-gradient-to-b from-primary/0 via-primary/60 to-primary/0 ${

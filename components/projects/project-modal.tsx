@@ -56,7 +56,7 @@ export function ProjectModal({
 									key={`modal-image-${i}`}
 									type="button"
 									aria-label={`View ${project.title} image ${i + 1} fullscreen`}
-									className="relative aspect-square overflow-hidden rounded-lg border border-border/40 cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+									className="relative aspect-square overflow-hidden rounded-lg border border-border/60 cursor-pointer transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 									onClick={() => onImageClick(image)}
 								>
 									{isFailed ? (
